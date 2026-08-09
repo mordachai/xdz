@@ -1,0 +1,82 @@
+name: Create Release from system.json
+
+on:
+  push:
+    branches:
+      - main
+    # Only run this workflow if system.json is modified
+    paths:
+      - 'system.json'
+  # Manual trigger — re-fire a release if GitHub drops the push trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. Extract the version from system.json using jq
+      - name: Get Version
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version system.json)
+          echo "Detected version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      # 2. Check if this tag already exists to prevent errors
+      - name: Check if Tag Exists
+        uses: mukunku/tag-exists-action@v1.6.0
+        id: check_tag
+        with:
+          tag: 'v${{ steps.get_version.outputs.version }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. Pin the download URL to THIS release's zip (not "latest")
+      # ------------------------------------------------------------------
+      # The download field must point at the version-specific asset so that
+      # installing an older release pulls that release's zip, not whatever
+      # GitHub currently marks as "latest". manifest stays on "latest" so
+      # Foundry's update notifier keeps working.
+      # ------------------------------------------------------------------
+      - name: Pin download URL to this release
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          DOWNLOAD="https://github.com/${{ github.repository }}/releases/download/v${VERSION}/system.zip"
+          MANIFEST="https://github.com/${{ github.repository }}/releases/latest/download/system.json"
+          tmp=$(mktemp)
+          jq --arg dl "$DOWNLOAD" --arg mf "$MANIFEST" '.download = $dl | .manifest = $mf' system.json > "$tmp"
+          mv "$tmp" system.json
+          echo "Pinned download to: $DOWNLOAD"
+
+      # 4. Create the Zip file (Only if tag doesn't exist)
+      # ------------------------------------------------------------------
+      # Zips only the runtime folders, ignoring dev files (src, node_modules, etc).
+      # Renamed to system.zip — includes the patched system.json above.
+      # ------------------------------------------------------------------
+      - name: Zip Files
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          zip -r system.zip system.json assets css lang module templates
+
+      # 5. Create Release
+      - name: Create Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: Release v${{ steps.get_version.outputs.version }}
+          files: |
+            system.zip
+            system.json
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
