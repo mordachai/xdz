@@ -1,0 +1,97 @@
+{
+  "XDZ": {
+    "RollCheck": "Roll Check",
+    "Delete": "Delete",
+
+    "Training": {
+      "Pilot": "Pilot",
+      "Systems": "Systems",
+      "Mechanic": "Mechanic",
+      "Weapons": "Weapons",
+      "Medical": "Medical"
+    },
+    "Resistance": {
+      "Fear": "Fear",
+      "Dodge": "Dodge",
+      "Death": "Death"
+    },
+    "Roll": {
+      "Success": "Success",
+      "Failure": "Failure"
+    },
+
+    "Actor": {
+      "Name": "Name",
+      "Rank": "Rank",
+      "Story": "Story",
+      "Quirk": "Quirk",
+      "Injury": "Injury",
+      "InjuryHint1": "Once down, take 1 injury each turn.",
+      "InjuryHint2": "Allies heal 1 injury with a Medical roll.",
+      "Down": "DOWN",
+      "KIA": "KIA",
+      "Training": "Training",
+      "RollOnYourTurn": "Roll against current target on your turn",
+      "TrainingBudget": "Training Budget",
+      "Resistance": "Resistance",
+      "RollOnEnemyTurn": "Roll against current target on enemy turn or event",
+      "ResistanceBudget": "Resistance Budget",
+      "Loadout": "Loadout",
+      "AddWeapon": "Add Weapon",
+      "Gear": "Gear",
+      "AddGear": "Gear"
+    },
+
+    "Weapon": {
+      "Equipped": "Equipped",
+      "DiscardOthers": "Discard all other weapons when equipped",
+      "DestroyDie": "Destroy Die",
+      "UpgradeDie": "Unleash Hell Die",
+      "Ammo": "Ammo",
+      "Damaged": "Damaged",
+      "SecondaryLabel": "Secondary Resource Label",
+      "SecondaryTrack": "Secondary Resource",
+      "Rules": "Rules",
+      "Description": "Description",
+      "Destroy": "Destroy",
+      "UnleashHell": "Unleash Hell",
+      "Destroyed": "{name} is destroyed and cannot be used.",
+      "NoAmmo": "No ammo remaining to Unleash Hell."
+    },
+
+    "Gear": {
+      "Quantity": "Quantity",
+      "Description": "Description"
+    },
+
+    "Xeno": {
+      "Type": "Type",
+      "TypePlaceholder": "Drone, Warrior, Praetorian...",
+      "Threat": "Threat",
+      "Mode": "Mode",
+      "Hide": "HIDE",
+      "Seek": "SEEK",
+      "Notes": "Notes"
+    },
+
+    "SheetLabels": {
+      "Commando": "XDZ Commando Sheet",
+      "Character": "XDZ Character Sheet",
+      "Xeno": "XDZ Xeno Sheet",
+      "Weapon": "XDZ Weapon Sheet",
+      "Gear": "XDZ Gear Sheet"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "commando": "Commando",
+      "character": "Character",
+      "xeno": "Xeno"
+    },
+    "Item": {
+      "weapon": "Weapon",
+      "gear": "Gear"
+    }
+  }
+}

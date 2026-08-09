@@ -1,0 +1,58 @@
+{
+  "id": "xdz",
+  "title": "Xeno Dead Zone",
+  "description": "A micro-setting, adventure toolkit, and GM-less bug-hunt system for 1-4 players. Aliens/Colonial-Marines tone.",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Gus",
+      "flags": {}
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "commando": {
+        "htmlFields": ["story"]
+      },
+      "character": {
+        "htmlFields": ["story"]
+      },
+      "xeno": {
+        "htmlFields": ["notes"]
+      }
+    },
+    "Item": {
+      "weapon": {
+        "htmlFields": ["description", "rules"]
+      },
+      "gear": {
+        "htmlFields": ["description"]
+      }
+    }
+  },
+  "flags": {
+    "hotReload": {
+      "extensions": ["css", "html", "hbs", "json"],
+      "paths": ["css", "lang", "templates"]
+    }
+  },
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "esmodules": ["module/xdz.mjs"],
+  "styles": ["css/xdz.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "grid": {
+    "distance": 1,
+    "units": "zone"
+  },
+  "primaryTokenAttribute": "injuries",
+  "socket": true
+}

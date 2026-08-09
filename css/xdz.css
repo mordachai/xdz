@@ -1,0 +1,939 @@
+@font-face {
+  font-family: "XDZ Anton";
+  src: url("../assets/fonts/Anton-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.application.xdz .window-content {
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.xdz-sheet {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ede7db;
+  color: #50504b;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  padding: 0.75rem 1rem 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.xdz-sheet input, .xdz-sheet textarea, .xdz-sheet select {
+  font-family: inherit;
+  color: #50504b;
+  background: rgba(250, 247, 240, 0.6);
+  border: 1px solid #9a958a;
+  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+}
+.xdz-sheet input:disabled, .xdz-sheet textarea:disabled, .xdz-sheet select:disabled {
+  background: transparent;
+  border-color: transparent;
+  opacity: 0.85;
+}
+.xdz-sheet input:focus, .xdz-sheet textarea:focus, .xdz-sheet select:focus {
+  outline: none;
+  border-color: #e08a2e;
+}
+.xdz-sheet textarea {
+  resize: vertical;
+}
+
+.xdz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.xdz-field-inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.xdz-field-row {
+  display: flex;
+  gap: 0.75rem;
+}
+.xdz-field-row .xdz-field {
+  flex: 1;
+}
+
+.xdz-field-label {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: #55524a;
+}
+
+.xdz-minmax-field {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.xdz-minmax-field input {
+  width: 3rem;
+  text-align: center;
+}
+
+.xdz-btn {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+  background: #50504b;
+  color: #faf7f0;
+  border: none;
+  border-radius: 3px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+.xdz-btn:hover:not(:disabled) {
+  background: #b96b1c;
+}
+.xdz-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.xdz-btn-add {
+  background: transparent;
+  color: #55524a;
+  border: 1px dashed #9a958a;
+  margin: 0.35rem 0 1rem;
+}
+.xdz-btn-add:hover {
+  color: #50504b;
+  border-color: #50504b;
+  background: rgba(250, 247, 240, 0.4);
+}
+
+.xdz-item-delete {
+  color: #6b675e;
+  margin-left: auto;
+}
+.xdz-item-delete:hover {
+  color: #a4362c;
+}
+
+.xdz-sheet {
+  position: relative;
+  border-radius: 10px;
+  clip-path: polygon(18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px), 0 18px);
+}
+.xdz-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.xdz-sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+.xdz-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0 0.75rem;
+  border-bottom: 3px solid #50504b;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+.xdz-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: #9a958a;
+  opacity: 0.6;
+}
+
+.xdz-header-stripes {
+  flex: 1;
+  height: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+}
+.xdz-header-stripes::before, .xdz-header-stripes::after {
+  content: "";
+  display: block;
+  height: 0.4rem;
+  background: repeating-linear-gradient(100deg, #e08a2e 0, #e08a2e 5px, transparent 5px, transparent 11px);
+}
+.xdz-header-stripes::after {
+  width: 55%;
+}
+
+.xdz-header-stripes-right::before, .xdz-header-stripes-right::after {
+  transform: scaleX(-1);
+}
+.xdz-header-stripes-right::after {
+  align-self: flex-start;
+}
+
+.xdz-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.85;
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 900;
+  text-align: center;
+}
+.xdz-logo span {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.xdz-logo .xdz-logo-xeno {
+  font-size: 0.9rem;
+  color: #55524a;
+  letter-spacing: 0.3em;
+}
+.xdz-logo .xdz-logo-dead, .xdz-logo .xdz-logo-zone {
+  font-size: 1.6rem;
+  color: #50504b;
+}
+
+.xdz-logo-compact .xdz-logo-xeno {
+  font-size: 1.4rem;
+  color: #50504b;
+  letter-spacing: 0.2em;
+}
+
+.xdz-pip-row {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 0.2rem;
+}
+
+.xdz-stat-pip {
+  width: calc(1rem + 2px);
+  height: calc(1rem + 2px);
+  flex-shrink: 0;
+  background: url("../assets/ui/cbox_right_empty.svg") no-repeat center/contain;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+}
+.xdz-stat-pip:hover {
+  opacity: 0.7;
+}
+.xdz-stat-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/cbox_right_filled.svg");
+}
+
+.xdz-pip-row-reverse .xdz-stat-pip {
+  background-image: url("../assets/ui/cbox_left_empty.svg");
+}
+.xdz-pip-row-reverse .xdz-stat-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/cbox_left_filled.svg");
+}
+
+.xdz-pip-circle {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  background: url("../assets/ui/circle-pip-empty.svg") no-repeat center/contain;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+}
+.xdz-pip-circle:hover {
+  opacity: 0.7;
+}
+.xdz-pip-circle.xdz-pip-filled {
+  background-image: url("../assets/ui/circle-pip-filled.svg");
+}
+
+.xdz-injury-skulls {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.xdz-skull-pip {
+  width: 0.95rem;
+  height: 1.15rem;
+  background: url("../assets/ui/cbox_skull-empty.svg") no-repeat center/contain;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+}
+.xdz-skull-pip:hover {
+  opacity: 0.7;
+}
+.xdz-skull-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/cbox_skull-full.svg");
+}
+
+.xdz-gauge {
+  grid-column: 2;
+  grid-row: 1/span 2;
+  position: relative;
+  width: 3.4rem;
+  height: 3.4rem;
+  flex: 0 0 auto;
+}
+.xdz-gauge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: url("../assets/ui/injury_gauge_body.svg") no-repeat center/contain;
+}
+
+.xdz-gauge-quad {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  height: 50%;
+  cursor: pointer;
+  opacity: 0;
+  background: url("../assets/ui/injury-gauge-fill.svg") no-repeat center/contain;
+  transition: opacity 0.1s ease;
+}
+.xdz-gauge-quad:hover {
+  opacity: 0.4;
+}
+.xdz-gauge-quad.xdz-pip-filled {
+  opacity: 1;
+}
+.xdz-gauge-quad.xdz-pip-filled:hover {
+  opacity: 0.85;
+}
+.xdz-gauge-quad:nth-of-type(1) {
+  top: 0;
+  right: 0;
+  transform: rotate(0deg);
+}
+.xdz-gauge-quad:nth-of-type(2) {
+  bottom: 0;
+  right: 0;
+  transform: rotate(90deg);
+}
+.xdz-gauge-quad:nth-of-type(3) {
+  bottom: 0;
+  left: 0;
+  transform: rotate(180deg);
+}
+.xdz-gauge-quad:nth-of-type(4) {
+  top: 0;
+  left: 0;
+  transform: rotate(270deg);
+}
+
+.xdz-down-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  color: #a4362c;
+  text-shadow: -1px -1px 0 #faf7f0, 1px -1px 0 #faf7f0, -1px 1px 0 #faf7f0, 1px 1px 0 #faf7f0, 0 0 3px #faf7f0;
+  pointer-events: none;
+}
+
+.xdz-kia-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: 3rem;
+  height: 3rem;
+  transform: translate(-50%, -50%);
+  background: url("../assets/ui/cbox_skull-full.svg") no-repeat center/contain;
+  pointer-events: none;
+}
+
+.xdz-top-grid {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.7fr) minmax(110px, 1.2fr) minmax(85px, 0.85fr) minmax(70px, 0.75fr);
+  gap: 0.2rem;
+  align-items: start;
+  margin-bottom: 0.35rem;
+}
+
+.xdz-col-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.xdz-col-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.xdz-portrait-frame {
+  border: 2px solid #50504b;
+  border-radius: 4px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  background: #ddd5c4;
+  flex: 0 0 auto;
+}
+
+.xdz-portrait-frame-small {
+  width: 4.5rem;
+}
+
+.xdz-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.xdz-injury-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 0.4rem;
+  border: 2px solid #50504b;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  background: rgba(250, 247, 240, 0.4);
+  width: 100%;
+}
+
+.xdz-injury-header {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.xdz-block-title {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+}
+
+.xdz-injury-track {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.xdz-hint-trigger {
+  position: relative;
+  cursor: help;
+}
+
+.xdz-hint-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.3rem;
+  z-index: 30;
+  background: #50504b;
+  color: #faf7f0;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 0.65rem;
+  line-height: 1.35;
+  padding: 0.35rem 0.55rem;
+  border-radius: 3px;
+  width: max-content;
+  max-width: 12rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.xdz-hint-trigger:hover .xdz-hint-tooltip {
+  opacity: 1;
+}
+
+.xdz-status-flag {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.xdz-status-down {
+  background: rgba(224, 138, 46, 0.3);
+  color: #b96b1c;
+}
+
+.xdz-status-dead {
+  background: rgba(164, 54, 44, 0.25);
+  color: #a4362c;
+}
+
+.xdz-stat-block {
+  border: 2px solid #50504b;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  background: rgba(250, 247, 240, 0.35);
+  display: flex;
+  flex-direction: column;
+}
+
+.xdz-block-title {
+  display: block;
+}
+
+.xdz-stat-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.xdz-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.05rem 0;
+}
+.xdz-stat-row .xdz-pip-row {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.xdz-stat-label {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.72rem;
+  background: none;
+  border: none;
+  color: #50504b;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+.xdz-stat-label:hover {
+  color: #b96b1c;
+  text-decoration: underline;
+}
+
+.xdz-budget-line {
+  font-size: 0.65rem;
+  color: #55524a;
+  text-align: right;
+  margin-top: 0.15rem;
+}
+
+.xdz-loadout-title {
+  box-sizing: border-box;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: #50504b;
+  border-bottom: 2px solid #50504b;
+  margin: 0.3rem 0;
+}
+
+.xdz-gear-title {
+  margin-top: 0.5rem;
+}
+
+.xdz-weapon-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.xdz-weapon-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #50504b;
+  border-radius: 4px;
+  background: rgba(250, 247, 240, 0.4);
+  padding: 0.4rem 0.6rem;
+}
+
+.xdz-weapon-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.xdz-equip-radio {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #55524a;
+  cursor: pointer;
+}
+.xdz-equip-radio input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.xdz-equip-radio span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid #50504b;
+  border-radius: 50%;
+  display: inline-block;
+}
+.xdz-equip-radio input:checked + span {
+  background: #e08a2e;
+  border-color: #b96b1c;
+}
+
+.xdz-weapon-img-wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 82%;
+  z-index: 0;
+  cursor: help;
+}
+
+.xdz-weapon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+.xdz-weapon-hint {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+}
+
+.xdz-weapon-name {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  margin: 0;
+  cursor: pointer;
+  min-width: 0;
+  color: #50504b;
+}
+.xdz-weapon-name:hover {
+  color: #b96b1c;
+}
+
+.xdz-weapon-tracks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  margin-bottom: 0.25rem;
+}
+
+.xdz-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.xdz-track-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #55524a;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.xdz-weapon-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 4.5rem;
+}
+
+.xdz-weapon-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.xdz-gear-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+}
+.xdz-gear-list .xdz-btn-add {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.xdz-gear-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  border-bottom: 1px solid #9a958a;
+  padding: 0 0 5px;
+}
+
+.xdz-gear-img {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.xdz-gear-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.xdz-gear-name:hover {
+  color: #b96b1c;
+}
+
+.xdz-gear-qty {
+  font-size: 0.75rem;
+  color: #55524a;
+}
+
+.xdz-commando-sheet {
+  display: flex;
+  flex-direction: column;
+  clip-path: none;
+  border-radius: 0;
+  padding: 0;
+}
+.xdz-commando-sheet::before {
+  content: none;
+}
+.xdz-commando-sheet .xdz-commando-bg-top,
+.xdz-commando-sheet .xdz-commando-bg-bottom {
+  flex: 0 0 auto;
+  width: 100%;
+  background: no-repeat center/100% 100%;
+}
+.xdz-commando-sheet .xdz-commando-bg-top {
+  aspect-ratio: 1507/181;
+  background-image: url("../assets/ui/commando_bg-top.webp");
+}
+.xdz-commando-sheet .xdz-commando-bg-bottom {
+  aspect-ratio: 1507/92;
+  background-image: url("../assets/ui/commando_bg-bottom.webp");
+}
+.xdz-commando-sheet .xdz-commando-bg-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: url("../assets/ui/commando_bg-content.webp") repeat-y center/100% auto;
+  padding: 0.6rem 2.9rem;
+}
+.xdz-commando-sheet .xdz-injury-block,
+.xdz-commando-sheet .xdz-stat-block,
+.xdz-commando-sheet .xdz-weapon-card {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+.xdz-commando-sheet .xdz-gear-item {
+  border-bottom: 1px solid rgba(154, 149, 138, 0.5);
+}
+.xdz-commando-sheet .xdz-col-photo {
+  align-items: flex-start;
+  position: relative;
+}
+.xdz-commando-sheet .xdz-portrait-frame {
+  border: 1px solid #50504b;
+  border-radius: 0;
+  background: transparent;
+}
+.xdz-commando-sheet .xdz-portrait-frame-small {
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  width: 8rem;
+  z-index: -1;
+}
+.xdz-commando-sheet .xdz-injury-block {
+  margin-top: 6.25rem;
+}
+.xdz-commando-sheet .xdz-col-identity .xdz-field {
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+  gap: 0.4rem;
+}
+.xdz-commando-sheet .xdz-col-identity .xdz-field-label {
+  flex: 0 0 auto;
+  width: 3rem;
+}
+.xdz-commando-sheet .xdz-col-identity input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid rgba(154, 149, 138, 0.6);
+  border-radius: 0;
+  padding: 0 0.1rem 0.05rem;
+}
+.xdz-commando-sheet .xdz-col-identity input:focus {
+  border-bottom-color: #e08a2e;
+}
+
+.xdz-xeno-sheet .xdz-header-compact {
+  padding-bottom: 0.5rem;
+}
+
+.xdz-xeno-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.75rem 1rem;
+}
+
+.xdz-xeno-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.xdz-field-notes {
+  grid-column: 1/-1;
+}
+
+.xdz-xeno-mode {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.xdz-mode-toggle {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border: 2px solid #50504b;
+  border-radius: 3px;
+  padding: 0.2rem 0.75rem;
+  cursor: pointer;
+  background: #9a958a;
+  color: #faf7f0;
+}
+.xdz-mode-toggle.xdz-mode-hide {
+  background: #6b675e;
+}
+.xdz-mode-toggle.xdz-mode-seek {
+  background: #a4362c;
+  border-color: #832a22;
+}
+
+.xdz-item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #50504b;
+  margin-bottom: 0.75rem;
+}
+
+.xdz-item-name {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex: 1;
+  border: none;
+  background: transparent;
+}
+.xdz-item-name:focus {
+  border-bottom: 1px solid #e08a2e;
+}
+
+.xdz-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.xdz-roll-flavor {
+  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.xdz-roll-flavor strong {
+  display: block;
+}
+
+.xdz-roll-result {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.xdz-roll-result.xdz-success {
+  color: #4c7a4f;
+}
+.xdz-roll-result.xdz-failure {
+  color: #a4362c;
+}
+
+.xdz-unleash-hell {
+  color: #b96b1c;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/*# sourceMappingURL=xdz.css.map */

@@ -1,0 +1,70 @@
+.xdz-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0 0.75rem;
+  border-bottom: 3px solid $xdz-ink;
+  margin-bottom: 0.75rem;
+  position: relative;
+
+  // Double-bar rivet rule under the whole header, echoing the printed sheet's frame line.
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -6px;
+    height: 2px;
+    background: $xdz-steel;
+    opacity: 0.6;
+  }
+}
+
+// Two uneven, offset rows of angled dashes — a rank-tab flourish, not a literal tracker.
+.xdz-header-stripes {
+  flex: 1;
+  height: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+
+  &::before, &::after {
+    content: '';
+    display: block;
+    height: 0.4rem;
+    background: repeating-linear-gradient(
+      100deg,
+      $xdz-orange 0, $xdz-orange 5px,
+      transparent 5px, transparent 11px
+    );
+  }
+
+  &::after { width: 55%; }
+}
+
+.xdz-header-stripes-right {
+  &::before, &::after { transform: scaleX(-1); }
+  &::after { align-self: flex-start; }
+}
+
+.xdz-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.85;
+  font-family: $xdz-font-display;
+  font-weight: 900;
+  text-align: center;
+
+  span {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .xdz-logo-xeno { font-size: 0.9rem; color: $xdz-ink-soft; letter-spacing: 0.3em; }
+  .xdz-logo-dead, .xdz-logo-zone { font-size: 1.6rem; color: $xdz-ink; }
+}
+
+.xdz-logo-compact {
+  .xdz-logo-xeno { font-size: 1.4rem; color: $xdz-ink; letter-spacing: 0.2em; }
+}

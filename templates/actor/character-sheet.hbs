@@ -1,0 +1,115 @@
+<div class="xdz-sheet xdz-commando-sheet xdz-character-sheet">
+
+  <section class="xdz-top-grid">
+
+    <div class="xdz-col-photo">
+      <div class="xdz-portrait-frame xdz-portrait-frame-small">
+        <img class="xdz-portrait" src="{{actor.img}}" data-action="onEditImage" data-edit="img" alt="{{actor.name}}">
+      </div>
+
+      <div class="xdz-injury-block">
+        <div class="xdz-injury-header xdz-hint-trigger">
+          <span class="xdz-block-title">{{localize 'XDZ.Actor.Injury'}}</span>
+          <p class="xdz-hint-tooltip">
+            {{localize 'XDZ.Actor.InjuryHint1'}}<br>
+            {{localize 'XDZ.Actor.InjuryHint2'}}
+          </p>
+        </div>
+        <div class="xdz-injury-track">
+          {{#if system.injuries.dead}}
+            <p class="xdz-status-flag xdz-status-dead">{{localize 'XDZ.Actor.KIA'}}</p>
+          {{else if system.injuries.down}}
+            <p class="xdz-status-flag xdz-status-down">{{localize 'XDZ.Actor.Down'}}</p>
+          {{/if}}
+          <div class="xdz-injury-skulls">
+            {{#each injurySkulls}}
+              <span class="xdz-skull-pip {{#if filled}}xdz-pip-filled{{/if}}"
+                    data-action="setPip" data-scope="actor" data-path="injuries.value" data-index="{{index}}"></span>
+            {{/each}}
+          </div>
+        </div>
+        <div class="xdz-gauge">
+          {{#each injuryGauge}}
+            <span class="xdz-gauge-quad {{#if filled}}xdz-pip-filled{{/if}}"
+                  data-action="setPip" data-scope="actor" data-path="injuries.value" data-index="{{index}}"></span>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    <div class="xdz-col-identity">
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Actor.Name'}}</span>
+        <input type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Actor.Rank'}}</span>
+        <input type="text" name="system.rank" value="{{system.rank}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Actor.Story'}}</span>
+        <input type="text" name="system.story" value="{{system.story}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Actor.Quirk'}}</span>
+        <input type="text" name="system.quirk" value="{{system.quirk}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+    </div>
+
+    <div class="xdz-col-training xdz-stat-block">
+      <span class="xdz-block-title xdz-hint-trigger">
+        {{localize 'XDZ.Actor.Training'}}
+        <span class="xdz-hint-tooltip">{{localize 'XDZ.Actor.RollOnYourTurn'}}</span>
+      </span>
+      <div class="xdz-stat-grid">
+        {{#each trainingRows}}
+          {{> "systems/xdz/templates/actor/parts/stat-track.hbs" this}}
+        {{/each}}
+      </div>
+      <div class="xdz-budget-line">{{localize 'XDZ.Actor.TrainingBudget'}}: {{system.training.spent}} / {{system.training.budget}}</div>
+    </div>
+
+    <div class="xdz-col-resistance xdz-stat-block">
+      <span class="xdz-block-title xdz-hint-trigger">
+        {{localize 'XDZ.Actor.Resistance'}}
+        <span class="xdz-hint-tooltip">{{localize 'XDZ.Actor.RollOnEnemyTurn'}}</span>
+      </span>
+      <div class="xdz-stat-grid">
+        {{#each resistanceRows}}
+          {{> "systems/xdz/templates/actor/parts/stat-track.hbs" this}}
+        {{/each}}
+      </div>
+      <div class="xdz-budget-line">{{localize 'XDZ.Actor.ResistanceBudget'}}: {{system.resistances.spent}} / {{system.resistances.budget}}</div>
+    </div>
+
+  </section>
+
+  <section class="xdz-loadout">
+    <h2 class="xdz-loadout-title">{{localize 'XDZ.Actor.Loadout'}}</h2>
+
+    <ul class="xdz-weapon-list">
+      {{#each weapons}}
+        {{> "systems/xdz/templates/actor/parts/weapon-card.hbs" this}}
+      {{/each}}
+    </ul>
+    <button type="button" class="xdz-btn xdz-btn-add" data-action="itemCreate" data-type="weapon">
+        <i class="fa-solid fa-plus"></i> {{localize 'XDZ.Actor.AddWeapon'}}
+    </button>
+
+    <h2 class="xdz-loadout-title xdz-gear-title">{{localize 'XDZ.Actor.Gear'}}</h2>
+    <ul class="xdz-gear-list">
+      {{#each gear}}
+        <li class="xdz-gear-item" data-item-id="{{this.id}}">
+          <img class="xdz-gear-img" src="{{this.img}}" alt="{{this.name}}">
+          <span class="xdz-gear-name" data-action="itemEdit">{{this.name}}</span>
+          <span class="xdz-gear-qty">×{{this.system.quantity}}</span>
+          <a class="xdz-item-delete" data-action="itemDelete"><i class="fa-solid fa-trash"></i></a>
+        </li>
+      {{/each}}
+    </ul>
+    <button type="button" class="xdz-btn xdz-btn-add" data-action="itemCreate" data-type="gear">
+      <i class="fa-solid fa-plus"></i> {{localize 'XDZ.Actor.AddGear'}}
+    </button>
+  </section>
+
+</div>

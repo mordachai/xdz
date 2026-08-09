@@ -1,0 +1,39 @@
+.xdz-xeno-sheet {
+  .xdz-header-compact { padding-bottom: 0.5rem; }
+}
+
+.xdz-xeno-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.75rem 1rem;
+}
+
+.xdz-xeno-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.xdz-field-notes { grid-column: 1 / -1; }
+
+.xdz-xeno-mode {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.xdz-mode-toggle {
+  font-family: $xdz-font-display;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border: 2px solid $xdz-ink;
+  border-radius: 3px;
+  padding: 0.2rem 0.75rem;
+  cursor: pointer;
+  background: $xdz-steel;
+  color: $xdz-white;
+
+  &.xdz-mode-hide { background: $xdz-steel-dark; }
+  &.xdz-mode-seek { background: $xdz-red; border-color: $xdz-red-dark; }
+}

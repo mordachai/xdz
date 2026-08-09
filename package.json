@@ -1,0 +1,15 @@
+{
+  "name": "xdz",
+  "version": "0.1.0",
+  "description": "CSS compiler for the Xeno Dead Zone system",
+  "scripts": {
+    "build": "sass src/scss/xdz.scss css/xdz.css --style=expanded --no-source-map",
+    "watch": "sass src/scss/xdz.scss css/xdz.css --style=expanded --source-map --watch"
+  },
+  "browserslist": ["last 3 versions"],
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

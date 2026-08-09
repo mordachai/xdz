@@ -1,0 +1,76 @@
+<div class="xdz-sheet xdz-item-sheet xdz-weapon-item-sheet">
+
+  <header class="xdz-item-header">
+    <div class="xdz-portrait-frame xdz-portrait-frame-small">
+      <img class="xdz-portrait" src="{{item.img}}" data-action="onEditImage" data-edit="img" alt="{{item.name}}">
+    </div>
+    <input type="text" class="xdz-item-name" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}}>
+  </header>
+
+  <div class="xdz-item-body">
+    <label class="xdz-field xdz-field-inline">
+      <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
+      <span class="xdz-field-label">{{localize 'XDZ.Weapon.Equipped'}}</span>
+    </label>
+    <label class="xdz-field xdz-field-inline">
+      <input type="checkbox" name="system.discardOthersOnEquip" {{#if system.discardOthersOnEquip}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
+      <span class="xdz-field-label">{{localize 'XDZ.Weapon.DiscardOthers'}}</span>
+    </label>
+
+    <div class="xdz-field-row">
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.DestroyDie'}}</span>
+        <input type="text" name="system.destroyDie" value="{{system.destroyDie}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.UpgradeDie'}}</span>
+        <input type="text" name="system.upgradeDie" value="{{system.upgradeDie}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+    </div>
+
+    <div class="xdz-field-row">
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.Ammo'}}</span>
+        <div class="xdz-minmax-field">
+          <input type="number" name="system.ammo.value" value="{{system.ammo.value}}" min="0" {{#unless editable}}disabled{{/unless}}>
+          <span>/</span>
+          <input type="number" name="system.ammo.max" value="{{system.ammo.max}}" min="0" {{#unless editable}}disabled{{/unless}}>
+        </div>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.Damaged'}}</span>
+        <div class="xdz-minmax-field">
+          <input type="number" name="system.damaged.value" value="{{system.damaged.value}}" min="0" {{#unless editable}}disabled{{/unless}}>
+          <span>/</span>
+          <input type="number" name="system.damaged.max" value="{{system.damaged.max}}" min="0" {{#unless editable}}disabled{{/unless}}>
+        </div>
+      </label>
+    </div>
+
+    <div class="xdz-field-row">
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryLabel'}}</span>
+        <input type="text" name="system.secondary.label" value="{{system.secondary.label}}" placeholder="Grenade / Fuel / Gyro" {{#unless editable}}disabled{{/unless}}>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryTrack'}}</span>
+        <div class="xdz-minmax-field">
+          <input type="number" name="system.secondary.value" value="{{system.secondary.value}}" min="0" {{#unless editable}}disabled{{/unless}}>
+          <span>/</span>
+          <input type="number" name="system.secondary.max" value="{{system.secondary.max}}" min="0" {{#unless editable}}disabled{{/unless}}>
+        </div>
+      </label>
+    </div>
+
+    <label class="xdz-field">
+      <span class="xdz-field-label">{{localize 'XDZ.Weapon.Rules'}}</span>
+      <textarea name="system.rules" rows="3" {{#unless editable}}disabled{{/unless}}>{{system.rules}}</textarea>
+    </label>
+
+    <label class="xdz-field">
+      <span class="xdz-field-label">{{localize 'XDZ.Weapon.Description'}}</span>
+      <textarea name="system.description" rows="4" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+    </label>
+  </div>
+
+</div>

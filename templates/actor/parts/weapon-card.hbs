@@ -1,0 +1,61 @@
+<li class="xdz-weapon-card" data-item-id="{{item.id}}">
+  <div class="xdz-weapon-title-row">
+    <h3 class="xdz-weapon-name" data-action="itemEdit">{{item.name}}</h3>
+
+    <label class="xdz-equip-radio" title="{{localize 'XDZ.Weapon.Equipped'}}">
+      <input type="radio" data-action="toggleEquip" {{#if system.equipped}}checked{{/if}}>
+      <span></span>
+      {{localize 'XDZ.Weapon.Equipped'}}
+    </label>
+  </div>
+
+  <div class="xdz-weapon-body">
+    <div class="xdz-weapon-img-wrap xdz-hint-trigger">
+      <img class="xdz-weapon-img" src="{{item.img}}" alt="{{item.name}}">
+      <div class="xdz-hint-tooltip xdz-weapon-hint">{{{system.rules}}}</div>
+    </div>
+  </div>
+
+  <div class="xdz-weapon-tracks">
+    <div class="xdz-track-row">
+      <span class="xdz-track-label">{{#if system.ammoLabel}}{{system.ammoLabel}}{{else}}{{localize 'XDZ.Weapon.Ammo'}}{{/if}}</span>
+      <div class="xdz-pip-row">
+        {{#each ammoPips}}
+          <span class="xdz-pip-circle {{#if filled}}xdz-pip-filled{{/if}}"
+                data-action="setPip" data-scope="item" data-path="ammo.value" data-index="{{@index}}"></span>
+        {{/each}}
+      </div>
+    </div>
+
+    {{#if system.secondary.max}}
+    <div class="xdz-track-row">
+      <span class="xdz-track-label">{{system.secondary.label}}</span>
+      <div class="xdz-pip-row">
+        {{#each secondaryPips}}
+          <span class="xdz-pip-circle {{#if filled}}xdz-pip-filled{{/if}}"
+                data-action="setPip" data-scope="item" data-path="secondary.value" data-index="{{@index}}"></span>
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+
+    <div class="xdz-track-row">
+      <span class="xdz-track-label">{{localize 'XDZ.Weapon.Damaged'}}</span>
+      <div class="xdz-pip-row xdz-pip-row-damaged">
+        {{#each damagedPips}}
+          <span class="xdz-pip-circle {{#if filled}}xdz-pip-filled{{/if}}"
+                data-action="setPip" data-scope="item" data-path="damaged.value" data-index="{{@index}}"></span>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+
+  <div class="xdz-weapon-actions">
+    <button type="button" class="xdz-btn xdz-btn-destroy" data-action="weaponRoll" {{#if system.destroyed}}disabled{{/if}}>
+      {{localize 'XDZ.Weapon.Destroy'}}
+    </button>
+    <button type="button" class="xdz-btn xdz-btn-unleash" data-action="weaponUnleash" {{#if system.destroyed}}disabled{{/if}}>
+      {{localize 'XDZ.Weapon.UnleashHell'}}
+    </button>
+  </div>
+</li>

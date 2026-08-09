@@ -1,0 +1,11 @@
+<div class="xdz-stat-row">
+  <button type="button" class="xdz-stat-label" data-action="{{rollAction}}" data-key="{{key}}" title="{{localize 'XDZ.RollCheck'}}">
+    {{localize label}}
+  </button>
+  <div class="xdz-pip-row {{#if reverse}}xdz-pip-row-reverse{{/if}}">
+    {{#each pips}}
+      <span class="xdz-stat-pip {{#if filled}}xdz-pip-filled{{/if}}"
+            data-action="setPip" data-scope="actor" data-path="{{../path}}" data-index="{{@index}}"></span>
+    {{/each}}
+  </div>
+</div>

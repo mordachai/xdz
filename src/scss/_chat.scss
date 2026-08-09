@@ -1,0 +1,21 @@
+.xdz-roll-flavor {
+  font-family: $xdz-font-display;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  strong { display: block; }
+}
+
+.xdz-roll-result {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+
+  &.xdz-success { color: $xdz-green; }
+  &.xdz-failure { color: $xdz-red; }
+}
+
+.xdz-unleash-hell {
+  color: $xdz-orange-dark;
+  font-weight: 700;
+  font-size: 0.8rem;
+}

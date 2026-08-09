@@ -1,0 +1,182 @@
+.xdz-loadout-title {
+  box-sizing: border-box;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  font-family: $xdz-font-display;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: $xdz-ink;
+  border-bottom: 2px solid $xdz-ink;
+  margin: 0.3rem 0;
+}
+
+.xdz-gear-title { margin-top: 0.5rem; }
+
+.xdz-weapon-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.xdz-weapon-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: $xdz-border;
+  border-radius: $xdz-radius;
+  background: rgba($xdz-white, 0.4);
+  padding: 0.4rem 0.6rem;
+}
+
+.xdz-weapon-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.xdz-equip-radio {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.3rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: $xdz-ink-soft;
+  cursor: pointer;
+
+  input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  span {
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 2px solid $xdz-ink;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  input:checked + span { background: $xdz-orange; border-color: $xdz-orange-dark; }
+}
+
+.xdz-weapon-img-wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 82%;
+  z-index: 0;
+  cursor: help;
+}
+
+.xdz-weapon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left bottom;
+  pointer-events: none;
+}
+
+.xdz-weapon-hint {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 0.3rem;
+}
+
+.xdz-weapon-name {
+  font-family: $xdz-font-display;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  margin: 0;
+  cursor: pointer;
+  min-width: 0;
+  color: $xdz-ink;
+
+  &:hover { color: $xdz-orange-dark; }
+}
+
+.xdz-weapon-tracks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  margin-bottom: 0.25rem;
+}
+
+.xdz-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.xdz-track-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $xdz-ink-soft;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.xdz-weapon-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 4.5rem;
+}
+
+.xdz-weapon-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.xdz-gear-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+
+  .xdz-btn-add { margin: 0; white-space: nowrap; }
+}
+
+.xdz-gear-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  border-bottom: 1px solid $xdz-steel;
+  padding: 0 0 5px;
+}
+
+.xdz-gear-img {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.xdz-gear-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  &:hover { color: $xdz-orange-dark; }
+}
+.xdz-gear-qty { font-size: 0.75rem; color: $xdz-ink-soft; }

@@ -1,0 +1,99 @@
+// Commando sheet — the printed-sheet background art supplies the frame,
+// logo, and stripe decoration, so all drawn decoration is stripped here.
+.xdz-commando-sheet {
+  display: flex;
+  flex-direction: column;
+  clip-path: none;
+  border-radius: 0;
+  padding: 0;
+
+  &::before { content: none; }
+
+  // Background sliced into top/content/bottom bands so the frame art
+  // (top logo, bottom stripe) never stretches — only the content band
+  // grows/shrinks with the sheet's content.
+  .xdz-commando-bg-top,
+  .xdz-commando-bg-bottom {
+    flex: 0 0 auto;
+    width: 100%;
+    background: no-repeat center / 100% 100%;
+  }
+
+  .xdz-commando-bg-top {
+    aspect-ratio: 1507 / 181;
+    background-image: url("../assets/ui/commando_bg-top.webp");
+  }
+
+  .xdz-commando-bg-bottom {
+    aspect-ratio: 1507 / 92;
+    background-image: url("../assets/ui/commando_bg-bottom.webp");
+  }
+
+  .xdz-commando-bg-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    background: url("../assets/ui/commando_bg-content.webp") repeat-y center / 100% auto;
+    padding: 0.6rem 2.9rem;
+  }
+
+  .xdz-injury-block,
+  .xdz-stat-block,
+  .xdz-weapon-card {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .xdz-gear-item { border-bottom: 1px solid rgba($xdz-steel, 0.5); }
+
+  .xdz-col-photo {
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .xdz-portrait-frame {
+    border: 1px solid $xdz-ink;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  // Sized up but pulled out of flow (absolute) so growing it never pushes
+  // the injury block / rest of the grid row down. Bottom edge pinned to the
+  // OLD 6rem mark (top offset = 6rem - width) so growth eats into the free
+  // space above the top-grid instead of overlapping injury-block below.
+  .xdz-portrait-frame-small {
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    width: 8rem;
+    z-index: -1;
+  }
+
+  .xdz-injury-block { margin-top: 6.25rem; }
+
+  .xdz-col-identity {
+    .xdz-field {
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 0;
+      gap: 0.4rem;
+    }
+
+    .xdz-field-label {
+      flex: 0 0 auto;
+      width: 3rem;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      border-bottom: 1px solid rgba($xdz-steel, 0.6);
+      border-radius: 0;
+      padding: 0 0.1rem 0.05rem;
+
+      &:focus { border-bottom-color: $xdz-orange; }
+    }
+  }
+}

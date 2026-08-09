@@ -1,0 +1,22 @@
+<div class="xdz-sheet xdz-item-sheet xdz-gear-item-sheet">
+
+  <header class="xdz-item-header">
+    <div class="xdz-portrait-frame xdz-portrait-frame-small">
+      <img class="xdz-portrait" src="{{item.img}}" data-action="onEditImage" data-edit="img" alt="{{item.name}}">
+    </div>
+    <input type="text" class="xdz-item-name" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}}>
+  </header>
+
+  <div class="xdz-item-body">
+    <label class="xdz-field">
+      <span class="xdz-field-label">{{localize 'XDZ.Gear.Quantity'}}</span>
+      <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" {{#unless editable}}disabled{{/unless}}>
+    </label>
+
+    <label class="xdz-field">
+      <span class="xdz-field-label">{{localize 'XDZ.Gear.Description'}}</span>
+      <textarea name="system.description" rows="6" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+    </label>
+  </div>
+
+</div>
