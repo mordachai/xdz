@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
-  <polyline points="0,46 26,46 32,20 38,46 44,34 50,46 100,46"
-            fill="none" stroke="#e08a2e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #e08a2e;
+        stroke-linejoin: round;
+        stroke-width: 3.5px;
+      }
+    </style>
+  </defs>
+  <polyline class="cls-1" points="0 30.94 37.89 30.94 39.74 37.09 43.78 20.02 46.44 40.17 50.15 10.72 53.56 49.28 58.67 22.91 61.11 30.94 100 30.94"/>
 </svg>

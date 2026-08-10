@@ -60,6 +60,10 @@ export default class CommandoSheet extends XDZActorSheet {
       filled: i < system.injuries.value,
     }));
 
+    // Sweep speeds up as injuries pile on — 6s healthy down to 1.0s near death.
+    const injuryRatio = Math.min(system.injuries.value / CONFIG.XDZ.injuryDeath, 1);
+    context.ecgSpeed = `${(6.0 - injuryRatio * 1.0).toFixed(2)}s`;
+
     context.trainingRows = Object.entries(CONFIG.XDZ.trainings).map(([key, label], i) => ({
       key,
       label,

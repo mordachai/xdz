@@ -202,15 +202,8 @@
   .xdz-ecg-row {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 0.15rem;
+    gap: 0;
     width: 100%;
-  }
-
-  .xdz-ecg-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    min-width: 0;
   }
 
   // Spans by default are inline and ignore width/height — must be block
@@ -222,9 +215,75 @@
     background: no-repeat bottom center / 100% 100%;
   }
 
+  // Scan sweep: a soft grey band slides left-to-right, so only a
+  // moving window of the trace is visible at a time — fades in ahead,
+  // fades out behind, like a trail rather than a hard draw-and-keep.
+  // This row holds only the 6 wave spans (spanning the full grid
+  // width) so the mask never touches the pip row below — pips must
+  // always stay fully visible.
+  // Speed reacts to injuries via --xdz-ecg-speed (set inline per actor).
+  .xdz-ecg-wave-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg, transparent 0%, transparent 8%,
+      rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+    );
+    mask-image: linear-gradient(
+      90deg, transparent 0%, transparent 8%,
+      rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 38% 100%;
+    mask-size: 38% 100%;
+    animation: xdz-ecg-reveal var(--xdz-ecg-speed, 2.4s) linear infinite;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -1%;
+      width: 2%;
+      height: 1.5rem;
+      background: linear-gradient(90deg, transparent, rgba(180, 230, 255, 0.95), transparent);
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: xdz-ecg-cursor var(--xdz-ecg-speed, 2.4s) linear infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+      -webkit-mask-image: none;
+      mask-image: none;
+
+      &::after { display: none; }
+    }
+  }
+
+  // mask-position's edge formula keeps a same-size-as-container-or-smaller
+  // image fully inside 0-100%, so a plain 0%->100% never lets the (38%-wide)
+  // band start off-screen left. Range extended so its front edge actually
+  // runs 0%->138% (fully off-screen at both ends) — see xdz-ecg-cursor below,
+  // which mirrors this in plain `left%` and must move in lockstep.
+  @keyframes xdz-ecg-reveal {
+    from { -webkit-mask-position: -61.29% 0; mask-position: -61.29% 0; }
+    to   { -webkit-mask-position: 161.29% 0; mask-position: 161.29% 0; }
+  }
+
+  // Tracks the mask band's leading (solid) edge exactly — front edge runs
+  // 0%->138% given the mask-position range above; centered for width 2%.
+  @keyframes xdz-ecg-cursor {
+    from { left: -1%; }
+    to   { left: 137%; }
+  }
+
   .xdz-ecg-pip {
     display: block;
-    width: 100%;
+    width: 90%;
     height: 0.55rem;
     border: 1px solid;
     border-radius: 2px;
@@ -482,10 +541,19 @@ $xdz-commando-themes: (
     .xdz-ecg-panel { border-color: rgba($color, 0.7); }
     .xdz-ecg-flag { color: $color; text-shadow: 0 0 4px rgba($color, 0.5); }
 
+    .xdz-ecg-wave-row::after {
+      background: linear-gradient(90deg, transparent, rgba($bright, 0.95), transparent);
+    }
+
     @for $i from 1 through 6 {
-      .xdz-ecg-cell:nth-child(#{$i}) .xdz-ecg-wave {
+      .xdz-ecg-wave-row .xdz-ecg-wave:nth-child(#{$i}) {
         background-image: url("../assets/ui/ecg-beat-#{$i}-#{$suf}.svg");
       }
+    }
+
+    // KIA: every cell flatlines on beat 6, overriding the per-cell art above.
+    .xdz-ecg-dead .xdz-ecg-wave-row .xdz-ecg-wave {
+      background-image: url("../assets/ui/ecg-beat-6-#{$suf}.svg");
     }
 
     .xdz-ecg-pip {

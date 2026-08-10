@@ -30,19 +30,21 @@
         {{localize 'XDZ.Actor.InjuryHint2'}}
       </p>
     </div>
-    <div class="xdz-ecg-panel">
+    <div class="xdz-ecg-panel{{#if system.injuries.dead}} xdz-ecg-dead{{/if}}" style="--xdz-ecg-speed: {{ecgSpeed}}">
       {{#if system.injuries.dead}}
         <span class="xdz-ecg-flag xdz-ecg-flag-dead">{{localize 'XDZ.Actor.KIA'}}</span>
       {{else if system.injuries.down}}
         <span class="xdz-ecg-flag xdz-ecg-flag-down">{{localize 'XDZ.Actor.Down'}}!</span>
       {{/if}}
       <div class="xdz-ecg-row">
-        {{#each injuryPips}}
-          <div class="xdz-ecg-cell">
+        <div class="xdz-ecg-wave-row">
+          {{#each injuryPips}}
             <span class="xdz-ecg-wave"></span>
-            <span class="xdz-ecg-pip {{#if filled}}xdz-pip-filled{{/if}}"
-                  data-action="setPip" data-scope="actor" data-path="injuries.value" data-index="{{index}}"></span>
-          </div>
+          {{/each}}
+        </div>
+        {{#each injuryPips}}
+          <span class="xdz-ecg-pip {{#if filled}}xdz-pip-filled{{/if}}"
+                data-action="setPip" data-scope="actor" data-path="injuries.value" data-index="{{index}}"></span>
         {{/each}}
       </div>
     </div>
