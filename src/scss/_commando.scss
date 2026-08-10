@@ -9,30 +9,22 @@
 
   &::before { content: none; }
 
-  // Background sliced into top/content/bottom bands so the frame art
-  // (top logo, bottom stripe) never stretches — only the content band
-  // grows/shrinks with the sheet's content.
-  .xdz-commando-bg-top,
+  // Background sliced into top/content/bottom bands. Bottom is a fixed
+  // decorative stripe pinned after content (flex column, no grow) so it
+  // always "snaps" to the end — only content grows/shrinks (e.g. for gear).
   .xdz-commando-bg-bottom {
+    position: relative;
     flex: 0 0 auto;
     width: 100%;
     background: no-repeat center / 100% 100%;
-  }
-
-  .xdz-commando-bg-top {
-    aspect-ratio: 1507 / 181;
-    background-image: url("../assets/ui/commando_bg-top.webp");
-  }
-
-  .xdz-commando-bg-bottom {
-    aspect-ratio: 1507 / 92;
-    background-image: url("../assets/ui/commando_bg-bottom.webp");
+    aspect-ratio: 572 / 91;
+    background-image: url("../assets/ui/commando_bg-bottom-green.webp");
   }
 
   .xdz-commando-bg-content {
     flex: 1 1 auto;
     min-height: 0;
-    background: url("../assets/ui/commando_bg-content.webp") repeat-y center / 100% auto;
+    background: url("../assets/ui/commando_bg-content-green.webp") repeat-y center / 100% auto;
     padding: 0.6rem 2.9rem;
   }
 
@@ -44,15 +36,13 @@
     background: transparent;
   }
 
-  .xdz-gear-item { border-bottom: 1px solid rgba($xdz-steel, 0.5); }
-
   .xdz-col-photo {
     align-items: flex-start;
     position: relative;
   }
 
   .xdz-portrait-frame {
-    border: 1px solid $xdz-ink;
+    border: 1px solid $xdz-green-color;
     border-radius: 0;
     background: transparent;
   }
@@ -93,7 +83,466 @@
       border-radius: 0;
       padding: 0 0.1rem 0.05rem;
 
-      &:focus { border-bottom-color: $xdz-orange; }
+      &:focus { border-bottom-color: $xdz-orange-color; }
+    }
+  }
+}
+
+// Compact commando sheet — narrow single-column redesign (~340px wide).
+// Scoped under xdz-commando-compact so the shared classes above (and the
+// wide CharacterSheet, which also uses .xdz-commando-sheet) are untouched.
+.xdz-commando-compact {
+  padding: 0;
+
+  // Fixed-width (340px), auto-height window — nothing here legitimately
+  // needs horizontal/vertical scroll, so drop the inherited .xdz-sheet
+  // clip. Otherwise absolutely-positioned hint tooltips (Training,
+  // Resistance, weapon-name) get cut off wherever they escape the box.
+  overflow: visible !important;
+  contain: none !important;
+
+  // Top band now holds real content (portrait/name/injury) instead of a
+  // fixed-aspect logo strip, so its height is driven by that content and the
+  // art is stretched to fit rather than the box being locked to the art.
+  .xdz-commando-bg-top {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: url("../assets/ui/commando_bg-top-green.webp") no-repeat center / 100% 100%;
+    padding: 26.5px 40px 3px 35px;
+  }
+
+  // _texture.scss ties every .xdz-sheet direct child to z-index:1, so
+  // bg-content and bg-bottom tie and DOM order wins — bg-bottom (later)
+  // would otherwise paint over hint tooltips (e.g. Heavy Gun's) that
+  // spill past the content area into the bottom band's screen space.
+  .xdz-commando-bg-content { position: relative; z-index: 2; padding: 3px 45px 3px 35px; }
+
+  .xdz-compact-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    width: calc(100% - 20px);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .xdz-portrait-frame-compact {
+    width: 75px;
+    height: 90px;
+    aspect-ratio: auto;
+    border-radius: 2px;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+
+  .xdz-col-identity {
+    flex: 1;
+    min-width: 0;
+    height: 90px;
+    justify-content: space-between;
+    gap: 0.1rem;
+
+    .xdz-field-label { width: 2.6rem; font-size: 0.62rem; }
+
+    input {
+      font-family: $xdz-font-mono;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+
+      &:focus { border-bottom: 1px dotted; }
+    }
+  }
+
+  .xdz-budget-line,
+  .xdz-gear-qty {
+    font-family: $xdz-font-mono;
+    letter-spacing: 0.03em;
+  }
+
+  .xdz-injury-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0;
+    margin-bottom: 0.35rem;
+  }
+
+  // ECG-style injury tracker — a continuous waveform strip that degrades
+  // beat-by-beat across 6 cells, each descending straight into its pip
+  // (cells 1-5 progressively more arrhythmic, cell 6 a flatline).
+  .xdz-ecg-panel {
+    position: relative;
+    width: 100%;
+    border: 1px solid;
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.35rem 0.35rem;
+    box-sizing: border-box;
+  }
+
+  .xdz-ecg-flag {
+    @extend %xdz-display-text;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    font-weight: 800;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+  }
+
+  .xdz-ecg-flag-dead { color: $xdz-red; text-shadow: 0 0 4px rgba($xdz-red, 0.5); }
+
+  .xdz-ecg-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.15rem;
+    width: 100%;
+  }
+
+  .xdz-ecg-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+  }
+
+  // Spans by default are inline and ignore width/height — must be block
+  // for the explicit sizing below to take effect.
+  .xdz-ecg-wave {
+    display: block;
+    width: 100%;
+    height: 1.5rem;
+    background: no-repeat bottom center / 100% 100%;
+  }
+
+  .xdz-ecg-pip {
+    display: block;
+    width: 100%;
+    height: 0.55rem;
+    border: 1px solid;
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.1s ease, opacity 0.1s ease;
+
+    &:hover { opacity: 0.7; }
+  }
+
+  .xdz-compact-stats {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 8px;
+    margin-bottom: 0.35rem;
+
+    .xdz-stat-block {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 4px;
+      padding: 0.15rem 0.35rem;
+    }
+  }
+
+  .xdz-block-title-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    text-align: center;
+    border-left: 1px dotted;
+
+    // Tooltip must read left-to-right even though its trigger is rotated
+    // vertical text — counter-rotate/reset writing-mode, and anchor off the
+    // trigger's right edge (screen space) since it sits inside the flipped
+    // 180deg frame (local left/bottom == screen right/top).
+    .xdz-hint-tooltip {
+      writing-mode: horizontal-tb;
+      transform: rotate(180deg);
+      top: auto;
+      bottom: 0;
+      left: 100%;
+      margin-top: 0;
+      margin-left: 0.3rem;
+      white-space: normal;
+    }
+  }
+
+  .xdz-stat-grid-wrap {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .xdz-stat-label { font-size: 0.8rem; letter-spacing: 0.08em; white-space: nowrap;  }
+  .xdz-stat-row { gap: 0.3rem; }
+
+  // Resistance (3 stats, stacked label+pips = 6 lines) sets the block
+  // height; Training (5 single-line rows) spreads out top-to-bottom to
+  // fill it instead of clumping at the top with dead space below.
+  .xdz-col-training .xdz-stat-grid {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .xdz-stat-pip {
+    width: calc(0.8rem + 0px);
+    height: calc(0.8rem + 0px);
+  }
+  .xdz-budget-line { font-size: 0.58rem; }
+
+  .xdz-col-resistance .xdz-stat-row { padding: 0; }
+
+  // Resistance rows stack label above pips (2 lines per stat = 6 lines for
+  // the 3 resistances), instead of Training's label-beside-pips single line.
+  .xdz-stat-row-stacked {
+    flex-direction: column;
+    gap: 0.03rem;
+  }
+
+  // Loadout title bar: prev/next pager chevrons either side of the label,
+  // or a trailing "+" button for the gear title — both use space-between.
+  .xdz-loadout-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .xdz-page-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 0.3rem;
+    font-size: 0.85rem;
+
+    &:hover:not(:disabled) { color: $xdz-orange-accent; }
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+
+  .xdz-title-add {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+
+    &:hover { color: $xdz-orange-accent; }
+  }
+
+  // Theme selector — two chevrons, ~40px apart, laid over the bottom band art.
+  .xdz-theme-switcher {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    top:10px;
+    left:92px;
+    align-items: center;
+    gap: 68px;
+  }
+
+  .xdz-theme-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+
+    &:hover { color: $xdz-orange-accent; }
+  }
+
+  // Single-column weapon cards, image left / tracks right.
+  .xdz-weapon-list {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  // Card is a 2-row grid: title (full width) / image+tracks (60%/40%).
+  // Grid areas let us reflow the sibling elements without touching the
+  // shared weapon-card.hbs partial (also used by the wide CharacterSheet).
+  .xdz-weapon-card {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-areas: "title title" "img tracks";
+    align-items: start;
+    gap: 3px;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid;
+    border-radius: 0.3rem;
+  }
+
+  .xdz-weapon-title-row {
+    grid-area: title;
+    justify-content: flex-start; // DOM is [name, radio]; order below puts the radio first, both packed left
+    gap: 0.4rem;
+  }
+
+  .xdz-equip-radio { order: -1; }
+
+  .xdz-weapon-body {
+    grid-area: img;
+    min-height: 4.5rem;
+  }
+
+  .xdz-weapon-img-wrap { width: 100%; }
+
+  .xdz-weapon-img {
+    filter: drop-shadow(0 2px 4px rgba(black, 0.5));
+    object-position: left top;
+  }
+
+  .xdz-weapon-tracks {
+    grid-area: tracks;
+    margin-bottom: 0;
+  }
+
+  .xdz-weapon-name { font-size: 0.8rem; }
+
+  .xdz-track-label {
+    font-size: 0.9rem;
+  }
+
+  // Loadout resource tracks use the tall tick-mark pip art instead of the
+  // round pip used elsewhere.
+  .xdz-weapon-tracks {
+    .xdz-pip-row { gap: 0.15rem; }
+
+    .xdz-pip-circle {
+      width: 0.4rem;
+      height: 0.78rem;
+    }
+  }
+
+  .xdz-gear-title,
+  .xdz-gear-list {
+    width: calc(100% - 22px);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .xdz-gear-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .xdz-gear-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid;
+    border-radius: 3px;
+    padding: 0.15rem 0.4rem;
+
+    .xdz-item-delete {
+      &:hover { color: $xdz-red; }
+    }
+  }
+}
+
+// Per-theme colors and art. Green is the default palette (see $xdz-green-color
+// / $xdz-green-accent in _variables.scss); each theme just swaps the
+// color/accent pair and the suffixed background/icon assets ("<name>-<theme>.<ext>").
+$xdz-commando-themes: (
+  green: (color: $xdz-green-color, accent: $xdz-green-accent, suffix: 'green'),
+  blue: (color: $xdz-blue-color, accent: $xdz-blue-accent, suffix: 'blue'),
+  orange: (color: $xdz-orange-color, accent: $xdz-orange-accent, suffix: 'orange'),
+);
+
+@each $name, $t in $xdz-commando-themes {
+  .xdz-commando-compact[data-theme="#{$name}"] {
+    $color: map-get($t, color);
+    $accent: map-get($t, accent);
+    $suf: map-get($t, suffix);
+    $bright: mix($color, $xdz-white, 35%);
+
+    // Root text color — covers every un-themed descendant (block titles,
+    // gear names, hints, ...) that just inherits color instead of setting
+    // its own, plus any bare `border: 1px solid;` that relies on currentColor.
+    color: $color;
+
+    .xdz-commando-bg-top { background-image: url("../assets/ui/commando_bg-top-#{$suf}.webp"); }
+    .xdz-commando-bg-content { background-image: url("../assets/ui/commando_bg-content-#{$suf}.webp"); }
+    .xdz-commando-bg-bottom { background-image: url("../assets/ui/commando_bg-bottom-#{$suf}.webp"); }
+
+    .xdz-col-identity {
+      .xdz-field-label { color: $color; }
+      input {
+        color: $bright;
+        text-shadow: 0 0 6px rgba($color, 0.55);
+        &:focus { border-bottom-color: $color; }
+      }
+    }
+
+    .xdz-ecg-panel { border-color: rgba($color, 0.7); }
+    .xdz-ecg-flag { color: $color; text-shadow: 0 0 4px rgba($color, 0.5); }
+
+    @for $i from 1 through 6 {
+      .xdz-ecg-cell:nth-child(#{$i}) .xdz-ecg-wave {
+        background-image: url("../assets/ui/ecg-beat-#{$i}-#{$suf}.svg");
+      }
+    }
+
+    .xdz-ecg-pip {
+      border-color: rgba($color, 0.7);
+      &.xdz-pip-filled { background: $color; box-shadow: 0 0 4px rgba($color, 0.6); }
+    }
+
+    .xdz-block-title-vertical { border-left-color: $accent; }
+
+    .xdz-stat-pip {
+      background-image: url("../assets/ui/pip-left-empty-#{$suf}.svg");
+      &.xdz-pip-filled { background-image: url("../assets/ui/pip-left-filled-#{$suf}.svg"); }
+    }
+
+    .xdz-page-nav,
+    .xdz-title-add,
+    .xdz-theme-nav,
+    .xdz-track-label,
+    .xdz-gear-item .xdz-item-delete { color: $color; }
+
+    .xdz-page-nav:hover:not(:disabled),
+    .xdz-title-add:hover,
+    .xdz-theme-nav:hover { color: $bright; }
+
+    .xdz-gear-item { border-color: rgba($color, 0.7); }
+
+    // Section titles ("Loadout" / "Gear") and their underline.
+    .xdz-loadout-title { color: $color; border-bottom-color: $color; }
+
+    // Stat/training row labels ("Pilot", "Fear", ...).
+    .xdz-stat-label { color: $color; }
+
+    // Weapon card title, border and equip-radio ring.
+    .xdz-weapon-name { color: $color; }
+    .xdz-weapon-card { background: rgba($accent, 0.08); border-color: rgba($color, 0.7); }
+    .xdz-equip-radio span { border-color: $accent; }
+    .xdz-equip-radio input:checked + span { background: $color; border-color: $color; }
+
+    // Portrait frame ring.
+    .xdz-portrait-frame { border-color: $color; }
+
+    // Hint tooltip pill.
+    .xdz-hint-tooltip { border-color: $accent; }
+
+    .xdz-weapon-tracks .xdz-pip-circle {
+      background-image: url("../assets/ui/pip2-empty-#{$suf}.svg");
+      &.xdz-pip-filled { background-image: url("../assets/ui/pip2-filled-#{$suf}.svg"); }
+    }
+
+    .xdz-track-label { text-shadow: 0 0 4px rgba($color, 0.5); }
+
+    .xdz-track-label.xdz-track-action:hover { color: $bright; text-shadow: 0 0 6px rgba($color, 0.9); }
+
+    // Click-to-attack image glow tinted to the active theme's ink color.
+    .xdz-weapon-img-wrap:hover .xdz-weapon-img {
+      opacity: 1;
+      filter: drop-shadow(0 2px 4px rgba(black, 0.5)) drop-shadow(0 0 7px rgba($color, 0.9)) brightness(1.05);
     }
   }
 }

@@ -7,18 +7,36 @@ import { COMMANDO_LOADOUT } from '../../helpers/commando-loadout.mjs';
 export default class CommandoSheet extends XDZActorSheet {
   static DEFAULT_OPTIONS = {
     classes: ['xdz', 'sheet', 'actor', 'commando'],
-    position: { width: 765, height: 'auto' },
+    position: { width: 340, height: 'auto' },
     actions: {
       setPip: this._onSetPip,
       weaponRoll: this._onWeaponRoll,
-      weaponUnleash: this._onWeaponUnleash,
+      weaponSecondary: this._onWeaponSecondary,
       toggleEquip: this._onToggleEquip,
+      loadoutPrev: this._onLoadoutPrev,
+      loadoutNext: this._onLoadoutNext,
+      themePrev: this._onThemePrev,
+      themeNext: this._onThemeNext,
     },
   };
 
   static PARTS = {
     sheet: { template: 'systems/xdz/templates/actor/commando-sheet.hbs', scrollable: [''] },
   };
+
+  /** Available compact-sheet color themes, in cycling order. */
+  static THEMES = ['green', 'blue', 'orange'];
+
+  /** Index of the visible weapon-card page in the loadout pager. @private */
+  _loadoutPage = 0;
+
+  /** Weapon cards shown per loadout page. @private */
+  _loadoutPageSize = 2;
+
+  /** Total loadout pages for a given weapon count (always >= 1). @private */
+  _loadoutPages(weaponCount) {
+    return Math.max(1, Math.ceil(weaponCount / this._loadoutPageSize));
+  }
 
   /** @override */
   async _prepareContext(options) {
@@ -30,15 +48,17 @@ export default class CommandoSheet extends XDZActorSheet {
     context.weapons = this.actor.items.filter((i) => i.type === 'weapon').map((item) => this._prepareWeapon(item));
     context.gear = this.actor.items.filter((i) => i.type === 'gear');
 
-    context.injuryGauge = Array.fromRange(CONFIG.XDZ.injuryDown).map((i) => ({
+    const totalPages = this._loadoutPages(context.weapons.length);
+    this._loadoutPage = this._loadoutPage % totalPages;
+    context.loadoutWeapons = context.weapons.slice(this._loadoutPage * this._loadoutPageSize, this._loadoutPage * this._loadoutPageSize + this._loadoutPageSize);
+    context.loadoutMultiPage = totalPages > 1;
+
+    context.theme = this.actor.getFlag('xdz', 'sheetTheme') ?? CommandoSheet.THEMES[0];
+
+    context.injuryPips = Array.fromRange(CONFIG.XDZ.injuryDeath).map((i) => ({
       index: i,
       filled: i < system.injuries.value,
     }));
-
-    context.injurySkulls = Array.fromRange(CONFIG.XDZ.injuryDeath - CONFIG.XDZ.injuryDown).map((i) => {
-      const index = CONFIG.XDZ.injuryDown + i;
-      return { index, filled: index < system.injuries.value };
-    });
 
     context.trainingRows = Object.entries(CONFIG.XDZ.trainings).map(([key, label], i) => ({
       key,
@@ -57,6 +77,7 @@ export default class CommandoSheet extends XDZActorSheet {
       rollAction: 'rollResistance',
       value: system.resistances[key],
       reverse: i % 2 === 1,
+      stacked: true,
       pips: this._buildPips(system.resistances[key], CONFIG.XDZ.statPipMax),
     }));
 
@@ -149,13 +170,41 @@ export default class CommandoSheet extends XDZActorSheet {
   static async _onWeaponRoll(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    return item?.rollDestroy();
+    return item?.rollAttack('normal');
   }
 
-  static async _onWeaponUnleash(event, target) {
+  static async _onWeaponSecondary(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    return item?.rollDestroy({ unleashHell: true });
+    return item?.rollSecondary();
+  }
+
+  static _onLoadoutPrev(event, target) {
+    const totalPages = this._loadoutPages(this.actor.itemTypes.weapon.length);
+    this._loadoutPage = (this._loadoutPage - 1 + totalPages) % totalPages;
+    this.render();
+  }
+
+  static _onLoadoutNext(event, target) {
+    const totalPages = this._loadoutPages(this.actor.itemTypes.weapon.length);
+    this._loadoutPage = (this._loadoutPage + 1) % totalPages;
+    this.render();
+  }
+
+  /** Cycle the compact sheet's color theme back/forward and persist it on the actor. @private */
+  static async _onThemePrev(event, target) {
+    return this._cycleTheme(-1);
+  }
+
+  static async _onThemeNext(event, target) {
+    return this._cycleTheme(1);
+  }
+
+  _cycleTheme(step) {
+    const themes = CommandoSheet.THEMES;
+    const current = this.actor.getFlag('xdz', 'sheetTheme') ?? themes[0];
+    const index = (themes.indexOf(current) + step + themes.length) % themes.length;
+    return this.actor.setFlag('xdz', 'sheetTheme', themes[index]);
   }
 
   static async _onToggleEquip(event, target) {

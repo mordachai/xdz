@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15.7 20.07">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient);
+        stroke: #d7df23;
+        stroke-linejoin: bevel;
+        stroke-width: 1.5px;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="7.85" cy="10.03" fx="7.85" fy="10.03" r="8.27" gradientTransform="translate(-.79 29.77) rotate(-135) scale(1 2)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8dc63f"/>
+      <stop offset=".16" stop-color="#88c53f"/>
+      <stop offset=".33" stop-color="#7cc241"/>
+      <stop offset=".5" stop-color="#66bd43"/>
+      <stop offset=".68" stop-color="#49b647"/>
+      <stop offset=".86" stop-color="#23ae4c"/>
+      <stop offset="1" stop-color="#00a651"/>
+    </radialGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <polygon class="cls-1" points="11.02 19.32 .73 19.32 4.68 .75 14.97 .75 11.02 19.32"/>
+  </g>
+</svg>

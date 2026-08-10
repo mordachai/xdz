@@ -22,7 +22,7 @@
 
 .xdz-portrait-frame {
   border: $xdz-border;
-  border-radius: $xdz-radius;
+  border-radius: 2px;
   overflow: hidden;
   aspect-ratio: 1 / 1;
   background: $xdz-paper-dark;
@@ -59,9 +59,8 @@
 }
 
 .xdz-block-title {
-  font-family: $xdz-font-display;
+  @extend %xdz-display-text;
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.95rem;
 }
@@ -85,15 +84,16 @@
   left: 0;
   margin-top: 0.3rem;
   z-index: 30;
-  background: $xdz-ink;
+  background: rgba(#0c0c0a, 0.94);
   color: $xdz-white;
+  border: 1px solid $xdz-green-color;
   font-family: $xdz-font-body;
   font-weight: 400;
   text-transform: none;
   letter-spacing: normal;
-  font-size: 0.65rem;
-  line-height: 1.35;
-  padding: 0.35rem 0.55rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.6rem;
   border-radius: 3px;
   width: max-content;
   max-width: 12rem;
@@ -106,7 +106,7 @@
 .xdz-hint-trigger:hover .xdz-hint-tooltip { opacity: 1; }
 
 .xdz-status-flag {
-  font-family: $xdz-font-display;
+  @extend %xdz-display-text;
   font-weight: 800;
   letter-spacing: 0.08em;
   margin: 0;
@@ -115,7 +115,7 @@
   display: inline-block;
 }
 
-.xdz-status-down { background: rgba($xdz-orange, 0.3); color: $xdz-orange-dark; }
+.xdz-status-down { background: rgba($xdz-orange-color, 0.3); color: $xdz-orange-accent; }
 .xdz-status-dead { background: rgba($xdz-red, 0.25); color: $xdz-red; }
 
 .xdz-stat-block {
@@ -149,24 +149,24 @@
 }
 
 .xdz-stat-label {
-  font-family: $xdz-font-display;
-  font-weight: 700;
+  font-family: $xdz-font-body;
   text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.03em;
   font-size: 0.72rem;
   background: none;
   border: none;
-  color: $xdz-ink;
+  color: $xdz-green-color;
   cursor: pointer;
   padding: 0;
   text-align: left;
 
-  &:hover { color: $xdz-orange-dark; text-decoration: underline; }
+  &:hover { color: $xdz-orange-accent; text-decoration: underline; }
 }
 
 .xdz-budget-line {
   font-size: 0.65rem;
-  color: $xdz-ink-soft;
+  color: $xdz-color-soft;
   text-align: right;
   margin-top: 0.15rem;
 }

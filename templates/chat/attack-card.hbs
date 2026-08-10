@@ -1,0 +1,27 @@
+<div class="xdz-chatcard xdz-chatcard-attack {{#if success}}xdz-chatcard-hit{{else}}xdz-chatcard-miss{{/if}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{weapon.name}}</span>
+    <img class="xdz-chatcard-icon" src="{{weapon.img}}" alt="{{weapon.name}}">
+    <span class="xdz-chatcard-tag{{#if spend}} xdz-chatcard-spend{{/if}}">{{label}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    <div class="xdz-chatcard-line">{{localize 'XDZ.Roll.TargetNumber'}}<strong>{{tn}}</strong></div>
+
+    <div class="xdz-chatcard-readout">
+      <span class="xdz-chatcard-digits">{{total}}</span>
+    </div>
+
+    <div class="xdz-chatcard-status {{#if success}}xdz-success{{else}}xdz-failure{{/if}}">
+      {{#if success}}{{localize 'XDZ.Roll.Success'}}{{else}}{{localize 'XDZ.Roll.Failure'}}{{/if}}
+    </div>
+
+    {{#if buttons}}
+    <div class="xdz-damage-row" data-item-uuid="{{itemUuid}}">
+      {{#each buttons}}
+      <button type="button" class="xdz-btn xdz-damage-btn {{this.variant}}" data-action="xdzRollDamage" data-die-mode="{{this.dieMode}}"{{#if this.disabled}} disabled{{/if}}>{{this.label}}</button>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+</div>

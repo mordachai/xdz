@@ -24,10 +24,10 @@
 }
 
 .xdz-mode-toggle {
-  font-family: $xdz-font-display;
+  @extend %xdz-display-text;
   font-weight: 800;
   letter-spacing: 0.08em;
-  border: 2px solid $xdz-ink;
+  border: 2px solid $xdz-green-color;
   border-radius: 3px;
   padding: 0.2rem 0.75rem;
   cursor: pointer;

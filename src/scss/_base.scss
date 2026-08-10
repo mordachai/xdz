@@ -1,11 +1,29 @@
 .application.xdz .window-content { padding: 0; overflow-x: hidden; }
 
+// Compact commando sheet is fixed-width/auto-height — no legitimate
+// horizontal/vertical overflow — so let its hint tooltips paint past the
+// window edge instead of being clipped by the frame.
+.application.xdz:has(.xdz-commando-compact) {
+  overflow: visible !important;
+  contain: none !important;
+
+  .window-content { overflow: visible !important; contain: none !important; }
+}
+
+// Shared display-font treatment — every uppercase "label"/"title"/"button"
+// text in the system reuses this pair instead of redeclaring it per selector.
+// Weight/letter-spacing/size stay local since those vary per use.
+%xdz-display-text {
+  font-family: $xdz-font-display;
+  text-transform: uppercase;
+}
+
 .xdz-sheet {
   display: flex;
   flex-direction: column;
   height: 100%;
   background: $xdz-paper;
-  color: $xdz-ink;
+  color: $xdz-green-color;
   font-family: $xdz-font-body;
   padding: 0.75rem 1rem 1rem;
   overflow-y: auto;
@@ -13,7 +31,7 @@
 
   input, textarea, select {
     font-family: inherit;
-    color: $xdz-ink;
+    color: $xdz-green-color;
     background: rgba($xdz-white, 0.6);
     border: 1px solid $xdz-steel;
     border-radius: 3px;
@@ -27,7 +45,7 @@
 
     &:focus {
       outline: none;
-      border-color: $xdz-orange;
+      border-color: $xdz-orange-color;
     }
   }
 
@@ -55,12 +73,11 @@
 }
 
 .xdz-field-label {
-  font-family: $xdz-font-display;
+  @extend %xdz-display-text;
   font-weight: 700;
-  text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.06em;
-  color: $xdz-ink-soft;
+  color: $xdz-color-soft;
 }
 
 .xdz-minmax-field {
@@ -72,12 +89,11 @@
 }
 
 .xdz-btn {
-  font-family: $xdz-font-display;
-  text-transform: uppercase;
+  @extend %xdz-display-text;
   font-weight: 700;
   letter-spacing: 0.04em;
   font-size: 0.75rem;
-  background: $xdz-ink;
+  background: $xdz-green-color;
   color: $xdz-white;
   border: none;
   border-radius: 3px;
@@ -85,17 +101,17 @@
   cursor: pointer;
   transition: background 0.1s ease;
 
-  &:hover:not(:disabled) { background: $xdz-orange-dark; }
+  &:hover:not(:disabled) { background: $xdz-orange-accent; }
   &:disabled { opacity: 0.4; cursor: not-allowed; }
 }
 
 .xdz-btn-add {
   background: transparent;
-  color: $xdz-ink-soft;
+  color: $xdz-color-soft;
   border: 1px dashed $xdz-steel;
   margin: 0.35rem 0 1rem;
 
-  &:hover { color: $xdz-ink; border-color: $xdz-ink; background: rgba($xdz-white, 0.4); }
+  &:hover { color: $xdz-green-color; border-color: $xdz-green-color; background: rgba($xdz-white, 0.4); }
 }
 
 .xdz-item-delete {

@@ -1,15 +1,14 @@
 .xdz-loadout-title {
+  @extend %xdz-display-text;
   box-sizing: border-box;
   height: 25px;
   display: flex;
   align-items: center;
-  font-family: $xdz-font-display;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1;
-  color: $xdz-ink;
-  border-bottom: 2px solid $xdz-ink;
+  color: $xdz-green-color;
+  border-bottom: 2px solid $xdz-green-color;
   margin: 0.3rem 0;
 }
 
@@ -50,7 +49,7 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: $xdz-ink-soft;
+  color: $xdz-color-soft;
   cursor: pointer;
 
   input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -58,12 +57,12 @@
   span {
     width: 0.7rem;
     height: 0.7rem;
-    border: 2px solid $xdz-ink;
+    border: 2px solid $xdz-color-soft;
     border-radius: 50%;
     display: inline-block;
   }
 
-  input:checked + span { background: $xdz-orange; border-color: $xdz-orange-dark; }
+  input:checked + span { background: $xdz-green-accent-light; border-color: $xdz-green-accent-light; }
 }
 
 .xdz-weapon-img-wrap {
@@ -73,7 +72,7 @@
   bottom: 0;
   width: 82%;
   z-index: 0;
-  cursor: help;
+  cursor: pointer;
 }
 
 .xdz-weapon-img {
@@ -83,26 +82,55 @@
   object-fit: contain;
   object-position: left bottom;
   pointer-events: none;
+  opacity: 0.75;
+  transition: filter 0.12s ease, opacity 0.12s ease;
+}
+
+// Click-to-attack image glows brighter/sharper on hover to read as interactive.
+.xdz-weapon-img-wrap:hover .xdz-weapon-img {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba($xdz-orange-color, 0.7)) brightness(1.3);
 }
 
 .xdz-weapon-hint {
-  top: auto;
-  bottom: 100%;
-  margin-top: 0;
+  max-width: 16rem;
+
+  p { margin: 0 0 0.3rem; }
+  p:last-child { margin-bottom: 0; }
+}
+
+.xdz-hint-rules {
   margin-bottom: 0.3rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba($xdz-white, 0.25);
+
+  p { margin: 0; }
+}
+
+// Ammo / secondary track labels double as click targets for their rolls.
+.xdz-track-label.xdz-track-action {
+  cursor: pointer;
+  &:hover { color: $xdz-orange-accent; }
+}
+
+// A destroyed weapon can't fire (secondary ability tracks a separate
+// resource and stays usable).
+.xdz-weapon-destroyed .xdz-weapon-img-wrap {
+  pointer-events: none;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .xdz-weapon-name {
-  font-family: $xdz-font-display;
-  text-transform: uppercase;
+  @extend %xdz-display-text;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
   margin: 0;
   cursor: pointer;
   min-width: 0;
-  color: $xdz-ink;
+  color: $xdz-green-color;
 
-  &:hover { color: $xdz-orange-dark; }
+  &:hover { color: $xdz-orange-accent; }
 }
 
 .xdz-weapon-tracks {
@@ -125,7 +153,7 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: $xdz-ink-soft;
+  color: $xdz-color-soft;
   text-align: right;
   white-space: nowrap;
 }
@@ -134,12 +162,6 @@
   position: relative;
   flex: 1 1 auto;
   min-height: 4.5rem;
-}
-
-.xdz-weapon-actions {
-  display: flex;
-  gap: 0.4rem;
-  margin-top: auto;
 }
 
 .xdz-gear-list {
@@ -177,6 +199,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
-  &:hover { color: $xdz-orange-dark; }
+  &:hover { color: $xdz-orange-accent; }
 }
-.xdz-gear-qty { font-size: 0.75rem; color: $xdz-ink-soft; }
+.xdz-gear-qty { font-size: 0.75rem; color: $xdz-color-soft; }

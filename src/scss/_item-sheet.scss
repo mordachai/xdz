@@ -3,20 +3,19 @@
   align-items: center;
   gap: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 3px solid $xdz-ink;
+  border-bottom: 3px solid $xdz-green-color;
   margin-bottom: 0.75rem;
 }
 
 .xdz-item-name {
-  font-family: $xdz-font-display;
+  @extend %xdz-display-text;
   font-size: 1.2rem;
   font-weight: 700;
-  text-transform: uppercase;
   flex: 1;
   border: none;
   background: transparent;
 
-  &:focus { border-bottom: 1px solid $xdz-orange; }
+  &:focus { border-bottom: 1px solid $xdz-orange-color; }
 }
 
 .xdz-item-body {

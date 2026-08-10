@@ -54,17 +54,18 @@ export default class XDZActor extends Actor {
     const isNat20 = die === 20;
     const success = isNat20 || roll.total >= target;
 
-    const flavor = `
-      <div class="xdz-roll-flavor">
-        <strong>${label}</strong> vs TN ${target}
-        <div class="xdz-roll-result ${success ? 'xdz-success' : 'xdz-failure'}">
-          ${success ? game.i18n.localize('XDZ.Roll.Success') : game.i18n.localize('XDZ.Roll.Failure')}
-        </div>
-      </div>`;
+    const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/check-card.hbs', {
+      label,
+      tn: target,
+      total: roll.total,
+      success,
+    });
 
-    await roll.toMessage({
+    await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor,
+      content,
+      rolls: [roll],
+      sound: CONFIG.sounds.dice,
     });
     return roll;
   }

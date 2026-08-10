@@ -64,5 +64,30 @@ Hooks.once('init', function () {
   return foundry.applications.handlebars.loadTemplates([
     'systems/xdz/templates/actor/parts/stat-track.hbs',
     'systems/xdz/templates/actor/parts/weapon-card.hbs',
+    'systems/xdz/templates/chat/attack-card.hbs',
+    'systems/xdz/templates/chat/damage-card.hbs',
+    'systems/xdz/templates/chat/secondary-card.hbs',
+    'systems/xdz/templates/chat/check-card.hbs',
   ]);
+});
+
+// Damage-row buttons on a successful weapon attack chat card ("Roll Damage" /
+// "Spray and Pray") aren't part of any Application, so they're wired here
+// instead of an actions map — one delegated listener per rendered message.
+// "Roll Damage" is a one-time base damage die and locks itself after use.
+// "Spray and Pray" adds extra damage on top and stays rollable across
+// multiple clicks, limited only by remaining ammo.
+Hooks.on('renderChatMessageHTML', (message, html) => {
+  html.querySelectorAll('[data-action="xdzRollDamage"]').forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const row = button.closest('.xdz-damage-row');
+      const item = fromUuidSync(row?.dataset.itemUuid);
+      if (!item) return;
+      const dieMode = button.dataset.dieMode;
+      button.disabled = true;
+      await item.rollDamage(dieMode);
+      if (dieMode === 'ammo') button.disabled = item.system.ammo.value <= 0;
+    });
+  });
 });

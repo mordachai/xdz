@@ -1,0 +1,13 @@
+<div class="xdz-chatcard xdz-chatcard-secondary">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{weapon.name}}</span>
+    <img class="xdz-chatcard-icon" src="{{weapon.img}}" alt="{{weapon.name}}">
+    <span class="xdz-chatcard-tag xdz-chatcard-spend">{{label}}</span>
+  </div>
+  {{#if description}}
+  <div class="xdz-chatcard-body">
+    <div class="xdz-chatcard-desc">{{{description}}}</div>
+  </div>
+  {{/if}}
+</div>

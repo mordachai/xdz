@@ -1,21 +1,211 @@
-.xdz-roll-flavor {
-  font-family: $xdz-font-display;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+// Chat cards — Nostromo terminal / motion-tracker readout. Distinct from the
+// warm paper-dossier sheet theme: black CRT housing, phosphor-green text,
+// scanline overlay. Dice results show the bare number for now; a die-face
+// background image gets layered in later.
+$xdz-crt-bg: #030d08;
+$xdz-crt-bg-panel: #071f13;
+$xdz-crt-green: #4dff8a;
+$xdz-crt-green-dim: #1f8a4c;
+$xdz-crt-amber: #ffb000;
+$xdz-crt-red: #ff4b3e;
 
-  strong { display: block; }
+.xdz-chatcard {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 0%, $xdz-crt-bg-panel 0%, $xdz-crt-bg 70%);
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba($xdz-crt-green, 0.25), inset 0 0 20px rgba(black, 0.6);
+  color: $xdz-crt-green;
+  font-family: $xdz-font-mono;
+  padding: 0.5rem 0.65rem 0.6rem;
 }
 
-.xdz-roll-result {
-  font-weight: 800;
-  letter-spacing: 0.06em;
-
-  &.xdz-success { color: $xdz-green; }
-  &.xdz-failure { color: $xdz-red; }
+.xdz-chatcard-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(black, 0.15) 0,
+    rgba(black, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
 }
 
-.xdz-unleash-hell {
-  color: $xdz-orange-dark;
+.xdz-chatcard-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid rgba($xdz-crt-green, 0.35);
+}
+
+.xdz-chatcard-icon {
+  width: 2.6rem;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(4);
+}
+
+.xdz-chatcard-title {
+  @extend %xdz-display-text;
+  font-family: $xdz-font-mono;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 6px rgba($xdz-crt-green, 0.8);
+  flex: 0 1 auto;
+}
+
+.xdz-chatcard-tag {
+  @extend %xdz-display-text;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: $xdz-crt-bg;
+  background: $xdz-crt-green;
+  border-radius: 2px;
+  padding: 0.1rem 0.35rem;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.xdz-chatcard-body {
+  position: relative;
+}
+
+.xdz-chatcard-line {
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: rgba($xdz-crt-green, 0.85);
+  text-transform: uppercase;
+
+  strong { color: $xdz-crt-green; margin-left: 0.15rem; }
+}
+
+// Marks any line/tag tied to consuming a limited resource (ammo, secondary
+// charges like Gyro or Grenade) — amber instead of the default green.
+.xdz-chatcard-spend { color: $xdz-crt-amber; }
+
+.xdz-chatcard-tag.xdz-chatcard-spend {
+  color: $xdz-crt-bg;
+  background: $xdz-crt-amber;
+}
+
+.xdz-chatcard-readout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.35rem 0;
+  padding: 0.3rem 0;
+  border-top: 1px dashed rgba($xdz-crt-green, 0.35);
+  border-bottom: 1px dashed rgba($xdz-crt-green, 0.35);
+}
+
+.xdz-chatcard-digits {
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0.05em;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.9), 0 0 14px rgba($xdz-crt-green, 0.5);
+
+  &::before { content: '['; margin-right: 0.3rem; opacity: 0.5; }
+  &::after { content: ']'; margin-left: 0.3rem; opacity: 0.5; }
+}
+
+// Damage rolls read as "{ n }" instead of "[ n ]" to tell them apart from
+// to-hit checks at a glance.
+.xdz-chatcard-damage .xdz-chatcard-digits {
+  &::before { content: '{'; }
+  &::after { content: '}'; }
+}
+
+.xdz-chatcard-status {
+  @extend %xdz-display-text;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+
+  &.xdz-success { color: $xdz-crt-green; text-shadow: 0 0 8px rgba($xdz-crt-green, 0.8); }
+  &.xdz-failure { color: $xdz-crt-red; text-shadow: 0 0 8px rgba($xdz-crt-red, 0.7); }
+}
+
+.xdz-chatcard-desc {
+  font-family: $xdz-font-body;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: rgba($xdz-crt-green, 0.85);
+  margin-top: 0.15rem;
+}
+
+.xdz-damage-row {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+
+  .xdz-btn {
+    flex: 1 1 auto;
+    font-family: $xdz-font-mono;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.4rem;
+    background: transparent;
+    color: $xdz-crt-green;
+    border: 1px solid $xdz-crt-green-dim;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.1s ease, box-shadow 0.1s ease;
+
+    &:hover:not(:disabled) {
+      background: rgba($xdz-crt-green, 0.15);
+      border-color: $xdz-crt-green;
+      box-shadow: 0 0 6px rgba($xdz-crt-green, 0.5);
+    }
+    &:disabled { opacity: 0.35; cursor: not-allowed; }
+  }
+
+  .xdz-spray-btn { border-color: $xdz-crt-amber; color: $xdz-crt-amber; }
+  .xdz-spray-btn:hover:not(:disabled) {
+    background: rgba($xdz-crt-amber, 0.15);
+    border-color: $xdz-crt-amber;
+    box-shadow: 0 0 6px rgba($xdz-crt-amber, 0.5);
+  }
+}
+
+// Recolor the whole message envelope — not just the card — so the CRT
+// housing reads as one black unit. Scoped to :has(.xdz-chatcard) so other
+// systems'/modules' chat messages are untouched.
+.chat-message:has(.xdz-chatcard) {
+  background: $xdz-crt-bg;
+  border-color: $xdz-crt-green-dim;
+  color: $xdz-crt-green;
+
+  .message-header, .message-sender, .message-timestamp, .message-metadata, i {
+    color: $xdz-crt-green;
+  }
+
+  .message-sender {
+    @extend %xdz-display-text;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 6px rgba($xdz-crt-green, 0.8);
+  }
+
+  .avatar img { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(3); }
+
+  // Terminal card fills the message body edge-to-edge instead of sitting
+  // inside Foundry's default padded/backgrounded content box.
+  .message-content { padding: 0; background: none; }
 }

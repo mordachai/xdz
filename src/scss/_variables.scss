@@ -1,19 +1,27 @@
 // XDZ — worn military dossier palette, lifted from the printed character sheet.
 $xdz-paper: #ede7db;
 $xdz-paper-dark: #ddd5c4;
-$xdz-ink: #50504b;
-$xdz-ink-soft: #55524a;
+$xdz-color-soft: #55524a;
 $xdz-steel: #9a958a;
 $xdz-steel-dark: #6b675e;
-$xdz-orange: #e08a2e;
-$xdz-orange-dark: #b96b1c;
 $xdz-red: #a4362c;
 $xdz-red-dark: #832a22;
-$xdz-green: #4c7a4f;
 $xdz-white: #faf7f0;
 
-$xdz-font-display: 'XDZ Anton', 'Arial Narrow', 'Oswald', 'Segoe UI Semibold', sans-serif;
-$xdz-font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+// Commando compact-sheet theme colors — each theme is a {color, accent} pair.
+// Green doubles as the default (untethered) palette used everywhere outside
+// the theme-scoped compact view.
+$xdz-green-color: #99b73d;
+$xdz-green-accent: #4c7a4f;
+$xdz-green-accent-light: #7ebe5c;
+$xdz-blue-color: #5da4c7;
+$xdz-blue-accent: #1f5c78;
+$xdz-orange-color: #e08a2e;
+$xdz-orange-accent: #b96b1c;
+
+$xdz-font-display: 'XDZ Audiowide', 'Arial Narrow', 'Oswald', 'Segoe UI Semibold', sans-serif;
+$xdz-font-body: 'XDZ Teko', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+$xdz-font-mono: 'Consolas', 'Courier New', monospace;
 
 $xdz-radius: 4px;
-$xdz-border: 2px solid $xdz-ink;
+$xdz-border: 2px solid $xdz-green-color;

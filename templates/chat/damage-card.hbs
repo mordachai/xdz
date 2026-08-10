@@ -1,0 +1,17 @@
+<div class="xdz-chatcard xdz-chatcard-damage">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{weapon.name}}</span>
+    <img class="xdz-chatcard-icon" src="{{weapon.img}}" alt="{{weapon.name}}">
+    <span class="xdz-chatcard-tag">{{localize 'XDZ.Weapon.Destroy'}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    {{#if tag}}<div class="xdz-chatcard-line xdz-chatcard-spend">{{tag}}</div>{{/if}}
+
+    <div class="xdz-chatcard-readout">
+      <span class="xdz-chatcard-digits">{{total}}</span>
+    </div>
+
+    {{#if description}}<div class="xdz-chatcard-desc">{{{description}}}</div>{{/if}}
+  </div>
+</div>

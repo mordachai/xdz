@@ -5,9 +5,37 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "XDZ Audiowide";
+  src: url("../assets/fonts/Audiowide-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "XDZ Teko";
+  src: url("../assets/fonts/Teko-Regular.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 .application.xdz .window-content {
   padding: 0;
   overflow-x: hidden;
+}
+
+.application.xdz:has(.xdz-commando-compact) {
+  overflow: visible !important;
+  contain: none !important;
+}
+.application.xdz:has(.xdz-commando-compact) .window-content {
+  overflow: visible !important;
+  contain: none !important;
+}
+
+.chat-message:has(.xdz-chatcard) .message-sender, .xdz-chatcard-status, .xdz-chatcard-tag, .xdz-chatcard-title, .xdz-item-name, .xdz-mode-toggle, .xdz-commando-compact .xdz-ecg-flag, .xdz-weapon-name, .xdz-loadout-title, .xdz-status-flag, .xdz-block-title, .xdz-btn, .xdz-field-label {
+  font-family: "XDZ Audiowide", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  text-transform: uppercase;
 }
 
 .xdz-sheet {
@@ -15,15 +43,15 @@
   flex-direction: column;
   height: 100%;
   background: #ede7db;
-  color: #50504b;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: #99b73d;
+  font-family: "XDZ Teko", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   padding: 0.75rem 1rem 1rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .xdz-sheet input, .xdz-sheet textarea, .xdz-sheet select {
   font-family: inherit;
-  color: #50504b;
+  color: #99b73d;
   background: rgba(250, 247, 240, 0.6);
   border: 1px solid #9a958a;
   border-radius: 3px;
@@ -64,9 +92,7 @@
 }
 
 .xdz-field-label {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 700;
-  text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.06em;
   color: #55524a;
@@ -83,12 +109,10 @@
 }
 
 .xdz-btn {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
-  text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.04em;
   font-size: 0.75rem;
-  background: #50504b;
+  background: #99b73d;
   color: #faf7f0;
   border: none;
   border-radius: 3px;
@@ -111,8 +135,8 @@
   margin: 0.35rem 0 1rem;
 }
 .xdz-btn-add:hover {
-  color: #50504b;
-  border-color: #50504b;
+  color: #99b73d;
+  border-color: #99b73d;
   background: rgba(250, 247, 240, 0.4);
 }
 
@@ -149,7 +173,7 @@
   align-items: center;
   gap: 1rem;
   padding: 0.5rem 0 0.75rem;
-  border-bottom: 3px solid #50504b;
+  border-bottom: 3px solid #99b73d;
   margin-bottom: 0.75rem;
   position: relative;
 }
@@ -194,7 +218,7 @@
   flex-direction: column;
   align-items: center;
   line-height: 0.85;
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-family: "XDZ Audiowide", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 900;
   text-align: center;
 }
@@ -210,12 +234,12 @@
 }
 .xdz-logo .xdz-logo-dead, .xdz-logo .xdz-logo-zone {
   font-size: 1.6rem;
-  color: #50504b;
+  color: #99b73d;
 }
 
 .xdz-logo-compact .xdz-logo-xeno {
   font-size: 1.4rem;
-  color: #50504b;
+  color: #99b73d;
   letter-spacing: 0.2em;
 }
 
@@ -347,7 +371,7 @@
   left: 50%;
   z-index: 3;
   transform: translate(-50%, -50%) rotate(-18deg);
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+  font-family: "XDZ Audiowide", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 900;
   letter-spacing: 0.03em;
   font-size: 1.1rem;
@@ -391,8 +415,8 @@
 }
 
 .xdz-portrait-frame {
-  border: 2px solid #50504b;
-  border-radius: 4px;
+  border: 2px solid #99b73d;
+  border-radius: 2px;
   overflow: hidden;
   aspect-ratio: 1/1;
   background: #ddd5c4;
@@ -415,7 +439,7 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   column-gap: 0.4rem;
-  border: 2px solid #50504b;
+  border: 2px solid #99b73d;
   border-radius: 4px;
   padding: 0.3rem 0.5rem;
   background: rgba(250, 247, 240, 0.4);
@@ -431,9 +455,7 @@
 }
 
 .xdz-block-title {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.95rem;
 }
@@ -458,15 +480,16 @@
   left: 0;
   margin-top: 0.3rem;
   z-index: 30;
-  background: #50504b;
+  background: rgba(12, 12, 10, 0.94);
   color: #faf7f0;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  border: 1px solid #99b73d;
+  font-family: "XDZ Teko", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   text-transform: none;
   letter-spacing: normal;
-  font-size: 0.65rem;
-  line-height: 1.35;
-  padding: 0.35rem 0.55rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.6rem;
   border-radius: 3px;
   width: max-content;
   max-width: 12rem;
@@ -481,7 +504,6 @@
 }
 
 .xdz-status-flag {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 800;
   letter-spacing: 0.08em;
   margin: 0;
@@ -501,7 +523,7 @@
 }
 
 .xdz-stat-block {
-  border: 2px solid #50504b;
+  border: 2px solid #99b73d;
   border-radius: 4px;
   padding: 0.3rem 0.6rem;
   background: rgba(250, 247, 240, 0.35);
@@ -531,14 +553,14 @@
 }
 
 .xdz-stat-label {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
-  font-weight: 700;
+  font-family: "XDZ Teko", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.03em;
   font-size: 0.72rem;
   background: none;
   border: none;
-  color: #50504b;
+  color: #99b73d;
   cursor: pointer;
   padding: 0;
   text-align: left;
@@ -560,13 +582,11 @@
   height: 25px;
   display: flex;
   align-items: center;
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1;
-  color: #50504b;
-  border-bottom: 2px solid #50504b;
+  color: #99b73d;
+  border-bottom: 2px solid #99b73d;
   margin: 0.3rem 0;
 }
 
@@ -587,7 +607,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 2px solid #50504b;
+  border: 2px solid #99b73d;
   border-radius: 4px;
   background: rgba(250, 247, 240, 0.4);
   padding: 0.4rem 0.6rem;
@@ -621,13 +641,13 @@
 .xdz-equip-radio span {
   width: 0.7rem;
   height: 0.7rem;
-  border: 2px solid #50504b;
+  border: 2px solid #55524a;
   border-radius: 50%;
   display: inline-block;
 }
 .xdz-equip-radio input:checked + span {
-  background: #e08a2e;
-  border-color: #b96b1c;
+  background: #7ebe5c;
+  border-color: #7ebe5c;
 }
 
 .xdz-weapon-img-wrap {
@@ -637,7 +657,7 @@
   bottom: 0;
   width: 82%;
   z-index: 0;
-  cursor: help;
+  cursor: pointer;
 }
 
 .xdz-weapon-img {
@@ -647,24 +667,54 @@
   object-fit: contain;
   object-position: left bottom;
   pointer-events: none;
+  opacity: 0.75;
+  transition: filter 0.12s ease, opacity 0.12s ease;
+}
+
+.xdz-weapon-img-wrap:hover .xdz-weapon-img {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(224, 138, 46, 0.7)) brightness(1.3);
 }
 
 .xdz-weapon-hint {
-  top: auto;
-  bottom: 100%;
-  margin-top: 0;
+  max-width: 16rem;
+}
+.xdz-weapon-hint p {
+  margin: 0 0 0.3rem;
+}
+.xdz-weapon-hint p:last-child {
+  margin-bottom: 0;
+}
+
+.xdz-hint-rules {
   margin-bottom: 0.3rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(250, 247, 240, 0.25);
+}
+.xdz-hint-rules p {
+  margin: 0;
+}
+
+.xdz-track-label.xdz-track-action {
+  cursor: pointer;
+}
+.xdz-track-label.xdz-track-action:hover {
+  color: #b96b1c;
+}
+
+.xdz-weapon-destroyed .xdz-weapon-img-wrap {
+  pointer-events: none;
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .xdz-weapon-name {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
-  text-transform: uppercase;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
   margin: 0;
   cursor: pointer;
   min-width: 0;
-  color: #50504b;
+  color: #99b73d;
 }
 .xdz-weapon-name:hover {
   color: #b96b1c;
@@ -699,12 +749,6 @@
   position: relative;
   flex: 1 1 auto;
   min-height: 4.5rem;
-}
-
-.xdz-weapon-actions {
-  display: flex;
-  gap: 0.4rem;
-  margin-top: auto;
 }
 
 .xdz-gear-list {
@@ -764,24 +808,18 @@
 .xdz-commando-sheet::before {
   content: none;
 }
-.xdz-commando-sheet .xdz-commando-bg-top,
 .xdz-commando-sheet .xdz-commando-bg-bottom {
+  position: relative;
   flex: 0 0 auto;
   width: 100%;
   background: no-repeat center/100% 100%;
-}
-.xdz-commando-sheet .xdz-commando-bg-top {
-  aspect-ratio: 1507/181;
-  background-image: url("../assets/ui/commando_bg-top.webp");
-}
-.xdz-commando-sheet .xdz-commando-bg-bottom {
-  aspect-ratio: 1507/92;
-  background-image: url("../assets/ui/commando_bg-bottom.webp");
+  aspect-ratio: 572/91;
+  background-image: url("../assets/ui/commando_bg-bottom-green.webp");
 }
 .xdz-commando-sheet .xdz-commando-bg-content {
   flex: 1 1 auto;
   min-height: 0;
-  background: url("../assets/ui/commando_bg-content.webp") repeat-y center/100% auto;
+  background: url("../assets/ui/commando_bg-content-green.webp") repeat-y center/100% auto;
   padding: 0.6rem 2.9rem;
 }
 .xdz-commando-sheet .xdz-injury-block,
@@ -791,15 +829,12 @@
   border-radius: 0;
   background: transparent;
 }
-.xdz-commando-sheet .xdz-gear-item {
-  border-bottom: 1px solid rgba(154, 149, 138, 0.5);
-}
 .xdz-commando-sheet .xdz-col-photo {
   align-items: flex-start;
   position: relative;
 }
 .xdz-commando-sheet .xdz-portrait-frame {
-  border: 1px solid #50504b;
+  border: 1px solid #99b73d;
   border-radius: 0;
   background: transparent;
 }
@@ -836,6 +871,680 @@
   border-bottom-color: #e08a2e;
 }
 
+.xdz-commando-compact {
+  padding: 0;
+  overflow: visible !important;
+  contain: none !important;
+}
+.xdz-commando-compact .xdz-commando-bg-top {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: url("../assets/ui/commando_bg-top-green.webp") no-repeat center/100% 100%;
+  padding: 26.5px 40px 3px 35px;
+}
+.xdz-commando-compact .xdz-commando-bg-content {
+  position: relative;
+  z-index: 2;
+  padding: 3px 45px 3px 35px;
+}
+.xdz-commando-compact .xdz-compact-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  width: calc(100% - 20px);
+  margin-left: 0;
+  margin-right: auto;
+}
+.xdz-commando-compact .xdz-portrait-frame-compact {
+  width: 75px;
+  height: 90px;
+  aspect-ratio: auto;
+  border-radius: 2px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.xdz-commando-compact .xdz-col-identity {
+  flex: 1;
+  min-width: 0;
+  height: 90px;
+  justify-content: space-between;
+  gap: 0.1rem;
+}
+.xdz-commando-compact .xdz-col-identity .xdz-field-label {
+  width: 2.6rem;
+  font-size: 0.62rem;
+}
+.xdz-commando-compact .xdz-col-identity input {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.xdz-commando-compact .xdz-col-identity input:focus {
+  border-bottom: 1px dotted;
+}
+.xdz-commando-compact .xdz-budget-line,
+.xdz-commando-compact .xdz-gear-qty {
+  font-family: "Consolas", "Courier New", monospace;
+  letter-spacing: 0.03em;
+}
+.xdz-commando-compact .xdz-injury-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+}
+.xdz-commando-compact .xdz-ecg-panel {
+  position: relative;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.35rem 0.35rem;
+  box-sizing: border-box;
+}
+.xdz-commando-compact .xdz-ecg-flag {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  font-weight: 800;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+}
+.xdz-commando-compact .xdz-ecg-flag-dead {
+  color: #a4362c;
+  text-shadow: 0 0 4px rgba(164, 54, 44, 0.5);
+}
+.xdz-commando-compact .xdz-ecg-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.15rem;
+  width: 100%;
+}
+.xdz-commando-compact .xdz-ecg-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+}
+.xdz-commando-compact .xdz-ecg-wave {
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  background: no-repeat bottom center/100% 100%;
+}
+.xdz-commando-compact .xdz-ecg-pip {
+  display: block;
+  width: 100%;
+  height: 0.55rem;
+  border: 1px solid;
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.1s ease, opacity 0.1s ease;
+}
+.xdz-commando-compact .xdz-ecg-pip:hover {
+  opacity: 0.7;
+}
+.xdz-commando-compact .xdz-compact-stats {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 8px;
+  margin-bottom: 0.35rem;
+}
+.xdz-commando-compact .xdz-compact-stats .xdz-stat-block {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 4px;
+  padding: 0.15rem 0.35rem;
+}
+.xdz-commando-compact .xdz-block-title-vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  text-align: center;
+  border-left: 1px dotted;
+}
+.xdz-commando-compact .xdz-block-title-vertical .xdz-hint-tooltip {
+  writing-mode: horizontal-tb;
+  transform: rotate(180deg);
+  top: auto;
+  bottom: 0;
+  left: 100%;
+  margin-top: 0;
+  margin-left: 0.3rem;
+  white-space: normal;
+}
+.xdz-commando-compact .xdz-stat-grid-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.xdz-commando-compact .xdz-stat-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.xdz-commando-compact .xdz-stat-row {
+  gap: 0.3rem;
+}
+.xdz-commando-compact .xdz-col-training .xdz-stat-grid {
+  flex: 1;
+  justify-content: space-between;
+}
+.xdz-commando-compact .xdz-stat-pip {
+  width: calc(0.8rem + 0px);
+  height: calc(0.8rem + 0px);
+}
+.xdz-commando-compact .xdz-budget-line {
+  font-size: 0.58rem;
+}
+.xdz-commando-compact .xdz-col-resistance .xdz-stat-row {
+  padding: 0;
+}
+.xdz-commando-compact .xdz-stat-row-stacked {
+  flex-direction: column;
+  gap: 0.03rem;
+}
+.xdz-commando-compact .xdz-loadout-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.xdz-commando-compact .xdz-page-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  font-size: 0.85rem;
+}
+.xdz-commando-compact .xdz-page-nav:hover:not(:disabled) {
+  color: #b96b1c;
+}
+.xdz-commando-compact .xdz-page-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.xdz-commando-compact .xdz-title-add {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.xdz-commando-compact .xdz-title-add:hover {
+  color: #b96b1c;
+}
+.xdz-commando-compact .xdz-theme-switcher {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  top: 10px;
+  left: 92px;
+  align-items: center;
+  gap: 68px;
+}
+.xdz-commando-compact .xdz-theme-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.xdz-commando-compact .xdz-theme-nav:hover {
+  color: #b96b1c;
+}
+.xdz-commando-compact .xdz-weapon-list {
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+}
+.xdz-commando-compact .xdz-weapon-card {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-areas: "title title" "img tracks";
+  align-items: start;
+  gap: 3px;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid;
+  border-radius: 0.3rem;
+}
+.xdz-commando-compact .xdz-weapon-title-row {
+  grid-area: title;
+  justify-content: flex-start;
+  gap: 0.4rem;
+}
+.xdz-commando-compact .xdz-equip-radio {
+  order: -1;
+}
+.xdz-commando-compact .xdz-weapon-body {
+  grid-area: img;
+  min-height: 4.5rem;
+}
+.xdz-commando-compact .xdz-weapon-img-wrap {
+  width: 100%;
+}
+.xdz-commando-compact .xdz-weapon-img {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  object-position: left top;
+}
+.xdz-commando-compact .xdz-weapon-tracks {
+  grid-area: tracks;
+  margin-bottom: 0;
+}
+.xdz-commando-compact .xdz-weapon-name {
+  font-size: 0.8rem;
+}
+.xdz-commando-compact .xdz-track-label {
+  font-size: 0.9rem;
+}
+.xdz-commando-compact .xdz-weapon-tracks .xdz-pip-row {
+  gap: 0.15rem;
+}
+.xdz-commando-compact .xdz-weapon-tracks .xdz-pip-circle {
+  width: 0.4rem;
+  height: 0.78rem;
+}
+.xdz-commando-compact .xdz-gear-title,
+.xdz-commando-compact .xdz-gear-list {
+  width: calc(100% - 22px);
+  margin-left: 0;
+  margin-right: auto;
+}
+.xdz-commando-compact .xdz-gear-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.xdz-commando-compact .xdz-gear-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid;
+  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+}
+.xdz-commando-compact .xdz-gear-item .xdz-item-delete:hover {
+  color: #a4362c;
+}
+
+.xdz-commando-compact[data-theme=green] {
+  color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-commando-bg-top {
+  background-image: url("../assets/ui/commando_bg-top-green.webp");
+}
+.xdz-commando-compact[data-theme=green] .xdz-commando-bg-content {
+  background-image: url("../assets/ui/commando_bg-content-green.webp");
+}
+.xdz-commando-compact[data-theme=green] .xdz-commando-bg-bottom {
+  background-image: url("../assets/ui/commando_bg-bottom-green.webp");
+}
+.xdz-commando-compact[data-theme=green] .xdz-col-identity .xdz-field-label {
+  color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-col-identity input {
+  color: rgb(84.7254901961%, 88.0784313725%, 69.5490196078%);
+  text-shadow: 0 0 6px rgba(153, 183, 61, 0.55);
+}
+.xdz-commando-compact[data-theme=green] .xdz-col-identity input:focus {
+  border-bottom-color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-panel {
+  border-color: rgba(153, 183, 61, 0.7);
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-flag {
+  color: #99b73d;
+  text-shadow: 0 0 4px rgba(153, 183, 61, 0.5);
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(1) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-1-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(2) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-2-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(3) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-3-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(4) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-4-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(5) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-5-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-cell:nth-child(6) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-6-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-pip {
+  border-color: rgba(153, 183, 61, 0.7);
+}
+.xdz-commando-compact[data-theme=green] .xdz-ecg-pip.xdz-pip-filled {
+  background: #99b73d;
+  box-shadow: 0 0 4px rgba(153, 183, 61, 0.6);
+}
+.xdz-commando-compact[data-theme=green] .xdz-block-title-vertical {
+  border-left-color: #4c7a4f;
+}
+.xdz-commando-compact[data-theme=green] .xdz-stat-pip {
+  background-image: url("../assets/ui/pip-left-empty-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-stat-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/pip-left-filled-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-page-nav,
+.xdz-commando-compact[data-theme=green] .xdz-title-add,
+.xdz-commando-compact[data-theme=green] .xdz-theme-nav,
+.xdz-commando-compact[data-theme=green] .xdz-track-label,
+.xdz-commando-compact[data-theme=green] .xdz-gear-item .xdz-item-delete {
+  color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-page-nav:hover:not(:disabled),
+.xdz-commando-compact[data-theme=green] .xdz-title-add:hover,
+.xdz-commando-compact[data-theme=green] .xdz-theme-nav:hover {
+  color: rgb(84.7254901961%, 88.0784313725%, 69.5490196078%);
+}
+.xdz-commando-compact[data-theme=green] .xdz-gear-item {
+  border-color: rgba(153, 183, 61, 0.7);
+}
+.xdz-commando-compact[data-theme=green] .xdz-loadout-title {
+  color: #99b73d;
+  border-bottom-color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-stat-label {
+  color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-weapon-name {
+  color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-weapon-card {
+  background: rgba(76, 122, 79, 0.08);
+  border-color: rgba(153, 183, 61, 0.7);
+}
+.xdz-commando-compact[data-theme=green] .xdz-equip-radio span {
+  border-color: #4c7a4f;
+}
+.xdz-commando-compact[data-theme=green] .xdz-equip-radio input:checked + span {
+  background: #99b73d;
+  border-color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-portrait-frame {
+  border-color: #99b73d;
+}
+.xdz-commando-compact[data-theme=green] .xdz-hint-tooltip {
+  border-color: #4c7a4f;
+}
+.xdz-commando-compact[data-theme=green] .xdz-weapon-tracks .xdz-pip-circle {
+  background-image: url("../assets/ui/pip2-empty-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-weapon-tracks .xdz-pip-circle.xdz-pip-filled {
+  background-image: url("../assets/ui/pip2-filled-green.svg");
+}
+.xdz-commando-compact[data-theme=green] .xdz-track-label {
+  text-shadow: 0 0 4px rgba(153, 183, 61, 0.5);
+}
+.xdz-commando-compact[data-theme=green] .xdz-track-label.xdz-track-action:hover {
+  color: rgb(84.7254901961%, 88.0784313725%, 69.5490196078%);
+  text-shadow: 0 0 6px rgba(153, 183, 61, 0.9);
+}
+.xdz-commando-compact[data-theme=green] .xdz-weapon-img-wrap:hover .xdz-weapon-img {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 7px rgba(153, 183, 61, 0.9)) brightness(1.05);
+}
+
+.xdz-commando-compact[data-theme=blue] {
+  color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-commando-bg-top {
+  background-image: url("../assets/ui/commando_bg-top-blue.webp");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-commando-bg-content {
+  background-image: url("../assets/ui/commando_bg-content-blue.webp");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-commando-bg-bottom {
+  background-image: url("../assets/ui/commando_bg-bottom-blue.webp");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-col-identity .xdz-field-label {
+  color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-col-identity input {
+  color: rgb(76.4901960784%, 85.4705882353%, 88.4901960784%);
+  text-shadow: 0 0 6px rgba(93, 164, 199, 0.55);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-col-identity input:focus {
+  border-bottom-color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-panel {
+  border-color: rgba(93, 164, 199, 0.7);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-flag {
+  color: #5da4c7;
+  text-shadow: 0 0 4px rgba(93, 164, 199, 0.5);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(1) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-1-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(2) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-2-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(3) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-3-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(4) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-4-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(5) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-5-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-cell:nth-child(6) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-6-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-pip {
+  border-color: rgba(93, 164, 199, 0.7);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-ecg-pip.xdz-pip-filled {
+  background: #5da4c7;
+  box-shadow: 0 0 4px rgba(93, 164, 199, 0.6);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-block-title-vertical {
+  border-left-color: #1f5c78;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-stat-pip {
+  background-image: url("../assets/ui/pip-left-empty-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-stat-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/pip-left-filled-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-page-nav,
+.xdz-commando-compact[data-theme=blue] .xdz-title-add,
+.xdz-commando-compact[data-theme=blue] .xdz-theme-nav,
+.xdz-commando-compact[data-theme=blue] .xdz-track-label,
+.xdz-commando-compact[data-theme=blue] .xdz-gear-item .xdz-item-delete {
+  color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-page-nav:hover:not(:disabled),
+.xdz-commando-compact[data-theme=blue] .xdz-title-add:hover,
+.xdz-commando-compact[data-theme=blue] .xdz-theme-nav:hover {
+  color: rgb(76.4901960784%, 85.4705882353%, 88.4901960784%);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-gear-item {
+  border-color: rgba(93, 164, 199, 0.7);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-loadout-title {
+  color: #5da4c7;
+  border-bottom-color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-stat-label {
+  color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-weapon-name {
+  color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-weapon-card {
+  background: rgba(31, 92, 120, 0.08);
+  border-color: rgba(93, 164, 199, 0.7);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-equip-radio span {
+  border-color: #1f5c78;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-equip-radio input:checked + span {
+  background: #5da4c7;
+  border-color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-portrait-frame {
+  border-color: #5da4c7;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-hint-tooltip {
+  border-color: #1f5c78;
+}
+.xdz-commando-compact[data-theme=blue] .xdz-weapon-tracks .xdz-pip-circle {
+  background-image: url("../assets/ui/pip2-empty-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-weapon-tracks .xdz-pip-circle.xdz-pip-filled {
+  background-image: url("../assets/ui/pip2-filled-blue.svg");
+}
+.xdz-commando-compact[data-theme=blue] .xdz-track-label {
+  text-shadow: 0 0 4px rgba(93, 164, 199, 0.5);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-track-label.xdz-track-action:hover {
+  color: rgb(76.4901960784%, 85.4705882353%, 88.4901960784%);
+  text-shadow: 0 0 6px rgba(93, 164, 199, 0.9);
+}
+.xdz-commando-compact[data-theme=blue] .xdz-weapon-img-wrap:hover .xdz-weapon-img {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 7px rgba(93, 164, 199, 0.9)) brightness(1.05);
+}
+
+.xdz-commando-compact[data-theme=orange] {
+  color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-commando-bg-top {
+  background-image: url("../assets/ui/commando_bg-top-orange.webp");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-commando-bg-content {
+  background-image: url("../assets/ui/commando_bg-content-orange.webp");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-commando-bg-bottom {
+  background-image: url("../assets/ui/commando_bg-bottom-orange.webp");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-col-identity .xdz-field-label {
+  color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-col-identity input {
+  color: rgb(94.4705882353%, 81.9019607843%, 67.4901960784%);
+  text-shadow: 0 0 6px rgba(224, 138, 46, 0.55);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-col-identity input:focus {
+  border-bottom-color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-panel {
+  border-color: rgba(224, 138, 46, 0.7);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-flag {
+  color: #e08a2e;
+  text-shadow: 0 0 4px rgba(224, 138, 46, 0.5);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(1) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-1-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(2) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-2-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(3) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-3-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(4) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-4-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(5) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-5-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-cell:nth-child(6) .xdz-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-6-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-pip {
+  border-color: rgba(224, 138, 46, 0.7);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-ecg-pip.xdz-pip-filled {
+  background: #e08a2e;
+  box-shadow: 0 0 4px rgba(224, 138, 46, 0.6);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-block-title-vertical {
+  border-left-color: #b96b1c;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-stat-pip {
+  background-image: url("../assets/ui/pip-left-empty-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-stat-pip.xdz-pip-filled {
+  background-image: url("../assets/ui/pip-left-filled-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-page-nav,
+.xdz-commando-compact[data-theme=orange] .xdz-title-add,
+.xdz-commando-compact[data-theme=orange] .xdz-theme-nav,
+.xdz-commando-compact[data-theme=orange] .xdz-track-label,
+.xdz-commando-compact[data-theme=orange] .xdz-gear-item .xdz-item-delete {
+  color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-page-nav:hover:not(:disabled),
+.xdz-commando-compact[data-theme=orange] .xdz-title-add:hover,
+.xdz-commando-compact[data-theme=orange] .xdz-theme-nav:hover {
+  color: rgb(94.4705882353%, 81.9019607843%, 67.4901960784%);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-gear-item {
+  border-color: rgba(224, 138, 46, 0.7);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-loadout-title {
+  color: #e08a2e;
+  border-bottom-color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-stat-label {
+  color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-weapon-name {
+  color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-weapon-card {
+  background: rgba(185, 107, 28, 0.08);
+  border-color: rgba(224, 138, 46, 0.7);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-equip-radio span {
+  border-color: #b96b1c;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-equip-radio input:checked + span {
+  background: #e08a2e;
+  border-color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-portrait-frame {
+  border-color: #e08a2e;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-hint-tooltip {
+  border-color: #b96b1c;
+}
+.xdz-commando-compact[data-theme=orange] .xdz-weapon-tracks .xdz-pip-circle {
+  background-image: url("../assets/ui/pip2-empty-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-weapon-tracks .xdz-pip-circle.xdz-pip-filled {
+  background-image: url("../assets/ui/pip2-filled-orange.svg");
+}
+.xdz-commando-compact[data-theme=orange] .xdz-track-label {
+  text-shadow: 0 0 4px rgba(224, 138, 46, 0.5);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-track-label.xdz-track-action:hover {
+  color: rgb(94.4705882353%, 81.9019607843%, 67.4901960784%);
+  text-shadow: 0 0 6px rgba(224, 138, 46, 0.9);
+}
+.xdz-commando-compact[data-theme=orange] .xdz-weapon-img-wrap:hover .xdz-weapon-img {
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 7px rgba(224, 138, 46, 0.9)) brightness(1.05);
+}
+
 .xdz-xeno-sheet .xdz-header-compact {
   padding-bottom: 0.5rem;
 }
@@ -864,10 +1573,9 @@
 }
 
 .xdz-mode-toggle {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-weight: 800;
   letter-spacing: 0.08em;
-  border: 2px solid #50504b;
+  border: 2px solid #99b73d;
   border-radius: 3px;
   padding: 0.2rem 0.75rem;
   cursor: pointer;
@@ -887,15 +1595,13 @@
   align-items: center;
   gap: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 3px solid #50504b;
+  border-bottom: 3px solid #99b73d;
   margin-bottom: 0.75rem;
 }
 
 .xdz-item-name {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
-  text-transform: uppercase;
   flex: 1;
   border: none;
   background: transparent;
@@ -910,30 +1616,208 @@
   gap: 0.4rem;
 }
 
-.xdz-roll-flavor {
-  font-family: "XDZ Anton", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
+.xdz-chatcard {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 0%, #071f13 0%, #030d08 70%);
+  border: 1px solid #1f8a4c;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(77, 255, 138, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.6);
+  color: #4dff8a;
+  font-family: "Consolas", "Courier New", monospace;
+  padding: 0.5rem 0.65rem 0.6rem;
+}
+
+.xdz-chatcard-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: multiply;
+}
+
+.xdz-chatcard-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(77, 255, 138, 0.35);
+}
+
+.xdz-chatcard-icon {
+  width: 2.6rem;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(4);
+}
+
+.xdz-chatcard-title {
+  font-family: "Consolas", "Courier New", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 6px rgba(77, 255, 138, 0.8);
+  flex: 0 1 auto;
+}
+
+.xdz-chatcard-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #030d08;
+  background: #4dff8a;
+  border-radius: 2px;
+  padding: 0.1rem 0.35rem;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.xdz-chatcard-body {
+  position: relative;
+}
+
+.xdz-chatcard-line {
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: rgba(77, 255, 138, 0.85);
+  text-transform: uppercase;
+}
+.xdz-chatcard-line strong {
+  color: #4dff8a;
+  margin-left: 0.15rem;
+}
+
+.xdz-chatcard-spend {
+  color: #ffb000;
+}
+
+.xdz-chatcard-tag.xdz-chatcard-spend {
+  color: #030d08;
+  background: #ffb000;
+}
+
+.xdz-chatcard-readout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.35rem 0;
+  padding: 0.3rem 0;
+  border-top: 1px dashed rgba(77, 255, 138, 0.35);
+  border-bottom: 1px dashed rgba(77, 255, 138, 0.35);
+}
+
+.xdz-chatcard-digits {
+  font-family: "Consolas", "Courier New", monospace;
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0.05em;
+  color: #4dff8a;
+  text-shadow: 0 0 4px rgba(77, 255, 138, 0.9), 0 0 14px rgba(77, 255, 138, 0.5);
+}
+.xdz-chatcard-digits::before {
+  content: "[";
+  margin-right: 0.3rem;
+  opacity: 0.5;
+}
+.xdz-chatcard-digits::after {
+  content: "]";
+  margin-left: 0.3rem;
+  opacity: 0.5;
+}
+
+.xdz-chatcard-damage .xdz-chatcard-digits::before {
+  content: "{";
+}
+.xdz-chatcard-damage .xdz-chatcard-digits::after {
+  content: "}";
+}
+
+.xdz-chatcard-status {
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+.xdz-chatcard-status.xdz-success {
+  color: #4dff8a;
+  text-shadow: 0 0 8px rgba(77, 255, 138, 0.8);
+}
+.xdz-chatcard-status.xdz-failure {
+  color: #ff4b3e;
+  text-shadow: 0 0 8px rgba(255, 75, 62, 0.7);
+}
+
+.xdz-chatcard-desc {
+  font-family: "XDZ Teko", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: rgba(77, 255, 138, 0.85);
+  margin-top: 0.15rem;
+}
+
+.xdz-damage-row {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+.xdz-damage-row .xdz-btn {
+  flex: 1 1 auto;
+  font-family: "Consolas", "Courier New", monospace;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  font-size: 0.65rem;
+  padding: 0.25rem 0.4rem;
+  background: transparent;
+  color: #4dff8a;
+  border: 1px solid #1f8a4c;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.1s ease, box-shadow 0.1s ease;
 }
-.xdz-roll-flavor strong {
-  display: block;
+.xdz-damage-row .xdz-btn:hover:not(:disabled) {
+  background: rgba(77, 255, 138, 0.15);
+  border-color: #4dff8a;
+  box-shadow: 0 0 6px rgba(77, 255, 138, 0.5);
+}
+.xdz-damage-row .xdz-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.xdz-damage-row .xdz-spray-btn {
+  border-color: #ffb000;
+  color: #ffb000;
+}
+.xdz-damage-row .xdz-spray-btn:hover:not(:disabled) {
+  background: rgba(255, 176, 0, 0.15);
+  border-color: #ffb000;
+  box-shadow: 0 0 6px rgba(255, 176, 0, 0.5);
 }
 
-.xdz-roll-result {
-  font-weight: 800;
+.chat-message:has(.xdz-chatcard) {
+  background: #030d08;
+  border-color: #1f8a4c;
+  color: #4dff8a;
+}
+.chat-message:has(.xdz-chatcard) .message-header, .chat-message:has(.xdz-chatcard) .message-sender, .chat-message:has(.xdz-chatcard) .message-timestamp, .chat-message:has(.xdz-chatcard) .message-metadata, .chat-message:has(.xdz-chatcard) i {
+  color: #4dff8a;
+}
+.chat-message:has(.xdz-chatcard) .message-sender {
   letter-spacing: 0.06em;
+  text-shadow: 0 0 6px rgba(77, 255, 138, 0.8);
 }
-.xdz-roll-result.xdz-success {
-  color: #4c7a4f;
+.chat-message:has(.xdz-chatcard) .avatar img {
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(3);
 }
-.xdz-roll-result.xdz-failure {
-  color: #a4362c;
-}
-
-.xdz-unleash-hell {
-  color: #b96b1c;
-  font-weight: 700;
-  font-size: 0.8rem;
+.chat-message:has(.xdz-chatcard) .message-content {
+  padding: 0;
+  background: none;
 }
 
 /*# sourceMappingURL=xdz.css.map */

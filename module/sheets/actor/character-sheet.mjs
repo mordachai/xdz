@@ -10,7 +10,7 @@ export default class CharacterSheet extends XDZActorSheet {
     actions: {
       setPip: this._onSetPip,
       weaponRoll: this._onWeaponRoll,
-      weaponUnleash: this._onWeaponUnleash,
+      weaponSecondary: this._onWeaponSecondary,
       toggleEquip: this._onToggleEquip,
     },
   };
@@ -110,13 +110,13 @@ export default class CharacterSheet extends XDZActorSheet {
   static async _onWeaponRoll(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    return item?.rollDestroy();
+    return item?.rollAttack('normal');
   }
 
-  static async _onWeaponUnleash(event, target) {
+  static async _onWeaponSecondary(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    return item?.rollDestroy({ unleashHell: true });
+    return item?.rollSecondary();
   }
 
   static async _onToggleEquip(event, target) {

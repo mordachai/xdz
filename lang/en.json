@@ -17,14 +17,15 @@
     },
     "Roll": {
       "Success": "Success",
-      "Failure": "Failure"
+      "Failure": "Failure",
+      "TargetNumber": "TN "
     },
 
     "Actor": {
-      "Name": "Name",
-      "Rank": "Rank",
-      "Story": "Story",
-      "Quirk": "Quirk",
+      "Name": "Name:",
+      "Rank": "Rank:",
+      "Story": "Story:",
+      "Quirk": "Quirk:",
       "Injury": "Injury",
       "InjuryHint1": "Once down, take 1 injury each turn.",
       "InjuryHint2": "Allies heal 1 injury with a Medical roll.",
@@ -44,19 +45,28 @@
 
     "Weapon": {
       "Equipped": "Equipped",
+      "EquipTooltip": "Equip weapon",
+      "EquipTooltipDiscard": "Equip weapon (unequips all other weapons)",
       "DiscardOthers": "Discard all other weapons when equipped",
-      "DestroyDie": "Destroy Die",
-      "UpgradeDie": "Unleash Hell Die",
+      "DestroyDie": "Attack Die",
+      "UpgradeDie": "Ammo Die",
       "Ammo": "Ammo",
+      "AmmoLabel": "Ammo Label",
+      "AmmoDescription": "Ammo Description",
       "Damaged": "Damaged",
       "SecondaryLabel": "Secondary Resource Label",
       "SecondaryTrack": "Secondary Resource",
+      "SecondaryDie": "Secondary Die",
+      "SecondaryDescription": "Secondary Description",
       "Rules": "Rules",
-      "Description": "Description",
+      "Description": "Attack Description",
+      "Attack": "Attack",
+      "RollDamage": "Roll Damage",
+      "SprayAndPray": "Spray and Pray",
       "Destroy": "Destroy",
-      "UnleashHell": "Unleash Hell",
       "Destroyed": "{name} is destroyed and cannot be used.",
-      "NoAmmo": "No ammo remaining to Unleash Hell."
+      "NoAmmo": "No ammo remaining.",
+      "NoSecondary": "No {label} remaining."
     },
 
     "Gear": {

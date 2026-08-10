@@ -15,12 +15,15 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       rules: new fields.HTMLField({ required: true, blank: true, initial: '' }),
       description: new fields.HTMLField({ required: true, blank: true, initial: '' }),
       ammoLabel: new fields.StringField({ required: true, blank: true, initial: '' }),
+      ammoDescription: new fields.HTMLField({ required: true, blank: true, initial: '' }),
       ammo: new fields.SchemaField({
         value: new fields.NumberField({ required: true, integer: true, min: 0, initial: 3 }),
         max: new fields.NumberField({ required: true, integer: true, min: 0, initial: 3 }),
       }),
       secondary: new fields.SchemaField({
         label: new fields.StringField({ required: true, blank: true, initial: '' }),
+        die: new fields.StringField({ required: true, blank: true, initial: '' }),
+        description: new fields.HTMLField({ required: true, blank: true, initial: '' }),
         value: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
         max: new fields.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
       }),

@@ -1,18 +1,26 @@
-<li class="xdz-weapon-card" data-item-id="{{item.id}}">
+<li class="xdz-weapon-card{{#if system.destroyed}} xdz-weapon-destroyed{{/if}}" data-item-id="{{item.id}}">
   <div class="xdz-weapon-title-row">
-    <h3 class="xdz-weapon-name" data-action="itemEdit">{{item.name}}</h3>
+    <h3 class="xdz-weapon-name xdz-hint-trigger" data-action="itemEdit">
+      {{item.name}}
+      <div class="xdz-hint-tooltip xdz-weapon-hint">
+        {{#if system.rules}}<div class="xdz-hint-rules">{{{system.rules}}}</div>{{/if}}
+        <p><strong>{{localize 'XDZ.Weapon.Attack'}}:</strong> {{system.destroyDie}}{{#if system.description}} — {{{system.description}}}{{/if}}</p>
+        <p><strong>{{#if system.ammoLabel}}{{system.ammoLabel}}{{else}}{{localize 'XDZ.Weapon.Ammo'}}{{/if}}:</strong> {{system.upgradeDie}}{{#if system.ammoDescription}} — {{{system.ammoDescription}}}{{/if}}</p>
+        {{#if system.secondary.max}}
+        <p><strong>{{#if system.secondary.label}}{{system.secondary.label}}{{else}}{{localize 'XDZ.Weapon.SecondaryTrack'}}{{/if}}:</strong> {{#if system.secondary.die}}{{system.secondary.die}}{{else}}—{{/if}}{{#if system.secondary.description}} — {{{system.secondary.description}}}{{/if}}</p>
+        {{/if}}
+      </div>
+    </h3>
 
-    <label class="xdz-equip-radio" title="{{localize 'XDZ.Weapon.Equipped'}}">
+    <label class="xdz-equip-radio" title="{{#if system.discardOthersOnEquip}}{{localize 'XDZ.Weapon.EquipTooltipDiscard'}}{{else}}{{localize 'XDZ.Weapon.EquipTooltip'}}{{/if}}">
       <input type="radio" data-action="toggleEquip" {{#if system.equipped}}checked{{/if}}>
       <span></span>
-      {{localize 'XDZ.Weapon.Equipped'}}
     </label>
   </div>
 
   <div class="xdz-weapon-body">
-    <div class="xdz-weapon-img-wrap xdz-hint-trigger">
+    <div class="xdz-weapon-img-wrap" data-action="weaponRoll">
       <img class="xdz-weapon-img" src="{{item.img}}" alt="{{item.name}}">
-      <div class="xdz-hint-tooltip xdz-weapon-hint">{{{system.rules}}}</div>
     </div>
   </div>
 
@@ -29,7 +37,7 @@
 
     {{#if system.secondary.max}}
     <div class="xdz-track-row">
-      <span class="xdz-track-label">{{system.secondary.label}}</span>
+      <span class="xdz-track-label xdz-track-action" data-action="weaponSecondary">{{system.secondary.label}}</span>
       <div class="xdz-pip-row">
         {{#each secondaryPips}}
           <span class="xdz-pip-circle {{#if filled}}xdz-pip-filled{{/if}}"
@@ -48,14 +56,5 @@
         {{/each}}
       </div>
     </div>
-  </div>
-
-  <div class="xdz-weapon-actions">
-    <button type="button" class="xdz-btn xdz-btn-destroy" data-action="weaponRoll" {{#if system.destroyed}}disabled{{/if}}>
-      {{localize 'XDZ.Weapon.Destroy'}}
-    </button>
-    <button type="button" class="xdz-btn xdz-btn-unleash" data-action="weaponUnleash" {{#if system.destroyed}}disabled{{/if}}>
-      {{localize 'XDZ.Weapon.UnleashHell'}}
-    </button>
   </div>
 </li>
