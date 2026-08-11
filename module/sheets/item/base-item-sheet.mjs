@@ -24,6 +24,7 @@ export default class XDZItemSheet extends HandlebarsApplicationMixin(ItemSheetV2
     context.system = this.item.system;
     context.XDZ = CONFIG.XDZ;
     context.editable = this.isEditable;
+    context.theme = game.settings.get('xdz', 'sheetTheme');
     return context;
   }
 

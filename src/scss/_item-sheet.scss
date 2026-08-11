@@ -1,3 +1,30 @@
+.xdz-item-sheet {
+  background: $xdz-item-dark-bg;
+
+  // Base .xdz-sheet paints inputs with an opaque paper-colored fill, a
+  // hardcoded green text color and a neutral steel border, tuned for the
+  // light dossier look — wrong on the dark chassis. Go transparent, inherit
+  // the themed text color, and tint the border to match instead of
+  // overriding all three per palette.
+  input, textarea, select {
+    background: transparent;
+    color: inherit;
+    border-color: rgba($xdz-green-color, 0.5);
+    font-size: 1.2rem;
+
+    &:focus { border-color: $xdz-green-color; }
+  }
+
+  // Soft grey field labels read fine on paper but vanish on the dark
+  // chassis — tint them to the active theme color instead (dimmed, so the
+  // brighter input/title text still reads as the primary layer).
+  .xdz-field-label { color: $xdz-green-color; }
+}
+
+// Weapon art is a landscape render meant to be seen whole, not cropped —
+// gear keeps the default cover/square headshot treatment.
+.xdz-weapon-item-sheet .xdz-portrait { object-fit: contain; }
+
 .xdz-item-header {
   display: flex;
   align-items: center;
@@ -22,4 +49,34 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+
+  textarea { font-size: 1.75rem; line-height: 1.3; width: 100%; }
+}
+
+// Item-sheet color themes, settable via the "Sheet Theme" world setting
+// (xdz.sheetTheme). Green is the default/unthemed look already painted by
+// .xdz-sheet — only blue/orange need overrides.
+$xdz-item-themes: (
+  blue: (color: $xdz-blue-color, accent: $xdz-blue-accent),
+  orange: (color: $xdz-orange-color, accent: $xdz-orange-accent),
+  white: (color: $xdz-white-color, accent: $xdz-white-accent),
+);
+
+@each $name, $t in $xdz-item-themes {
+  .xdz-item-sheet[data-theme="#{$name}"] {
+    $color: map-get($t, color);
+    $accent: map-get($t, accent);
+
+    color: $color;
+
+    .xdz-item-header { border-bottom-color: $color; }
+    .xdz-portrait-frame { border-color: $color; }
+    .xdz-item-name:focus { border-bottom-color: $accent; }
+    .xdz-field-label { color: rgba($color, 0.65); }
+
+    input, textarea, select {
+      border-color: rgba($color, 0.5);
+      &:focus { border-color: $accent; }
+    }
+  }
 }

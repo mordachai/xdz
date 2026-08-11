@@ -18,7 +18,29 @@
     "Roll": {
       "Success": "Success",
       "Failure": "Failure",
-      "TargetNumber": "TN "
+      "TargetNumber": "TN ",
+      "TypeTraining": "Training",
+      "TypeResistance": "Resistance"
+    },
+
+    "Hud": {
+      "TargetNumber": "TN",
+      "Rounds": "Timer",
+      "Clock": "Realtimer",
+      "Hard": "Hard (+3)",
+      "Easy": "Easy (-3)",
+      "HardPlate": "H:+3",
+      "EasyPlate": "E:-3",
+      "Timer": "Create Timer",
+      "ToggleMode": "Timer / Realtimer (toggle)",
+      "Rename": "Rename",
+      "ResetRealtimer": "Reset (Realtimer)",
+      "AdjustMinus1": "-1 round",
+      "AdjustPlus1": "+1 round",
+      "Start": "Start",
+      "Pause": "Pause",
+      "SetDuration": "Set duration (mm:ss)",
+      "ToggleVisibility": "Toggle TN & Timer HUD"
     },
 
     "Actor": {
@@ -90,6 +112,43 @@
       "Xeno": "XDZ Xeno Sheet",
       "Weapon": "XDZ Weapon Sheet",
       "Gear": "XDZ Gear Sheet"
+    },
+
+    "MapGenerator": {
+      "Title": "Map Generator",
+      "Legend": "Generate a Location Map",
+      "Style": "Style",
+      "Color": "Color",
+      "BW": "B&W",
+      "Type": "Type",
+      "Starship": "Starship",
+      "Colony": "Colony",
+      "SceneName": "Scene Name",
+      "Generate": "Generate"
+    },
+
+    "MissionGenerator": {
+      "ColonyObjectives": "Colony Objectives",
+      "ShipObjectives": "Ship Objectives",
+      "Starship": "Starship",
+      "Colony": "Colony",
+      "Evac": "EVAC",
+      "EvacDesc": "Reach"
+    },
+
+    "Escalation": {
+      "Title": "ESCALATION"
+    },
+
+    "Settings": {
+      "SheetTheme": {
+        "Name": "Sheet Theme",
+        "Hint": "Color theme used by item sheets and chat cards.",
+        "Green": "Green",
+        "Blue": "Blue",
+        "Orange": "Orange",
+        "White": "White"
+      }
     }
   },
 

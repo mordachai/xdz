@@ -1,0 +1,125 @@
+// The green-screen journal pages MissionGenerator/escalation-roll write.
+// Reuses the CRT vars/scanline language from _chat.scss rather than
+// inventing a second "terminal" look. The Colony/Ship Objectives buttons
+// that trigger these live in the Journal directory's header-actions row
+// (see renderJournalDirectory in xdz.mjs) and use Foundry's own button
+// styling there, same as the Map Generator button — no bespoke CSS needed.
+
+// The generated Journal Entry Page content. Root div gets classes
+// ['xdz', 'xdz-journal-sheet'] (see MissionGenerator._addJournalPage) —
+// everything nested under this compound selector so it can never leak into
+// other (non-xdz) journal pages.
+.xdz.xdz-journal-sheet {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 0%, $xdz-crt-bg-panel 0%, $xdz-crt-bg 70%);
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: 4px;
+  box-shadow: inset 0 0 30px rgba(black, 0.6);
+  color: $xdz-crt-green;
+  font-family: $xdz-font-mono;
+  padding: 1rem 1.25rem 1.25rem;
+  margin: 0.5rem 0;
+
+  .xdz-journal-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(black, 0.15) 0, rgba(black, 0.15) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode: multiply;
+  }
+
+  .xdz-journal-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed rgba($xdz-crt-green, 0.4);
+  }
+
+  .xdz-journal-title {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 6px rgba($xdz-crt-green, 0.8);
+  }
+
+  .xdz-journal-timestamp {
+    font-size: 0.8rem;
+    color: rgba($xdz-crt-green, 0.7);
+  }
+
+  .xdz-journal-objectives {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .xdz-journal-objective {
+    border: 1px solid rgba($xdz-crt-green, 0.3);
+    border-radius: 3px;
+    padding: 0.5rem 0.65rem;
+    background: rgba(black, 0.2);
+  }
+
+  .xdz-journal-objective-title {
+    margin-bottom: 0.25rem;
+    color: $xdz-crt-green;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-shadow: 0 0 4px rgba($xdz-crt-green, 0.6);
+  }
+
+  .xdz-journal-objective-desc {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: rgba($xdz-crt-green, 0.9);
+  }
+
+  .xdz-journal-evac {
+    border-color: $xdz-crt-amber;
+    box-shadow: 0 0 8px rgba($xdz-crt-amber, 0.3);
+
+    .xdz-journal-objective-title {
+      color: $xdz-crt-amber;
+      text-shadow: 0 0 6px rgba($xdz-crt-amber, 0.8);
+    }
+  }
+
+  .xdz-journal-loc {
+    display: inline-block;
+    color: $xdz-crt-amber;
+    font-weight: 700;
+    text-shadow: 0 0 4px rgba($xdz-crt-amber, 0.7);
+  }
+}
+
+// Escalation log pages (see escalation-roll.mjs) — appended after the
+// mission briefing page as their own separate journal pages, one per XENO
+// turn's roll. Same sheet chassis, red accent instead of green to read as a
+// danger/complication readout, matching the chat-card escalation variant.
+.xdz.xdz-journal-sheet.xdz-journal-escalation {
+  border-color: rgba($xdz-crt-red, 0.6);
+  box-shadow: inset 0 0 30px rgba(black, 0.6), 0 0 8px rgba($xdz-crt-red, 0.25);
+
+  .xdz-journal-title {
+    color: $xdz-crt-red;
+    text-shadow: 0 0 6px rgba($xdz-crt-red, 0.8);
+  }
+
+  .xdz-journal-objective {
+    border-color: rgba($xdz-crt-red, 0.35);
+  }
+
+  .xdz-journal-objective-title {
+    color: $xdz-crt-red;
+    text-shadow: 0 0 4px rgba($xdz-crt-red, 0.6);
+  }
+}

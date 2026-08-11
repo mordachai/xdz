@@ -1,3 +1,5 @@
+import TnTracker from '../apps/tn-tracker.mjs';
+
 /**
  * Extend the base Item document for XDZ-specific roll behavior.
  */
@@ -26,7 +28,7 @@ export default class XDZItem extends Item {
 
     const label = mode === 'grenade' ? this.system.secondary.label : game.i18n.localize('XDZ.Weapon.Attack');
     const bonus = this.actor?.system?.training?.weapons ?? 0;
-    const tn = this.actor?.system?.target ?? CONFIG.XDZ.defaultTarget;
+    const tn = TnTracker.getCurrentTN() ?? this.actor?.system?.target ?? CONFIG.XDZ.defaultTarget;
 
     const roll = await new Roll('1d20 + @bonus', { bonus }).evaluate();
     const die = roll.dice[0]?.results?.[0]?.result;
@@ -50,7 +52,11 @@ export default class XDZItem extends Item {
 
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/attack-card.hbs', {
       weapon: this,
+      theme: game.settings.get('xdz', 'sheetTheme'),
       label,
+      die,
+      bonusLabel: 'W',
+      bonus,
       tn,
       total: roll.total,
       success,
@@ -101,6 +107,7 @@ export default class XDZItem extends Item {
 
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/damage-card.hbs', {
       weapon: this,
+      theme: game.settings.get('xdz', 'sheetTheme'),
       total: roll.total,
       tag,
       description,
@@ -134,6 +141,7 @@ export default class XDZItem extends Item {
 
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/secondary-card.hbs', {
       weapon: this,
+      theme: game.settings.get('xdz', 'sheetTheme'),
       label: secondary.label,
       description: secondary.description,
     });

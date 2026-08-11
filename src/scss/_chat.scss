@@ -9,6 +9,15 @@ $xdz-crt-green-dim: #1f8a4c;
 $xdz-crt-amber: #ffb000;
 $xdz-crt-red: #ff4b3e;
 
+// Theme swaps for the CRT readout (settable via the "Sheet Theme" world
+// setting, xdz.sheetTheme). Green (above) is the default/unthemed look.
+$xdz-crt-blue: #4dc3ff;
+$xdz-crt-blue-dim: #1f6f8a;
+$xdz-crt-orange: #ffa64d;
+$xdz-crt-orange-dim: #8a551f;
+$xdz-crt-white: #f2f5f2;
+$xdz-crt-white-dim: #8a938a;
+
 .xdz-chatcard {
   position: relative;
   overflow: hidden;
@@ -91,11 +100,40 @@ $xdz-crt-red: #ff4b3e;
 
 // Marks any line/tag tied to consuming a limited resource (ammo, secondary
 // charges like Gyro or Grenade) — amber instead of the default green.
+.xdz-chatcard-equation { text-transform: none; }
+
 .xdz-chatcard-spend { color: $xdz-crt-amber; }
 
 .xdz-chatcard-tag.xdz-chatcard-spend {
   color: $xdz-crt-bg;
   background: $xdz-crt-amber;
+}
+
+// ESCALATION cards (see escalation-roll.mjs) — same CRT housing, red
+// accent instead of green to read as a danger/complication readout.
+.xdz-chatcard-escalation {
+  border-color: rgba($xdz-crt-red, 0.6);
+  box-shadow: 0 0 8px rgba($xdz-crt-red, 0.25), inset 0 0 20px rgba(black, 0.6);
+
+  .xdz-chatcard-tag {
+    color: $xdz-crt-bg;
+    background: $xdz-crt-red;
+  }
+}
+
+.xdz-chatcard-escalation-label {
+  margin-bottom: 0.3rem;
+  color: $xdz-crt-red;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 6px rgba($xdz-crt-red, 0.7);
+}
+
+.xdz-chatcard-escalation-desc {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: rgba($xdz-crt-green, 0.9);
 }
 
 .xdz-chatcard-readout {
@@ -208,4 +246,68 @@ $xdz-crt-red: #ff4b3e;
   // Terminal card fills the message body edge-to-edge instead of sitting
   // inside Foundry's default padded/backgrounded content box.
   .message-content { padding: 0; background: none; }
+}
+
+// Blue/orange readout overrides — green above stays the default/unthemed
+// look, so only the other two palettes need their own rule block.
+$xdz-chatcard-themes: (
+  blue: (main: $xdz-crt-blue, dim: $xdz-crt-blue-dim, hue: 190deg),
+  orange: (main: $xdz-crt-orange, dim: $xdz-crt-orange-dim, hue: 0deg),
+  white: (main: $xdz-crt-white, dim: $xdz-crt-white-dim, hue: 0deg),
+);
+
+@each $name, $t in $xdz-chatcard-themes {
+  $c: map-get($t, main);
+  $d: map-get($t, dim);
+  $h: map-get($t, hue);
+
+  .xdz-chatcard[data-theme="#{$name}"] {
+    background: radial-gradient(ellipse at 50% 0%, mix($c, $xdz-crt-bg, 15%) 0%, $xdz-crt-bg 70%);
+    border-color: $d;
+    box-shadow: 0 0 8px rgba($c, 0.25), inset 0 0 20px rgba(black, 0.6);
+    color: $c;
+
+    .xdz-chatcard-header { border-bottom-color: rgba($c, 0.35); }
+    .xdz-chatcard-icon { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(#{$h}) saturate(4); }
+    .xdz-chatcard-title { text-shadow: 0 0 6px rgba($c, 0.8); }
+    .xdz-chatcard-tag { color: $xdz-crt-bg; background: $c; }
+
+    .xdz-chatcard-line {
+      color: rgba($c, 0.85);
+      strong { color: $c; }
+    }
+
+    .xdz-chatcard-readout { border-top-color: rgba($c, 0.35); border-bottom-color: rgba($c, 0.35); }
+    .xdz-chatcard-digits { color: $c; text-shadow: 0 0 4px rgba($c, 0.9), 0 0 14px rgba($c, 0.5); }
+    .xdz-chatcard-status.xdz-success { color: $c; text-shadow: 0 0 8px rgba($c, 0.8); }
+    .xdz-chatcard-desc { color: rgba($c, 0.85); }
+
+    .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
+      color: $c;
+      border-color: $d;
+
+      &:hover:not(:disabled) {
+        background: rgba($c, 0.15);
+        border-color: $c;
+        box-shadow: 0 0 6px rgba($c, 0.5);
+      }
+    }
+  }
+
+  .chat-message:has(.xdz-chatcard[data-theme="#{$name}"]) {
+    background: $xdz-crt-bg;
+    border-color: $d;
+    color: $c;
+
+    .message-header, .message-sender, .message-timestamp, .message-metadata, i { color: $c; }
+    .message-sender { text-shadow: 0 0 6px rgba($c, 0.8); }
+    .avatar img { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(#{$h}) saturate(3); }
+  }
+}
+
+// White theme's icons/avatars stay neutral grey — the sepia/hue-rotate/
+// saturate pipeline above only makes sense for tinting toward a hue.
+.xdz-chatcard[data-theme="white"] .xdz-chatcard-icon,
+.chat-message:has(.xdz-chatcard[data-theme="white"]) .avatar img {
+  filter: grayscale(1) brightness(1.1);
 }

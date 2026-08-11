@@ -37,10 +37,8 @@
         <span class="xdz-ecg-flag xdz-ecg-flag-down">{{localize 'XDZ.Actor.Down'}}!</span>
       {{/if}}
       <div class="xdz-ecg-row">
-        <div class="xdz-ecg-wave-row">
-          {{#each injuryPips}}
-            <span class="xdz-ecg-wave"></span>
-          {{/each}}
+        <div class="xdz-ecg-wave-row xdz-ecg-level-{{injuryLevel}}">
+          <span class="xdz-ecg-wave"></span>
         </div>
         {{#each injuryPips}}
           <span class="xdz-ecg-pip {{#if filled}}xdz-pip-filled{{/if}}"

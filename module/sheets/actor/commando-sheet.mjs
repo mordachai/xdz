@@ -25,7 +25,7 @@ export default class CommandoSheet extends XDZActorSheet {
   };
 
   /** Available compact-sheet color themes, in cycling order. */
-  static THEMES = ['green', 'blue', 'orange'];
+  static THEMES = ['green', 'blue', 'orange', 'white'];
 
   /** Index of the visible weapon-card page in the loadout pager. @private */
   _loadoutPage = 0;
@@ -59,6 +59,9 @@ export default class CommandoSheet extends XDZActorSheet {
       index: i,
       filled: i < system.injuries.value,
     }));
+
+    // Full-width ECG strip swaps wholesale per injury level (1 = healthy, 6 = flatline).
+    context.injuryLevel = Math.max(1, Math.min(system.injuries.value, CONFIG.XDZ.injuryDeath));
 
     // Sweep speeds up as injuries pile on — 6s healthy down to 1.0s near death.
     const injuryRatio = Math.min(system.injuries.value / CONFIG.XDZ.injuryDeath, 1);

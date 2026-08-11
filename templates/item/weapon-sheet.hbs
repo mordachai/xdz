@@ -1,21 +1,23 @@
-<div class="xdz-sheet xdz-item-sheet xdz-weapon-item-sheet">
+<div class="xdz-sheet xdz-item-sheet xdz-weapon-item-sheet" data-theme="{{theme}}">
 
   <header class="xdz-item-header">
-    <div class="xdz-portrait-frame xdz-portrait-frame-small">
+    <div class="xdz-portrait-frame xdz-portrait-frame-rect">
       <img class="xdz-portrait" src="{{item.img}}" data-action="onEditImage" data-edit="img" alt="{{item.name}}">
     </div>
     <input type="text" class="xdz-item-name" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}}>
   </header>
 
   <div class="xdz-item-body">
-    <label class="xdz-field xdz-field-inline">
-      <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
-      <span class="xdz-field-label">{{localize 'XDZ.Weapon.Equipped'}}</span>
-    </label>
-    <label class="xdz-field xdz-field-inline">
-      <input type="checkbox" name="system.discardOthersOnEquip" {{#if system.discardOthersOnEquip}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
-      <span class="xdz-field-label">{{localize 'XDZ.Weapon.DiscardOthers'}}</span>
-    </label>
+    <div class="xdz-field-row">
+      <label class="xdz-field xdz-field-inline">
+        <input type="checkbox" name="system.equipped" {{#if system.equipped}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.Equipped'}}</span>
+      </label>
+      <label class="xdz-field xdz-field-inline">
+        <input type="checkbox" name="system.discardOthersOnEquip" {{#if system.discardOthersOnEquip}}checked{{/if}} {{#unless editable}}disabled{{/unless}}>
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.DiscardOthers'}}</span>
+      </label>
+    </div>
 
     <div class="xdz-field-row">
       <label class="xdz-field">
@@ -61,7 +63,7 @@
       <textarea name="system.ammoDescription" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.ammoDescription}}</textarea>
     </label>
 
-    <div class="xdz-field-row">
+    <div class="xdz-field-row xdz-field-row-baseline">
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryLabel'}}</span>
         <input type="text" name="system.secondary.label" value="{{system.secondary.label}}" placeholder="Grenade / Gyro" {{#unless editable}}disabled{{/unless}}>

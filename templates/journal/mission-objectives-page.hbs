@@ -1,0 +1,19 @@
+<div class="xdz-journal-scanlines"></div>
+
+<div class="xdz-journal-header">
+  <span class="xdz-journal-title">{{typeLabelUpper}} MISSION BRIEFING</span>
+  <span class="xdz-journal-timestamp">{{timestamp}}</span>
+</div>
+
+<ol class="xdz-journal-objectives">
+  {{#each objectives}}
+  <li class="xdz-journal-objective">
+    <div class="xdz-journal-objective-title">{{this.num}}. {{this.label}}</div>
+    <div class="xdz-journal-objective-desc">{{{this.desc}}}</div>
+  </li>
+  {{/each}}
+  <li class="xdz-journal-objective xdz-journal-evac">
+    <div class="xdz-journal-objective-title">{{localize "XDZ.MissionGenerator.Evac"}}</div>
+    <div class="xdz-journal-objective-desc">{{localize "XDZ.MissionGenerator.EvacDesc"}} {{{evacTag}}}</div>
+  </li>
+</ol>

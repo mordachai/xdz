@@ -31,6 +31,14 @@
 
 .xdz-portrait-frame-small { width: 4.5rem; }
 
+// Same actual height as the small square portrait, wider frame — used where
+// the source art is a landscape weapon render instead of a headshot.
+.xdz-portrait-frame-rect {
+  width: auto;
+  height: 4.5rem;
+  aspect-ratio: 16 / 9;
+}
+
 .xdz-portrait {
   width: 100%;
   height: 100%;

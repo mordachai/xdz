@@ -18,7 +18,20 @@
   text-transform: uppercase;
 }
 
+// Thin, theme-colored scrollbar for any XDZ-owned scroll container — reuses
+// whatever `color` is active at that element (theme green/blue/orange, or a
+// per-actor commando theme) instead of hardcoding per-palette variants.
+%xdz-thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: currentColor transparent;
+
+  &::-webkit-scrollbar { width: 6px; height: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background-color: currentColor; border-radius: 3px; }
+}
+
 .xdz-sheet {
+  @extend %xdz-thin-scrollbar;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -49,7 +62,7 @@
     }
   }
 
-  textarea { resize: vertical; }
+  textarea { @extend %xdz-thin-scrollbar; resize: vertical; }
 }
 
 .xdz-field {
@@ -71,6 +84,8 @@
 
   .xdz-field { flex: 1; }
 }
+
+.xdz-field-row-baseline { align-items: baseline; }
 
 .xdz-field-label {
   @extend %xdz-display-text;

@@ -1,0 +1,170 @@
+// Always-on HUD badges — shared Target Number and round/clock timer.
+// Same CRT-green readout language as chat cards, but small and frameless,
+// pinned to the top of the viewport for every connected client.
+
+// Application root gets classes ['xdz', 'hud-app', <name>] as separate
+// tokens (not a single "xdz-hud-app" class) — match them as a compound
+// selector, not a hyphenated one.
+// Position (left/top) is JS-driven per app instance — see hud-drag.mjs —
+// so no fixed offsets here. Only the positioning mode itself is forced.
+.xdz.hud-app {
+  position: fixed !important;
+  z-index: 40;
+  pointer-events: none;
+
+  * { pointer-events: auto; }
+}
+
+.xdz-hud-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  cursor: grab;
+
+  &:active { cursor: grabbing; }
+}
+
+.xdz-hud-badge {
+  position: relative;
+  width: 70px;
+  aspect-ratio: 34.67 / 40.03;
+  filter: drop-shadow(0 0 6px rgba($xdz-crt-green, 0.5));
+}
+
+.xdz-hud-bg {
+  position: absolute;
+  inset: 0;
+  background: no-repeat center / contain;
+}
+
+.xdz-hud-bg-tn { background-image: url("../assets/ui/tn_bg.svg"); }
+
+.round-timer .xdz-hud-badge {  width: 60px; aspect-ratio: 35.82 / 35.81; }
+.xdz-hud-bg-timer { background-image: url("../assets/ui/timer_bg.svg"); }
+
+.xdz-hud-readout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xdz-hud-digits {
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.9), 0 0 10px rgba($xdz-crt-green, 0.5);
+}
+
+.xdz-timer-digits { font-size: 0.85rem; }
+
+.xdz-hud-input {
+  width: fit-content;
+  max-width: 60px;
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.9);
+
+  &:focus { outline: 1px solid rgba($xdz-crt-green, 0.6); }
+
+  // Hide native spinner arrows — the +/- buttons below cover that.
+  &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { appearance: none; margin: 0; }
+  appearance: textfield;
+}
+
+.xdz-hud-label,
+.xdz-hud-label-input {
+  @extend %xdz-display-text;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: rgba($xdz-crt-green, 0.75);
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.5);
+}
+
+.xdz-hud-label-input {
+  background: transparent;
+  border: none;
+  margin: 2px 0px;
+  padding: 2px 0px;
+  height: 1.2em;
+  line-height: 1;
+  text-align: center;
+  font-family: inherit;
+  white-space: nowrap;
+  field-sizing: content;
+  min-width: fit-content;
+  max-width: 70px;
+
+  &:focus { outline: 1px solid rgba($xdz-crt-green, 0.4); }
+}
+
+.xdz-hud-controls {
+  display: flex;
+  gap: 0.15rem;
+
+  button {
+    font-family: $xdz-font-mono;
+    font-weight: 700;
+    font-size: 0.6rem;
+    line-height: 1;
+    padding: 0.15rem 0.3rem;
+    background: rgba($xdz-crt-bg-panel, 0.85);
+    color: $xdz-crt-green;
+    border: 1px solid $xdz-crt-green-dim;
+    border-radius: 2px;
+    cursor: pointer;
+
+    &:hover { background: rgba($xdz-crt-green, 0.15); border-color: $xdz-crt-green; }
+  }
+}
+
+// "H: +3" / "E: -3" readout of the last modifier applied via the TN
+// right-click menu. Sits low on the badge, offset to a side so it doesn't
+// cover the digits.
+.xdz-hud-modifier {
+  position: absolute;
+  bottom: 3px;
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.8);
+}
+
+.xdz-hud-modifier-hard { right: -1rem; }
+.xdz-hud-modifier-easy { left: -1rem; }
+
+.xdz-timer-duration-input {
+  width: 2.6rem;
+  font-family: $xdz-font-mono;
+  font-size: 0.6rem;
+  text-align: center;
+  background: rgba($xdz-crt-bg-panel, 0.85);
+  color: $xdz-crt-green;
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: 2px;
+}
+
+// Flashes when a real-time countdown hits zero.
+.xdz-hud-alarm .xdz-hud-badge {
+  animation: xdz-hud-alarm-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes xdz-hud-alarm-pulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba($xdz-crt-red, 0.5)); }
+  50% { filter: drop-shadow(0 0 14px rgba($xdz-crt-red, 0.9)); }
+}
+
+.xdz-hud-alarm .xdz-hud-digits {
+  color: $xdz-crt-red;
+  text-shadow: 0 0 4px rgba($xdz-crt-red, 0.9), 0 0 10px rgba($xdz-crt-red, 0.6);
+}

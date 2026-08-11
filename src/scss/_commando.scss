@@ -212,20 +212,18 @@
     display: block;
     width: 100%;
     height: 1.5rem;
-    background: no-repeat bottom center / 100% 100%;
+    background: repeat-x left bottom / auto 100%;
   }
 
   // Scan sweep: a soft grey band slides left-to-right, so only a
   // moving window of the trace is visible at a time — fades in ahead,
   // fades out behind, like a trail rather than a hard draw-and-keep.
-  // This row holds only the 6 wave spans (spanning the full grid
-  // width) so the mask never touches the pip row below — pips must
-  // always stay fully visible.
+  // This row holds only the full-width wave span (spanning the full
+  // grid width) so the mask never touches the pip row below — pips
+  // must always stay fully visible.
   // Speed reacts to injuries via --xdz-ecg-speed (set inline per actor).
   .xdz-ecg-wave-row {
     grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
     position: relative;
     overflow: hidden;
     -webkit-mask-image: linear-gradient(
@@ -511,6 +509,7 @@ $xdz-commando-themes: (
   green: (color: $xdz-green-color, accent: $xdz-green-accent, suffix: 'green'),
   blue: (color: $xdz-blue-color, accent: $xdz-blue-accent, suffix: 'blue'),
   orange: (color: $xdz-orange-color, accent: $xdz-orange-accent, suffix: 'orange'),
+  white: (color: $xdz-white-color, accent: $xdz-white-accent, suffix: 'white'),
 );
 
 @each $name, $t in $xdz-commando-themes {
@@ -545,13 +544,15 @@ $xdz-commando-themes: (
       background: linear-gradient(90deg, transparent, rgba($bright, 0.95), transparent);
     }
 
+    // One full-width strip per injury level (1 = healthy, 6 = flatline) —
+    // the whole trace swaps wholesale instead of tiling 6 small cells.
     @for $i from 1 through 6 {
-      .xdz-ecg-wave-row .xdz-ecg-wave:nth-child(#{$i}) {
+      .xdz-ecg-wave-row.xdz-ecg-level-#{$i} .xdz-ecg-wave {
         background-image: url("../assets/ui/ecg-beat-#{$i}-#{$suf}.svg");
       }
     }
 
-    // KIA: every cell flatlines on beat 6, overriding the per-cell art above.
+    // KIA always flatlines, overriding whatever level is set above.
     .xdz-ecg-dead .xdz-ecg-wave-row .xdz-ecg-wave {
       background-image: url("../assets/ui/ecg-beat-6-#{$suf}.svg");
     }

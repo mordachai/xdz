@@ -1,0 +1,15 @@
+<div class="xdz-hud-root">
+  <div class="xdz-hud-badge">
+    <div class="xdz-hud-bg xdz-hud-bg-tn"></div>
+    <div class="xdz-hud-readout">
+      {{#if isGM}}
+        <input type="number" class="xdz-hud-input" name="tnValue" value="{{value}}" min="1">
+      {{else}}
+        <span class="xdz-hud-digits">{{value}}</span>
+      {{/if}}
+    </div>
+    {{#if modifier.type}}
+      <div class="xdz-hud-modifier xdz-hud-modifier-{{modifier.type}}">{{modifier.label}}</div>
+    {{/if}}
+  </div>
+</div>

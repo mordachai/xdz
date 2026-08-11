@@ -1,4 +1,4 @@
-<div class="xdz-chatcard xdz-chatcard-attack {{#if success}}xdz-chatcard-hit{{else}}xdz-chatcard-miss{{/if}}">
+<div class="xdz-chatcard xdz-chatcard-attack {{#if success}}xdz-chatcard-hit{{else}}xdz-chatcard-miss{{/if}}" data-theme="{{theme}}">
   <div class="xdz-chatcard-scanlines"></div>
   <div class="xdz-chatcard-header">
     <span class="xdz-chatcard-title">{{weapon.name}}</span>
@@ -6,7 +6,7 @@
     <span class="xdz-chatcard-tag{{#if spend}} xdz-chatcard-spend{{/if}}">{{label}}</span>
   </div>
   <div class="xdz-chatcard-body">
-    <div class="xdz-chatcard-line">{{localize 'XDZ.Roll.TargetNumber'}}<strong>{{tn}}</strong></div>
+    <div class="xdz-chatcard-line xdz-chatcard-equation">$r'{{die}}'+${{bonusLabel}}'{{bonus}}' &gt;= {{tn}}?</div>
 
     <div class="xdz-chatcard-readout">
       <span class="xdz-chatcard-digits">{{total}}</span>

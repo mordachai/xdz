@@ -1,0 +1,38 @@
+<div class="xdz-hud-root">
+  <div class="xdz-hud-badge">
+    <div class="xdz-hud-bg xdz-hud-bg-timer"></div>
+    <div class="xdz-hud-readout">
+      {{#if (eq mode 'rounds')}}
+        {{#if isGM}}
+          <input type="number" class="xdz-hud-input" name="rounds" value="{{rounds}}" min="0">
+        {{else}}
+          <span class="xdz-hud-digits">{{rounds}}</span>
+        {{/if}}
+      {{else}}
+        <span class="xdz-hud-digits xdz-timer-digits">{{clock.remainingText}}</span>
+      {{/if}}
+    </div>
+  </div>
+  {{#if isGM}}
+    <input type="text" class="xdz-hud-label-input" name="name" value="{{label}}" title="{{localize 'XDZ.Hud.Rename'}}">
+  {{else}}
+    <div class="xdz-hud-label">{{label}}</div>
+  {{/if}}
+  {{#if isGM}}
+    <div class="xdz-hud-controls">
+      {{#if (eq mode 'rounds')}}
+        <button type="button" data-action="adjustRounds" data-delta="-1" title="{{localize 'XDZ.Hud.AdjustMinus1'}}">-</button>
+        <button type="button" data-action="adjustRounds" data-delta="1" title="{{localize 'XDZ.Hud.AdjustPlus1'}}">+</button>
+      {{else}}
+        {{#unless clock.running}}
+          <input type="text" class="xdz-timer-duration-input" value="{{clock.durationText}}" title="{{localize 'XDZ.Hud.SetDuration'}}">
+        {{/unless}}
+        {{#if clock.running}}
+          <button type="button" data-action="pause" title="{{localize 'XDZ.Hud.Pause'}}"><i class="fa-solid fa-pause"></i></button>
+        {{else}}
+          <button type="button" data-action="start" title="{{localize 'XDZ.Hud.Start'}}"><i class="fa-solid fa-play"></i></button>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

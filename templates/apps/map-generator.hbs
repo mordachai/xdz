@@ -1,0 +1,24 @@
+<div class="xdz-map-generator-body">
+  <fieldset>
+    <legend>{{localize "XDZ.MapGenerator.Legend"}}</legend>
+
+    <label>{{localize "XDZ.MapGenerator.Style"}}</label>
+    <div class="xdz-map-generator-row">
+      <label><input type="radio" name="style" value="color" checked> {{localize "XDZ.MapGenerator.Color"}}</label>
+      <label><input type="radio" name="style" value="bw"> {{localize "XDZ.MapGenerator.BW"}}</label>
+    </div>
+
+    <label>{{localize "XDZ.MapGenerator.Type"}}</label>
+    <div class="xdz-map-generator-row">
+      <label><input type="radio" name="type" value="ship" checked> {{localize "XDZ.MapGenerator.Starship"}}</label>
+      <label><input type="radio" name="type" value="colony"> {{localize "XDZ.MapGenerator.Colony"}}</label>
+    </div>
+
+    <label for="xdz-map-generator-name">{{localize "XDZ.MapGenerator.SceneName"}}</label>
+    <input type="text" id="xdz-map-generator-name" name="name" value="{{name}}">
+  </fieldset>
+
+  <button type="submit">
+    <i class="fa-solid fa-map"></i> {{localize "XDZ.MapGenerator.Generate"}}
+  </button>
+</div>
