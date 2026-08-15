@@ -63,7 +63,7 @@ jobs:
       - name: Zip Files
         if: steps.check_tag.outputs.exists == 'false'
         run: |
-          zip -r system.zip system.json assets css lang module templates
+          zip -r system.zip system.json assets css lang module templates packs -x 'packs/_source/*' 'packs/*/LOCK' 'packs/*/LOG' 'packs/*/LOG.old'
 
       # 5. Create Release
       - name: Create Release
