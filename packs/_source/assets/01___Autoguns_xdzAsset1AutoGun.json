@@ -1,15 +1,15 @@
 {
-  "name": "Drop Crate",
+  "name": "01 - Autoguns",
   "type": "gear",
-  "_id": "xdzAsset3DropCrt",
-  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "_id": "xdzAsset1AutoGun",
+  "img": "/icons/weapons/guns/gun-chain-gatling-heavy.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 3. Replenish squad ammo and medical supplies."
+    "description": "Place in a Location. The Autocannon will kill 1d8 Xenos there for 1d8 Rounds."
   },
   "effects": [],
   "folder": null,
-  "sort": 300000,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },
@@ -19,11 +19,11 @@
     "systemId": "xdz",
     "systemVersion": "1.0.0",
     "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "modifiedTime": 1786898359162,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!xdzAsset3DropCrt"
+  "_key": "!items!xdzAsset1AutoGun"
 }

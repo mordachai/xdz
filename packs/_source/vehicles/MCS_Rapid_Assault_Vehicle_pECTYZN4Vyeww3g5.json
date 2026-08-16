@@ -10,37 +10,55 @@
       {
         "title": "Armored Crew Compartment and Assault Ramp",
         "description": "Crew compartment holds 10 troops in roll-protective padded seats. Also includes helmet-camera monitor bank for at-vehicle command. Vehicle still operable if destroyed, but cannot carry troops.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": ""
       },
       {
         "title": "Main Plasma Cannon",
         "description": "Fires slugs of super-heated uranium, 4D12, takes 1d4 rounds to reload.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": "4d12"
       },
       {
         "title": "Dual Chain Guns",
         "description": "Inflict 1D8 on up to 4 targets.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": "1d8"
       },
       {
         "title": "Cockpit",
         "description": "Room for pilot and gunner. If destroyed, vehicle is not operable.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": ""
       },
       {
         "title": "Drone Nest",
         "description": "2 far-scouting combat drones with advanced optics and comm systems. Drone signals cannot be processed if crew compartment destroyed.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": ""
       },
       {
         "title": "Storage Compartment",
         "description": "Holds 6 canisters of nerve gas, 2 remote autocannons, spare troop weapons, 8 med kits, and 1 short range escape cycle.",
-        "hp": { "value": 5, "max": 5 },
+        "hp": {
+          "value": 5,
+          "max": 5
+        },
         "damage": ""
       }
     ]

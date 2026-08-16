@@ -1,15 +1,15 @@
 {
-  "name": "Loader",
+  "name": "12 - APC",
   "type": "gear",
-  "_id": "xdzAssetbLoaderx",
-  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "_id": "xdzAssetcAPCxxxx",
+  "img": "/icons/equipment/head/helm-gas-mask.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 11. A cargo moving machine, can be used in all kinds of creative, destructive ways."
+    "description": "Move 8 Commandos to any Location instantly, then too damaged to use."
   },
   "effects": [],
   "folder": null,
-  "sort": 1100000,
+  "sort": 1200000,
   "ownership": {
     "default": 0
   },
@@ -19,11 +19,11 @@
     "systemId": "xdz",
     "systemVersion": "1.0.0",
     "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "modifiedTime": 1786899523951,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!xdzAssetbLoaderx"
+  "_key": "!items!xdzAssetcAPCxxxx"
 }

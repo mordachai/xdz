@@ -9,7 +9,7 @@
     "destroyDie": "1d6",
     "upgradeDie": "1d8",
     "rules": "",
-    "description": "Shorts out any electronic devices or XENOS with two HEARTS or less.",
+    "description": "Shorts out any electronic devices or XENOS with 20 HP or less.",
     "ammoLabel": "Grenades",
     "ammoDescription": "",
     "ammo": {

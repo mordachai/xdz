@@ -1,15 +1,15 @@
 {
-  "name": "Autoguns",
+  "name": "02 - Barricade",
   "type": "gear",
-  "_id": "xdzAsset1AutoGun",
-  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "_id": "xdzAsset2Barrcad",
+  "img": "/icons/environment/settlement/rubble-scrap-refuse-wood-metal.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 1. Place in a Location. The Autocannon will kill 1d8 Xenos there for 1d8 Rounds."
+    "description": "Place where two Locations meet to permanently block that door."
   },
   "effects": [],
   "folder": null,
-  "sort": 100000,
+  "sort": 200000,
   "ownership": {
     "default": 0
   },
@@ -19,11 +19,11 @@
     "systemId": "xdz",
     "systemVersion": "1.0.0",
     "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "modifiedTime": 1786899918014,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!xdzAsset1AutoGun"
+  "_key": "!items!xdzAsset2Barrcad"
 }

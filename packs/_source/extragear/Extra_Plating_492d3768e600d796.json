@@ -5,7 +5,7 @@
   "img": "icons/containers/boxes/crate-tech-silver.webp",
   "system": {
     "quantity": 1,
-    "description": "Add a HEART (increase max Injuries by 1)."
+    "description": "Add 10 HP (increase max Injuries by 1)."
   },
   "effects": [],
   "folder": null,

@@ -1,11 +1,11 @@
 {
-  "name": "Hold",
+  "name": "10 - Hold",
   "type": "gear",
   "_id": "xdzAssetaHoldxxx",
-  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "img": "/icons/sundries/survival/tape-duct.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 10. A brief rest. Replenish all ammo and heal all Injuries."
+    "description": "A brief rest. Replenish all ammo and heal all Injuries."
   },
   "effects": [],
   "folder": null,
@@ -19,7 +19,7 @@
     "systemId": "xdz",
     "systemVersion": "1.0.0",
     "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "modifiedTime": 1786899157221,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,

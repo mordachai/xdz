@@ -1,15 +1,15 @@
 {
-  "name": "Med Kits",
+  "name": "03 - Drop Crate",
   "type": "gear",
-  "_id": "xdzAsset4MedKits",
+  "_id": "xdzAsset3DropCrt",
   "img": "icons/containers/boxes/crate-modern-open.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 4. All Commandos heal 2 Injuries."
+    "description": "Replenish squad ammo and medical supplies."
   },
   "effects": [],
   "folder": null,
-  "sort": 400000,
+  "sort": 300000,
   "ownership": {
     "default": 0
   },
@@ -25,5 +25,5 @@
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!xdzAsset4MedKits"
+  "_key": "!items!xdzAsset3DropCrt"
 }

@@ -1,15 +1,15 @@
 {
-  "name": "Cover",
+  "name": "04 - Med Kits",
   "type": "gear",
-  "_id": "xdzAsset9Coverxx",
-  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "_id": "xdzAsset4MedKits",
+  "img": "/icons/tools/medical/medkit-white-red.webp",
   "system": {
     "quantity": 1,
-    "description": "Roll 9. Place in a Location. Xenos cannot Ambush there."
+    "description": "All Commandos heal 2 Injuries."
   },
   "effects": [],
   "folder": null,
-  "sort": 900000,
+  "sort": 400000,
   "ownership": {
     "default": 0
   },
@@ -19,11 +19,11 @@
     "systemId": "xdz",
     "systemVersion": "1.0.0",
     "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "modifiedTime": 1786898472892,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!xdzAsset9Coverxx"
+  "_key": "!items!xdzAsset4MedKits"
 }

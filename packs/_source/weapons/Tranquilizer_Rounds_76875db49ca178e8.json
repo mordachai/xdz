@@ -9,7 +9,7 @@
     "destroyDie": "1d4",
     "upgradeDie": "1d6",
     "rules": "",
-    "description": "Non-lethal. Puts a target with two HEARTS or less to sleep for 1D4 ROUNDS.",
+    "description": "Non-lethal. Puts a target with 20 HP or less to sleep for 1D4 ROUNDS.",
     "ammoLabel": "Rounds",
     "ammoDescription": "",
     "ammo": {

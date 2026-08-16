@@ -10,25 +10,37 @@
       {
         "title": "Operator Cab",
         "description": "A single pilot operates this machine from a standing harness. Arm and feet controls are mimicked by the truck, giving it very versatile capability. The operator cab does NOT feature a canopy. If this CHUNK is destroyed, the truck will not function.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Walker Legs",
         "description": "4 pneumatic legs move the truck in all kinds of ways including spinning, climbing, and bracing in place. The truck is very slow, moving NEAR per TURN maximum. If this CHUNK is destroyed, all functions continue besides mobility.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Lift Arms",
         "description": "Hydraulic carbon steel lift blades are 6 feet long, can be moved in many ways to grab, lift or load all kinds of objects. Maximum lift weight is 4 tons.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Engine",
         "description": "The truck has a diesel hybrid power plant. It stores enough fuel for 1 hour of operation. If destroyed, the truck becomes immobilized. If destroyed, roll 1D6, on a 6 the engine explodes destroying the lift truck entirely, and its operator.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       }
     ]

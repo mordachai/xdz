@@ -10,37 +10,55 @@
       {
         "title": "Twin VTOL Wing Rotors",
         "description": "Supersonic flight speed, Hover capability, Extreme maneuverability even indoors. Can sustain hover or flight at DOUBLE payload, but only for 1D4 ROUNDS.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Reflective Panel Composite Skin",
         "description": "Radar-invisible, All rolls to detect the jet visually are HARD. Beyond 100 yards the jet is detectable only by heat-sensitive equipment.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Cockpit and Avionics Cluster",
         "description": "The STRIKE is not operable if this CHUNK is destroyed. If this CHUNK withstands more than 5 damage, all piloting rolls are HARD.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Smart Missiles",
         "description": "A pod of target-seeking explosives. 24 count, d12 vehicle damage each. Can be fired in volleys up to 6. If this CHUNK is destroyed it explodes, destroying 2 other CHUNKS.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": "1d12"
       },
       {
         "title": "Payload Bay",
         "description": "Capable of holding one MCS Rapid Assault Vehicle and included troops. Land and deploy any bay contents in 1D4 ROUNDS before liftoff.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": ""
       },
       {
         "title": "Twin Flechete Anti-Personnel Pods",
         "description": "Shred any targets within a NEAR radius of the vehicle; 4D12 damage is inflicted in all directions. This damage can be halved with a DEX roll.",
-        "hp": { "value": 10, "max": 10 },
+        "hp": {
+          "value": 10,
+          "max": 10
+        },
         "damage": "4d12"
       }
     ]

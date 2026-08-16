@@ -9,7 +9,7 @@
     "destroyDie": "1d6",
     "upgradeDie": "1d8",
     "rules": "",
-    "description": "Spend 1 ROUND aiming. On a hit, reduce the target's HEARTS by 2.",
+    "description": "Spend 1 ROUND aiming. On a hit, reduce the target's HP by 20.",
     "ammoLabel": "Rounds",
     "ammoDescription": "",
     "ammo": {

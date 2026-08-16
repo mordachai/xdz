@@ -9,7 +9,7 @@
     "destroyDie": "1d6",
     "upgradeDie": "1d8",
     "rules": "",
-    "description": "Deploy two automated guns once per MISSION. Each has 1 HEART and 1D6 bursts; each burst destroys one HEART of a XENO.",
+    "description": "Deploy two automated guns once per MISSION. Each has 10 HP and 1D6 bursts; each burst destroys 10 HP of a XENO.",
     "ammoLabel": "Bursts",
     "ammoDescription": "",
     "ammo": {
