@@ -1,0 +1,29 @@
+{
+  "name": "Pneumatics",
+  "type": "gear",
+  "_id": "xdzAsset7Pneumtc",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll 7. Excavate a tunnel between any 2 Locations."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 700000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xdzAsset7Pneumtc"
+}

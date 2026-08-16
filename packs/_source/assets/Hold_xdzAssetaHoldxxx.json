@@ -1,0 +1,29 @@
+{
+  "name": "Hold",
+  "type": "gear",
+  "_id": "xdzAssetaHoldxxx",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll 10. A brief rest. Replenish all ammo and heal all Injuries."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1000000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xdzAssetaHoldxxx"
+}

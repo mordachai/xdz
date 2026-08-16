@@ -1,0 +1,29 @@
+{
+  "name": "Hailstorm Module",
+  "type": "gear",
+  "_id": "d1cd9b5fe43ab14e",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "On a modified 15+ Weapons roll, roll again to attack a second target."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1400000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!d1cd9b5fe43ab14e"
+}

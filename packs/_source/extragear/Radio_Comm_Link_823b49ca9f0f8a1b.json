@@ -1,0 +1,29 @@
+{
+  "name": "Radio Comm-Link",
+  "type": "gear",
+  "_id": "823b49ca9f0f8a1b",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Once per LOCATION, make a Systems roll to call for (or find) a supply drop."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!823b49ca9f0f8a1b"
+}

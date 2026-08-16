@@ -1,0 +1,29 @@
+{
+  "name": "Med Kits",
+  "type": "gear",
+  "_id": "xdzAsset4MedKits",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll 4. All Commandos heal 2 Injuries."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 400000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xdzAsset4MedKits"
+}

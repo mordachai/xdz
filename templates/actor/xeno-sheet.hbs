@@ -1,44 +1,80 @@
-<div class="xdz-sheet xdz-xeno-sheet">
+<div class="xdz-sheet xdz-xeno-sheet" data-theme="{{theme}}">
 
-  <header class="xdz-header xdz-header-compact">
-    <div class="xdz-header-stripes xdz-header-stripes-left"></div>
-    <div class="xdz-logo xdz-logo-compact">
-      <span class="xdz-logo-xeno">XENO</span>
+  <section class="xdz-xeno-layout">
+
+    <div class="xdz-xeno-main">
+      <div class="xdz-field-row xdz-xeno-identity-row">
+        <label class="xdz-field">
+          <span class="xdz-field-label">{{localize 'XDZ.Actor.Name'}}</span>
+          <input type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}}>
+        </label>
+
+        <label class="xdz-field xdz-field-narrow">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Threat'}}</span>
+          <input type="number" name="system.threat" value="{{system.threat}}" min="0" {{#unless editable}}disabled{{/unless}}>
+        </label>
+      </div>
+
+      <div class="xdz-field-row xdz-xeno-identity-row">
+        <label class="xdz-field">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Type'}}</span>
+          <select name="system.xenoType" {{#unless editable}}disabled{{/unless}}>
+            {{#each xenoTypeOptions}}
+              <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+        </label>
+
+        <div class="xdz-field xdz-xeno-mode">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Mode'}}</span>
+          <button type="button" class="xdz-mode-toggle xdz-mode-{{system.mode}}" data-action="toggleMode">
+            {{localize modeLabel}}
+          </button>
+        </div>
+      </div>
+
+      {{#if isCustomType}}
+        <div class="xdz-field-row xdz-xeno-identity-row">
+          <label class="xdz-field">
+            <span class="xdz-field-label">{{localize 'XDZ.Xeno.TypeCustomLabel'}}</span>
+            <input type="text" name="system.xenoTypeCustom" value="{{system.xenoTypeCustom}}" placeholder="{{localize 'XDZ.Xeno.TypeCustomPlaceholder'}}" {{#unless editable}}disabled{{/unless}}>
+          </label>
+        </div>
+      {{/if}}
+
+      <label class="xdz-field xdz-field-notes">
+        <span class="xdz-field-label">{{localize 'XDZ.Xeno.Notes'}}</span>
+        <textarea name="system.notes" rows="3" {{#unless editable}}disabled{{/unless}}>{{system.notes}}</textarea>
+      </label>
+
+      <section class="xdz-briefing">
+        <div class="xdz-briefing-title">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          {{localize 'XDZ.Xeno.BriefingTitle'}}
+        </div>
+
+        {{#each briefing.steps}}
+          <div class="xdz-briefing-step">
+            <span class="xdz-briefing-num">{{num}}</span>
+            <p class="xdz-briefing-text">{{{localize key}}}</p>
+          </div>
+          {{#unless @last}}<div class="xdz-chevron-divider"></div>{{/unless}}
+        {{/each}}
+
+        <ul class="xdz-briefing-rules">
+          {{#each briefing.ruleKeys}}
+            <li>{{{localize this}}}</li>
+          {{/each}}
+        </ul>
+      </section>
     </div>
-    <div class="xdz-header-stripes xdz-header-stripes-right"></div>
-  </header>
 
-  <section class="xdz-xeno-body">
-    <div class="xdz-portrait-frame xdz-portrait-frame-small">
-      <img class="xdz-portrait" src="{{actor.img}}" data-action="onEditImage" data-edit="img" alt="{{actor.name}}">
-    </div>
-
-    <div class="xdz-xeno-fields">
-      <label class="xdz-field">
-        <span class="xdz-field-label">{{localize 'XDZ.Actor.Name'}}</span>
-        <input type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}}>
-      </label>
-      <label class="xdz-field">
-        <span class="xdz-field-label">{{localize 'XDZ.Xeno.Type'}}</span>
-        <input type="text" name="system.xenoType" value="{{system.xenoType}}" placeholder="{{localize 'XDZ.Xeno.TypePlaceholder'}}" {{#unless editable}}disabled{{/unless}}>
-      </label>
-      <label class="xdz-field">
-        <span class="xdz-field-label">{{localize 'XDZ.Xeno.Threat'}}</span>
-        <input type="number" name="system.threat" value="{{system.threat}}" min="0" {{#unless editable}}disabled{{/unless}}>
-      </label>
-
-      <div class="xdz-xeno-mode">
-        <span class="xdz-field-label">{{localize 'XDZ.Xeno.Mode'}}</span>
-        <button type="button" class="xdz-mode-toggle xdz-mode-{{system.mode}}" data-action="toggleMode">
-          {{localize modeLabel}}
-        </button>
+    <div class="xdz-xeno-portrait-col">
+      <div class="xdz-portrait-frame xdz-portrait-frame-tall">
+        <img class="xdz-portrait" src="{{actor.img}}" data-action="onEditImage" data-edit="img" alt="{{actor.name}}">
       </div>
     </div>
 
-    <label class="xdz-field xdz-field-notes">
-      <span class="xdz-field-label">{{localize 'XDZ.Xeno.Notes'}}</span>
-      <textarea name="system.notes" rows="4" {{#unless editable}}disabled{{/unless}}>{{system.notes}}</textarea>
-    </label>
   </section>
 
 </div>

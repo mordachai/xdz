@@ -1,24 +1,101 @@
+// Xeno sheet — Nostromo terminal / motion-tracker CRT housing, same "old
+// screen" look as the chat cards (see _chat.scss), themed via the "Sheet
+// Theme" world setting (xdz.sheetTheme: green/blue/orange/white).
 .xdz-xeno-sheet {
-  .xdz-header-compact { padding-bottom: 0.5rem; }
+  background: radial-gradient(ellipse at 50% 0%, $xdz-crt-bg-panel 0%, $xdz-crt-bg 70%);
+  color: $xdz-crt-green;
+  box-shadow: inset 0 0 30px rgba(black, 0.6);
+
+  .xdz-field-label { color: rgba($xdz-crt-green, 0.75); }
+
+  input, textarea, select {
+    background: rgba(black, 0.25);
+    color: $xdz-crt-green;
+    border-color: rgba($xdz-crt-green, 0.4);
+
+    &:focus { border-color: $xdz-crt-green; box-shadow: 0 0 4px rgba($xdz-crt-green, 0.5); }
+  }
+
+  select:hover { border-color: $xdz-crt-green; box-shadow: 0 0 4px rgba($xdz-crt-green, 0.5); }
+
+  select option {
+    background: $xdz-crt-bg-panel;
+    color: $xdz-crt-green;
+
+    &:hover, &:checked, &:focus {
+      background: $xdz-crt-green;
+      color: #000;
+    }
+  }
 }
 
-.xdz-xeno-body {
+// Left column (fields/notes/briefing) | right column (full-height portrait).
+// No fixed height/scroll — the window grows to fit content (see position:
+// { height: 'auto' } on XenoSheet).
+.xdz-xeno-layout {
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  gap: 0.75rem 1rem;
+  grid-template-columns: 1.3fr 0.8fr;
+  gap: 1rem;
 }
 
-.xdz-xeno-fields {
+.xdz-xeno-main {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  min-width: 0;
+  gap: 0.8rem;
 }
 
-.xdz-field-notes { grid-column: 1 / -1; }
+// Name+Threat / Type+Mode rows — undecorated inline fields (label beside a
+// borderless, underlined input), same treatment as the Commando sheet's
+// identity block instead of the sheet's default boxed inputs.
+.xdz-xeno-identity-row {
+  gap: 1rem;
+
+  .xdz-field {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0;
+  }
+
+  .xdz-field-label { flex: 0 0 auto; }
+
+  input, select {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba($xdz-crt-green, 0.4);
+    border-radius: 0;
+    padding: 0 0.1rem 0.05rem;
+
+    &:focus { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+  }
+
+  select:hover { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+}
+
+.xdz-field-narrow {
+  flex: 0 0 5rem;
+
+  input { text-align: center; }
+}
+
+.xdz-xeno-sheet .xdz-portrait-frame {
+  background: rgba(black, 0.4);
+  border-color: $xdz-crt-green-dim;
+  box-shadow: 0 0 8px rgba($xdz-crt-green, 0.2);
+}
+
+.xdz-portrait-frame-tall {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
 
 .xdz-xeno-mode {
-  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
 }
@@ -27,13 +104,188 @@
   @extend %xdz-display-text;
   font-weight: 800;
   letter-spacing: 0.08em;
-  border: 2px solid $xdz-green-color;
+  border: 2px solid $xdz-crt-green-dim;
   border-radius: 3px;
   padding: 0.2rem 0.75rem;
   cursor: pointer;
-  background: $xdz-steel;
-  color: $xdz-white;
+  background: rgba(black, 0.4);
+  color: $xdz-crt-green;
 
-  &.xdz-mode-hide { background: $xdz-steel-dark; }
-  &.xdz-mode-seek { background: $xdz-red; border-color: $xdz-red-dark; }
+  &.xdz-mode-hide { color: rgba($xdz-crt-green, 0.6); }
+  &.xdz-mode-seek {
+    background: rgba($xdz-crt-red, 0.15);
+    border-color: $xdz-crt-red;
+    color: $xdz-crt-red;
+    text-shadow: 0 0 6px rgba($xdz-crt-red, 0.7);
+  }
+}
+
+// Military-briefing style rules reminder, below Notes — same CRT panel
+// treatment as a chat card's body, amber accent to read as a warning readout.
+.xdz-briefing {
+  margin-top: 0.5rem;
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: $xdz-radius;
+  padding: 0.5rem 0.65rem 0.65rem;
+  background: rgba(black, 0.3);
+}
+
+.xdz-briefing-title {
+  @extend %xdz-display-text;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 6px rgba($xdz-crt-green, 0.6);
+  margin-bottom: 1rem;
+
+  i { color: $xdz-crt-green; }
+}
+
+.xdz-briefing-step {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.xdz-briefing-num {
+  @extend %xdz-display-text;
+  flex: 0 0 auto;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: $xdz-crt-bg;
+  background: $xdz-crt-green;
+  box-shadow: 0 0 6px rgba($xdz-crt-green, 0.6);
+  border-radius: 50%;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xdz-briefing-text {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: rgba($xdz-crt-green, 0.9);
+
+  strong {
+    background: $xdz-crt-green;
+    color: #000;
+    padding: 1px 4px;
+    line-height: 1;
+  }
+}
+
+// Hazard-tape chevron bar between steps — same repeating-dash geometry as
+// .xdz-header-stripes, recolored to the active theme's phosphor color with
+// black chevrons cut through it.
+.xdz-chevron-divider {
+  height: 0.4rem;
+  margin: 0.35rem 0;
+  background-color: $xdz-crt-green;
+  background-image: repeating-linear-gradient(
+    100deg,
+    transparent 0, transparent 5px,
+    #000 5px, #000 11px
+  );
+}
+
+.xdz-briefing-rules {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  li {
+    position: relative;
+    padding-left: 0.9rem;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    color: rgba($xdz-crt-green, 0.9);
+
+    &::before {
+      content: '\2022';
+      position: absolute;
+      left: 0;
+      color: $xdz-crt-green;
+    }
+
+    strong {
+      background: $xdz-crt-green;
+      color: #000;
+      padding: 1px 4px;
+      line-height: 1;
+    }
+  }
+}
+
+// Blue/orange/white readout overrides — green above stays the default look.
+$xdz-xeno-themes: (
+  blue: (main: $xdz-crt-blue, dim: $xdz-crt-blue-dim),
+  orange: (main: $xdz-crt-orange, dim: $xdz-crt-orange-dim),
+  white: (main: $xdz-crt-white, dim: $xdz-crt-white-dim),
+);
+
+@each $name, $t in $xdz-xeno-themes {
+  $c: map-get($t, main);
+  $d: map-get($t, dim);
+
+  .xdz-xeno-sheet[data-theme="#{$name}"] {
+    background: radial-gradient(ellipse at 50% 0%, mix($c, $xdz-crt-bg, 15%) 0%, $xdz-crt-bg 70%);
+    color: $c;
+
+    .xdz-field-label { color: rgba($c, 0.75); }
+
+    input, textarea, select {
+      color: $c;
+      border-color: rgba($c, 0.4);
+      &:focus { border-color: $c; box-shadow: 0 0 4px rgba($c, 0.5); }
+    }
+
+    select:hover { border-color: $c; box-shadow: 0 0 4px rgba($c, 0.5); }
+
+    select option {
+      background: $xdz-crt-bg-panel;
+      color: $c;
+
+      &:hover, &:checked, &:focus {
+        background: $c;
+        color: #000;
+      }
+    }
+
+    .xdz-xeno-identity-row input,
+    .xdz-xeno-identity-row select {
+      border-bottom-color: rgba($c, 0.4);
+      font-size: 1.2rem;
+      &:focus { border-bottom-color: $c; }
+      &:hover { border-bottom-color: $c; }
+    }
+
+    .xdz-portrait-frame { border-color: $d; box-shadow: 0 0 8px rgba($c, 0.2); }
+
+    .xdz-mode-toggle {
+      border-color: $d;
+      color: $c;
+      &.xdz-mode-hide { color: rgba($c, 0.6); }
+    }
+
+    .xdz-briefing { border-color: $d; }
+    .xdz-briefing-title { color: $c; text-shadow: 0 0 6px rgba($c, 0.6); i { color: $c; } }
+    .xdz-briefing-num { background: $c; box-shadow: 0 0 6px rgba($c, 0.6); }
+    .xdz-briefing-text { color: rgba($c, 0.9); strong { background: $c; } }
+    .xdz-chevron-divider { background-color: $c; }
+    .xdz-briefing-rules li {
+      color: rgba($c, 0.9);
+      &::before { color: $c; }
+      strong { background: $c; }
+    }
+  }
 }

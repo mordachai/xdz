@@ -1,0 +1,29 @@
+{
+  "name": "Extra Plating",
+  "type": "gear",
+  "_id": "492d3768e600d796",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Add a HEART (increase max Injuries by 1)."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!492d3768e600d796"
+}

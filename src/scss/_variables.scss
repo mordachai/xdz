@@ -31,3 +31,19 @@ $xdz-font-mono: 'Consolas', 'Courier New', monospace;
 
 $xdz-radius: 4px;
 $xdz-border: 2px solid $xdz-green-color;
+
+// Nostromo terminal / motion-tracker CRT palette — black housing, phosphor
+// text, shared by chat cards and any other "old screen" themed surface
+// (Xeno sheet). Settable via the "Sheet Theme" world setting (xdz.sheetTheme).
+$xdz-crt-bg: #030d08;
+$xdz-crt-bg-panel: #071f13;
+$xdz-crt-green: #4dff8a;
+$xdz-crt-green-dim: #1f8a4c;
+$xdz-crt-amber: #ffb000;
+$xdz-crt-red: #ff4b3e;
+$xdz-crt-blue: #4dc3ff;
+$xdz-crt-blue-dim: #1f6f8a;
+$xdz-crt-orange: #ffa64d;
+$xdz-crt-orange-dim: #8a551f;
+$xdz-crt-white: #f2f5f2;
+$xdz-crt-white-dim: #8a938a;

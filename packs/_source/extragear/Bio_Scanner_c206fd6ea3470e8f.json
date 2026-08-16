@@ -1,0 +1,29 @@
+{
+  "name": "Bio-Scanner",
+  "type": "gear",
+  "_id": "c206fd6ea3470e8f",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Scan any deceased target. Roll Easy against that enemy type."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4200000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!c206fd6ea3470e8f"
+}

@@ -1,5 +1,13 @@
 import { resolveEntry } from '../helpers/mission-rolls.mjs';
 import { getMissionJournal, appendJournalPage } from '../helpers/journal-log.mjs';
+import { spawnBreeder, spawnRogueCommandos, spawnSwarm } from './spawn-xenos.mjs';
+
+// Escalations that spawn actors on the scene, keyed by CONFIG.XDZ.escalations entry id.
+const SPAWN_HANDLERS = {
+  theBreeder: spawnBreeder,
+  rogueCommandos: spawnRogueCommandos,
+  swarm: spawnSwarm,
+};
 
 /**
  * Rolls 1D20 on XDZ.escalations (KB "mission ESCALATIONS", rolled once per
@@ -44,7 +52,9 @@ export async function rollEscalation() {
   const journal = await getMissionJournal();
   await appendJournalPage(
     journal,
-    `ESCALATION ${resolved.num} — ${resolved.label.toUpperCase()} — ${timestamp}`,
+    `${game.i18n.localize('XDZ.Escalation.Title')} ${resolved.num} — ${resolved.label.toUpperCase()} — ${timestamp}`,
     `<div class="xdz xdz-journal-sheet xdz-journal-escalation">${pageBody}</div>`,
   );
+
+  await SPAWN_HANDLERS[entry.id]?.();
 }

@@ -42,7 +42,7 @@
     <div class="xdz-field-row">
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.AmmoLabel'}}</span>
-        <input type="text" name="system.ammoLabel" value="{{system.ammoLabel}}" placeholder="Ammo / Fuel" {{#unless editable}}disabled{{/unless}}>
+        <input type="text" name="system.ammoLabel" value="{{system.ammoLabel}}" placeholder="{{localize 'XDZ.Weapon.AmmoLabelPlaceholder'}}" {{#unless editable}}disabled{{/unless}}>
       </label>
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.UpgradeDie'}}</span>
@@ -66,11 +66,11 @@
     <div class="xdz-field-row xdz-field-row-baseline">
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryLabel'}}</span>
-        <input type="text" name="system.secondary.label" value="{{system.secondary.label}}" placeholder="Grenade / Gyro" {{#unless editable}}disabled{{/unless}}>
+        <input type="text" name="system.secondary.label" value="{{system.secondary.label}}" placeholder="{{localize 'XDZ.Weapon.SecondaryLabelPlaceholder'}}" {{#unless editable}}disabled{{/unless}}>
       </label>
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryDie'}}</span>
-        <input type="text" name="system.secondary.die" value="{{system.secondary.die}}" placeholder="1d6 (blank = no roll)" {{#unless editable}}disabled{{/unless}}>
+        <input type="text" name="system.secondary.die" value="{{system.secondary.die}}" placeholder="{{localize 'XDZ.Weapon.SecondaryDiePlaceholder'}}" {{#unless editable}}disabled{{/unless}}>
       </label>
       <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryTrack'}}</span>

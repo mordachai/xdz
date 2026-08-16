@@ -1,0 +1,101 @@
+<div class="xdz-sheet xdz-xeno-sheet xdz-vehicle-sheet" data-theme="{{theme}}">
+
+  <section class="xdz-vehicle-layout">
+
+    <div class="xdz-field-row xdz-xeno-identity-row">
+      <div class="xdz-portrait-frame xdz-vehicle-portrait">
+        <img class="xdz-portrait" src="{{actor.img}}" data-action="onEditImage" data-edit="img" alt="{{actor.name}}">
+      </div>
+
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Actor.Name'}}</span>
+        <input type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Vehicle.Type'}}</span>
+        <input type="text" name="system.vehicleType" value="{{system.vehicleType}}" {{#unless editable}}disabled{{/unless}}>
+      </label>
+    </div>
+
+    <label class="xdz-field xdz-field-notes">
+      <span class="xdz-field-label">{{localize 'XDZ.Vehicle.Description'}}</span>
+      <textarea class="xdz-vehicle-description" name="system.description" rows="3" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+    </label>
+
+    <section class="xdz-chunks">
+      <div class="xdz-chunks-header">
+        <span class="xdz-field-label">{{localize 'XDZ.Vehicle.Chunks'}}</span>
+        {{#if editable}}
+          <div class="xdz-chunks-header-actions">
+            {{#if chunkEditMode}}
+              <button type="button" class="xdz-chunk-add" data-action="chunkCreate">
+                <i class="fa-solid fa-plus"></i> {{localize 'XDZ.Vehicle.AddChunk'}}
+              </button>
+            {{/if}}
+            <button type="button" class="xdz-chunk-edit-toggle{{#if chunkEditMode}} xdz-active{{/if}}" data-action="toggleChunkEdit">
+              <i class="fa-solid fa-pen"></i> {{#if chunkEditMode}}{{localize 'XDZ.Vehicle.Done'}}{{else}}{{localize 'XDZ.Vehicle.Edit'}}{{/if}}
+            </button>
+          </div>
+        {{/if}}
+      </div>
+
+      <ul class="xdz-chunk-list">
+        {{#each system.chunks as |chunk index|}}
+          <li class="xdz-chunk-row" data-chunk-index="{{index}}">
+            {{! Row 1: title + HP/DMG column captions }}
+            {{#if ../chunkEditMode}}
+              <input type="text" class="xdz-chunk-title" name="system.chunks.{{index}}.title"
+                     value="{{chunk.title}}" placeholder="{{localize 'XDZ.Vehicle.ChunkTitle'}}">
+            {{else}}
+              <button type="button" class="xdz-chunk-title-link" data-action="rollChunkDamage" title="{{localize 'XDZ.Vehicle.RollDamage'}}">
+                {{chunk.title}}
+              </button>
+            {{/if}}
+
+            <span class="xdz-chunk-hp-label xdz-field-label">{{localize 'XDZ.Vehicle.HP'}}</span>
+            <span class="xdz-chunk-dmg-label xdz-field-label">{{localize 'XDZ.Vehicle.Damage'}}</span>
+
+            {{#if ../chunkEditMode}}
+              <button type="button" class="xdz-chunk-delete" data-action="chunkDelete" title="{{localize 'XDZ.Delete'}}">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            {{/if}}
+
+            {{! Row 2: description + HP value + DMG formula, under their row-1 captions }}
+            <div class="xdz-chunk-desc-row">
+              {{#if ../chunkEditMode}}
+                <textarea class="xdz-chunk-desc" rows="1" name="system.chunks.{{index}}.description"
+                          placeholder="{{localize 'XDZ.Vehicle.ChunkDescription'}}">{{chunk.description}}</textarea>
+              {{else}}
+                <p class="xdz-chunk-desc-text">{{chunk.description}}</p>
+              {{/if}}
+            </div>
+
+            <div class="xdz-chunk-hp-value">
+              {{#if ../chunkEditMode}}
+                <span class="xdz-chunk-hp-inputs">
+                  <input type="number" name="system.chunks.{{index}}.hp.value" value="{{chunk.hp.value}}">
+                  <span>/</span>
+                  <input type="number" name="system.chunks.{{index}}.hp.max" value="{{chunk.hp.max}}">
+                </span>
+              {{else}}
+                <span class="xdz-chunk-hp-text">{{chunk.hp.value}}/{{chunk.hp.max}}</span>
+              {{/if}}
+            </div>
+
+            <div class="xdz-chunk-dmg-value">
+              {{#if ../chunkEditMode}}
+                <input type="text" name="system.chunks.{{index}}.damage" value="{{chunk.damage}}">
+              {{else}}
+                <span class="xdz-chunk-damage-text">{{chunk.damage}}</span>
+              {{/if}}
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </section>
+
+  </section>
+
+</div>

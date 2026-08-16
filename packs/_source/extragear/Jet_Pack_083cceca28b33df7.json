@@ -1,0 +1,29 @@
+{
+  "name": "Jet Pack",
+  "type": "gear",
+  "_id": "083cceca28b33df7",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Hover in a LOCATION for 1D4 ROUNDS; ascend up to 30 feet."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3200000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!083cceca28b33df7"
+}

@@ -36,7 +36,7 @@ export async function rollMission(type) {
   const journal = await getMissionJournal();
   const page = await appendJournalPage(
     journal,
-    `${data.typeLabelUpper} MISSION — ${data.timestamp}`,
+    `${data.typeLabelUpper} ${game.i18n.localize('XDZ.MissionGenerator.Mission')} — ${data.timestamp}`,
     `<div class="xdz xdz-journal-sheet">${bodyHtml}</div>`,
   );
   journal.sheet.render(true, { pageId: page.id });

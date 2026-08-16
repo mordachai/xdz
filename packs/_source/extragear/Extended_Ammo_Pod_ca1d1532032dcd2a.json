@@ -1,0 +1,29 @@
+{
+  "name": "Extended Ammo Pod",
+  "type": "gear",
+  "_id": "ca1d1532032dcd2a",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Reload after every three bursts instead of two."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3500000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ca1d1532032dcd2a"
+}

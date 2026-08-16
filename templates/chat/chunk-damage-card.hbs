@@ -1,0 +1,15 @@
+<div class="xdz-chatcard xdz-chatcard-damage" data-theme="{{theme}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{chunk.title}}</span>
+    <img class="xdz-chatcard-icon" src="{{vehicle.img}}" alt="{{vehicle.name}}">
+    <span class="xdz-chatcard-tag">{{localize 'XDZ.Vehicle.Damage'}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    <div class="xdz-chatcard-readout">
+      <span class="xdz-chatcard-digits">{{total}}</span>
+    </div>
+
+    {{#if chunk.description}}<div class="xdz-chatcard-desc">{{chunk.description}}</div>{{/if}}
+  </div>
+</div>

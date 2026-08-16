@@ -1,0 +1,441 @@
+{
+  "XDZ": {
+    "RollCheck": "Rolar Teste",
+    "Delete": "Excluir",
+
+    "Training": {
+      "Pilot": "Pilotagem",
+      "Systems": "Sistemas",
+      "Mechanic": "Mecânica",
+      "Weapons": "Armas",
+      "Medical": "Medicina"
+    },
+    "Resistance": {
+      "Fear": "Medo",
+      "Dodge": "Esquiva",
+      "Death": "Morte"
+    },
+    "Roll": {
+      "Success": "Sucesso",
+      "Failure": "Falha",
+      "TargetNumber": "ND ",
+      "TypeTraining": "Treinamento",
+      "TypeResistance": "Resistência"
+    },
+
+    "Hud": {
+      "TargetNumber": "ND",
+      "Rounds": "Timer",
+      "Clock": "Cronômetro",
+      "Hard": "Difícil (+3)",
+      "Easy": "Fácil (-3)",
+      "HardPlate": "D:+3",
+      "EasyPlate": "F:-3",
+      "Timer": "Criar Timer",
+      "ToggleMode": "Timer / Cronômetro (alternar)",
+      "Rename": "Renomear",
+      "ResetRealtimer": "Reiniciar (Cronômetro)",
+      "AdjustMinus1": "-1 rodada",
+      "AdjustPlus1": "+1 rodada",
+      "Start": "Iniciar",
+      "Pause": "Pausar",
+      "SetDuration": "Definir duração (mm:ss)",
+      "ToggleVisibility": "Alternar HUD de ND & Timer"
+    },
+
+    "Actor": {
+      "Name": "Nome:",
+      "Rank": "Patente:",
+      "Story": "História:",
+      "Quirk": "Peculiaridade:",
+      "Injury": "Ferimento",
+      "InjuryHint1": "Uma vez caído, sofra 1 ferimento a cada turno.",
+      "InjuryHint2": "Aliados curam 1 ferimento com um teste de Medicina.",
+      "Down": "CAÍDO",
+      "KIA": "MEA",
+      "Training": "Treinamento",
+      "RollOnYourTurn": "Role contra o alvo atual no seu turno",
+      "TrainingBudget": "Orçamento de Treinamento",
+      "Resistance": "Resistência",
+      "RollOnEnemyTurn": "Role contra o alvo atual no turno inimigo ou evento",
+      "ResistanceBudget": "Orçamento de Resistência",
+      "Loadout": "Equipamento",
+      "AddWeapon": "Adicionar Arma",
+      "Gear": "Itens",
+      "AddGear": "Itens"
+    },
+
+    "Weapon": {
+      "Equipped": "Equipada",
+      "EquipTooltip": "Equipar arma",
+      "EquipTooltipDiscard": "Equipar arma (desequipa todas as outras armas)",
+      "DiscardOthers": "Desequipar todas as outras armas ao equipar",
+      "DestroyDie": "Dado de Ataque",
+      "UpgradeDie": "Dado de Munição",
+      "Ammo": "Munição",
+      "AmmoLabel": "Rótulo da Munição",
+      "AmmoDescription": "Descrição da Munição",
+      "Damaged": "Danificada",
+      "SecondaryLabel": "Rótulo do Recurso Secundário",
+      "SecondaryTrack": "Recurso Secundário",
+      "SecondaryDie": "Dado Secundário",
+      "SecondaryDescription": "Descrição Secundária",
+      "Rules": "Regras",
+      "Description": "Descrição do Ataque",
+      "Attack": "Atacar",
+      "RollDamage": "Rolar Dano",
+      "SprayAndPray": "Fogo Descontrolado",
+      "Destroy": "Destruir",
+      "Destroyed": "{name} está destruída e não pode ser usada.",
+      "NoAmmo": "Sem munição restante.",
+      "NoSecondary": "Sem {label} restante.",
+      "AmmoLabelPlaceholder": "Munição / Combustível",
+      "SecondaryLabelPlaceholder": "Granada / Giro",
+      "SecondaryDiePlaceholder": "1d6 (em branco = sem rolagem)"
+    },
+
+    "Gear": {
+      "Quantity": "Quantidade",
+      "Description": "Descrição"
+    },
+
+    "Xeno": {
+      "Type": "Tipo",
+      "TypeDrone": "Drone",
+      "TypeWarrior": "Guerreiro",
+      "TypePretorian": "Pretoriano",
+      "TypeBreeder": "Procriadora",
+      "TypeAlpha": "Alfa",
+      "TypeCustom": "Personalizado",
+      "TypeCustomLabel": "Tipo Personalizado",
+      "TypeCustomPlaceholder": "Digite um tipo personalizado...",
+      "Threat": "Ameaça",
+      "Mode": "Modo",
+      "Hide": "OCULTO",
+      "Seek": "BUSCA",
+      "Notes": "Notas",
+      "BriefingTitle": "Briefing de Campo",
+      "BriefingStep1": "Role para <strong>GERAR</strong> XENOS.",
+      "BriefingStep2": "Mova e resolva todos os XENOS em modo <strong>BUSCA</strong>.",
+      "BriefingStep3": "Quando XENOS entram em contato com COMANDOS, eles sempre atacam! Os COMANDOS então precisam rolar RESISTÊNCIA para sobreviver. Qual rolagem é necessária depende das condições de combate:",
+      "BriefingRule1": "Role <strong>MEDO</strong> quando XENOS aparecem do modo OCULTO para o modo BUSCA.",
+      "BriefingRule2": "Role <strong>ESQUIVA</strong> quando XENOS estão atacando.",
+      "BriefingRule3": "Role <strong>MORTE</strong> quando XENOS SURGEM EM CONTATO com um COMANDO — este evento grotesco também é chamado de <strong>EMBOSCADA</strong>."
+    },
+
+    "Vehicle": {
+      "Type": "Tipo",
+      "Description": "Descrição",
+      "Chunks": "Partes",
+      "AddChunk": "Adicionar Parte",
+      "ChunkTitle": "Título",
+      "ChunkDescription": "Descrição",
+      "HP": "PV",
+      "Damage": "Dano",
+      "RollDamage": "Rolar Dano",
+      "Edit": "Editar",
+      "Done": "Concluído"
+    },
+
+    "SheetLabels": {
+      "Commando": "Ficha de Comando XDZ",
+      "Character": "Ficha de Personagem XDZ",
+      "Xeno": "Ficha de Xeno XDZ",
+      "Npc": "Ficha de NPC XDZ",
+      "Vehicle": "Ficha de Veículo XDZ",
+      "Weapon": "Ficha de Arma XDZ",
+      "Gear": "Ficha de Item XDZ"
+    },
+
+    "MapGenerator": {
+      "Title": "Gerador de Mapa",
+      "Legend": "Gerar um Mapa de Localização",
+      "Style": "Estilo",
+      "Color": "Cor",
+      "BW": "P&B",
+      "Type": "Tipo",
+      "Starship": "Nave Estelar",
+      "Colony": "Colônia",
+      "SceneName": "Nome da Cena",
+      "Generate": "Gerar",
+      "Area": "Área {area}",
+      "LocationsSceneName": "Localizações",
+      "LocationsSceneNameLetter": "Localizações {letter}"
+    },
+
+    "MissionGenerator": {
+      "ColonyObjectives": "Objetivos de Colônia",
+      "ShipObjectives": "Objetivos de Nave",
+      "Starship": "Nave Estelar",
+      "Colony": "Colônia",
+      "Evac": "EVACUAÇÃO",
+      "EvacDesc": "Alcançar",
+      "MissionBriefing": "BRIEFING DA MISSÃO",
+      "Mission": "MISSÃO",
+      "JournalName": "Objetivos da Missão"
+    },
+
+    "Escalation": {
+      "Title": "ESCALADA",
+      "BreederDialogTitle": "ESCALADA 5 — A Procriadora",
+      "BreederDialogContent": "<p>O OBJETIVO atual é <strong>Matar a Procriadora</strong>?</p><p>Se sim, uma segunda Procriadora XENO gigante entra na luta.</p>",
+      "BreederJoins": "Uma segunda Procriadora XENO gigante entra na luta.",
+      "SwarmErupts": "{count} XENOS irrompem na localização dos COMANDOS!"
+    },
+
+    "Notifications": {
+      "NoTileForArea": "Nenhum tile para a Área {area} Localização {location}.",
+      "NoTileForLocation": "Nenhum tile para essa localização na cena atual.",
+      "NoActiveScene": "Nenhuma cena ativa.",
+      "NoCommandoTokens": "Nenhum token de COMANDO na cena.",
+      "CouldNotLoadActor": "Não foi possível carregar o ator {uuid}."
+    },
+
+    "Locations": {
+      "Ship": {
+        "EscapePod": "Cápsula de Fuga",
+        "Bridge": "Ponte de Comando",
+        "EngineRoom": "Sala de Máquinas",
+        "Airlock": "Câmara de Vácuo",
+        "MedBay": "Enfermaria",
+        "Quarters": "Alojamentos",
+        "Galley": "Cozinha",
+        "Refinery": "Refinaria",
+        "Hydroponics": "Hidroponia",
+        "Garage": "Garagem",
+        "LoadingBay": "Baía de Carga",
+        "Corridor": "Corredor M",
+        "Crawlspace": "Espaço de Serviço",
+        "Sump": "Poço de Drenagem",
+        "ObsDeck": "Deque de Observação",
+        "LifeSupport": "Suporte de Vida"
+      },
+      "Colony": {
+        "LandingPad": "Plataforma de Pouso",
+        "RadioDish": "Antena de Rádio",
+        "Command": "Comando",
+        "MedBay": "Enfermaria",
+        "Armory": "Arsenal",
+        "Refinery": "Refinaria",
+        "Reactor": "Reator",
+        "Cafeteria": "Refeitório",
+        "Causeway": "Via de Acesso",
+        "Surface": "Superfície",
+        "Residential": "Área Residencial",
+        "Dump": "Depósito de Lixo",
+        "Substructure": "Subestrutura",
+        "MotorPool": "Pátio de Veículos",
+        "PotatoFarm": "Fazenda de Batatas",
+        "Astrophysics": "Astrofísica"
+      }
+    },
+
+    "Objectives": {
+      "SweepAndClear": {
+        "Label": "Varrer e Limpar",
+        "Desc": "Passe sala por sala pela área atual e elimine todas as ameaças XENO. Mate todos! Faça 3 ROLAGENS DE LOCALIZAÇÃO %LOC1% %LOC2% %LOC3% para determinar 3 LOCALIZAÇÕES. Os COMANDOS devem matar todos os XENOS nessas áreas."
+      },
+      "RestorePower": {
+        "Label": "Restaurar Energia",
+        "Desc": "Restaure a energia de um sistema ou área crítica. Encontre o gerador, emende um cabo ou localize o terminal ou interruptor correto. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para determinar onde está o gerador, cabo ou terminal. Os COMANDOS devem alcançar essa LOCALIZAÇÃO e gastar 1D4 rodadas defendendo-a enquanto o sistema é ativado."
+      },
+      "AnomalyRecon": {
+        "Label": "Reconhecimento de Anomalia",
+        "Desc": "Os \"Chefões\" querem que certa localização estranha seja investigada. O que poderia estar causando a anomalia? Além disso, o que poderia estar à espreita lá? Vá verificar. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para posicionar a anomalia. Os COMANDOS devem alcançar essa LOCALIZAÇÃO e rolar uma ESCALADA extra para determinar sua natureza. Obtenha os dados e saia."
+      },
+      "FallBack": {
+        "Label": "Recuar!",
+        "Desc": "Os Xenos têm números esmagadores! Recuem \"em ordem\" e se retirem para um ponto de encontro antes de prosseguir. Faça uma rolagem de LOCALIZAÇÃO %LOC1% para determinar o ponto de encontro. Os COMANDOS devem alcançar essa localização e gastar 1D4 rodadas defendendo-a."
+      },
+      "RescueTheColonists": {
+        "Label": "Resgatar os Colonos",
+        "Desc": "Prossiga até a próxima localização e resgate pelo menos 50% de 4D20 colonos casulados. Faça uma rolagem de LOCALIZAÇÃO %LOC1% para posicioná-los. Resgate quantos colonos por RODADA houver COMANDOS em seu esquadrão."
+      },
+      "ExterminateTheAlpha": {
+        "Label": "Exterminar o Alfa",
+        "Desc": "Esta é uma missão de busca e destruição. Encontre o líder do enxame e o extermine com prejuízo extremo. Faça uma ROLAGEM DE LOCALIZAÇÃO para determinar a LOCALIZAÇÃO %LOC1%."
+      },
+      "DestroyTheHive": {
+        "Label": "Destruir o Ninho",
+        "Desc": "Encontre a câmara de ovos e garanta que toda coisa rastejante nojenta ali esteja morta. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para determinar a LOCALIZAÇÃO da câmara de ovos. Uma vez lá, destrua 1D20 ovos para concluir o OBJETIVO."
+      },
+      "RepairTheMachinery": {
+        "Label": "Reparar a Maquinaria",
+        "Desc": "Prossiga até a localização correta e repare ou ative uma grande peça de maquinaria: um gerador, toda a rede elétrica ou um sistema de suporte de vida. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para determinar onde está o gerador, a rede elétrica ou o sistema. Os COMANDOS devem alcançar essa LOCALIZAÇÃO e gastar 1D4 rodadas defendendo-a enquanto os reparos são feitos."
+      },
+      "Stronghold": {
+        "Label": "Fortaleza",
+        "Desc": "Os Xenos estão avançando em grandes ondas! Repila quatro assaltos diretos ao seu grupo em ondas cada vez maiores de inimigos. Vocês têm 1D4 rodadas para erguer defesas antes que cheguem. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para determinar a LOCALIZAÇÃO onde os COMANDOS devem se defender. Alcancem essa localização e então gerem XENOS..."
+      },
+      "EscortACivi": {
+        "Label": "Escoltar um Civil",
+        "Desc": "Os Chefões trouxeram um contratado civil, cientista ou outro VIP. Escolte essa pessoa até a localização correta e garanta que nada aconteça com ela. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para determinar a LOCALIZAÇÃO que o VIP precisa alcançar."
+      },
+      "SpecimenCollection": {
+        "Label": "Coleta de Espécime",
+        "Desc": "Alguém da Divisão de Bioarmas quer um espécime vivo. Role sua LOCALIZAÇÃO %LOC1%. Pegue uma Arma de Eletro-Rede e capture uma das criaturas para transporte. Para uma ESCALADA extra, torne o XENO único ou o primeiro de sua espécie."
+      },
+      "Demolitions": {
+        "Label": "Demolição",
+        "Desc": "É hora de explodir este lugar. Leve uma mini-bomba nuclear até uma LOCALIZAÇÃO sorteada %LOC1% e a arme para explodir. Apenas deixe claro quando a explosão está programada -- de preferência quando vocês estiverem longe dela."
+      },
+      "DataRetrieval": {
+        "Label": "Recuperação de Dados",
+        "Desc": "Em algum lugar da instalação (role! %LOC1%) ou da nave há um computador com dados importantes. Alguém precisa ir até lá, invadir manualmente e salvar os dados em uma mídia portátil."
+      },
+      "RescueOp": {
+        "Label": "Operação de Resgate",
+        "Desc": "Vocês acabaram de receber uma comunicação urgente de outra equipe. Delta está presa e com pouca munição em uma LOCALIZAÇÃO sorteada %LOC1%. Vocês chegarão a tempo de salvá-los?"
+      },
+      "AlignTheUplinkDish": {
+        "Label": "Alinhar a Antena de Uplink",
+        "Desc": "Antes de poderem Evacuar, vocês terão que alinhar a antena de uplink do satélite e transmitir suas coordenadas. Boa sorte para chegar a tempo."
+      },
+      "AidASurvivor": {
+        "Label": "Ajudar um Sobrevivente",
+        "Desc": "Vocês não esperavam por isso, mas havia um Sobrevivente morando aqui nos dutos. Role LOCALIZAÇÃO %LOC1% e chegue até essa pessoa, escolte-a até um local seguro (role) %LOC2%, e preste socorro."
+      },
+      "GetTheTech": {
+        "Label": "Buscar a Tecnologia",
+        "Desc": "A Companhia perdeu uma peça valiosa de tecnologia aqui, e a quer de volta. Entrem, encontrem em uma LOCALIZAÇÃO sorteada %LOC1% e a tragam com vocês. O problema é que ela pode ser pesada, volumosa, volátil ou peri-"
+      },
+      "WayPoints": {
+        "Label": "Pontos de Passagem",
+        "Desc": "Alcancem três LOCALIZAÇÕES %LOC1% %LOC2% %LOC3% em sequência e limpem cada área. O problema é que parte do terreno pode ser traiçoeiro ou difícil de alcançar."
+      },
+      "FindTheirOrigin": {
+        "Label": "Encontrar a Origem",
+        "Desc": "Os XENOS entraram, e os Chefões querem respostas sobre como eles chegaram aqui. Procurem 3 pistas, em LOCALIZAÇÕES sorteadas %LOC1% %LOC2% %LOC3%, juntem-nas e saiam com o segredo."
+      },
+      "HostileAgents": {
+        "Label": "Agentes Hostis",
+        "Desc": "Agentes desertores ou Mercenários da Companhia estão tramando alguma sacanagem. Encontrem essas forças opositoras em 1D4 LOCALIZAÇÕES %LOCLIST% e as eliminem. É melhor não fazer muitas perguntas."
+      }
+    },
+
+    "Escalations": {
+      "KillMe": {
+        "Label": "Me Mate!",
+        "Desc": "Um membro da sua unidade está infectado, e um XENO irrompe de seu peito! Essa pessoa faz uma rolagem de MORTE ou morre instantaneamente! Role 1D4 na tabela 'Quem Está Infectado?' abaixo para escolher a vítima. COMANDOS que veem o XENO emergindo devem fazer rolagens de MEDO.\n1: Escolha um COMANDO aleatoriamente\n2: Escolha um sobrevivente, colono ou civil do seu grupo\n3: O COMANDO de patente mais alta\n4: O COMANDO de patente mais baixa"
+      },
+      "TheyCutThePower": {
+        "Label": "Cortaram a Energia!",
+        "Desc": "Tudo escurece. Adicione o Objetivo Restaurar Energia. O Alvo é aumentado em 3 até o fim do OBJETIVO atual, e todos os XENOS agora estão em modo BUSCA. Anule esse efeito com a etiqueta Visão Noturna ou Holofote em equipamentos."
+      },
+      "Blocked": {
+        "Label": "Bloqueado!",
+        "Desc": "Uma junção crítica está bloqueada, seja por escombros, uma barricada ou uma porta trancada com mecanismo quebrado. Os COMANDOS trabalham com cortadores a plasma para passar, mas ficam parados por 1D4 RODADAS."
+      },
+      "FlameUnitsOnly": {
+        "Label": "Somente Lança-Chamas",
+        "Desc": "Por algum motivo, os chefões não querem que ninguém use armas de projétil. Completem o OBJETIVO atual usando apenas unidades de fogo."
+      },
+      "TheBreeder": {
+        "Label": "A Procriadora",
+        "Desc": "Esta batalha é uma luta até a morte e deve ser resolvida antes de qualquer progresso adicional no OBJETIVO atual. Somente para este confronto, o Alvo é aumentado em 3. Se o OBJETIVO atual for Matar a Procriadora, agora há duas Procriadoras XENO gigantes."
+      },
+      "PraetorianGuards": {
+        "Label": "Guardas Pretorianos",
+        "Desc": "Os XENOS nesta seção são muito mais resistentes que os drones e guerreiros que vocês encontraram. Até que o OBJETIVO atual seja concluído, todos os ataques XENO exigem RESISTÊNCIAS DE MORTE para sobreviver."
+      },
+      "RogueCommandos": {
+        "Label": "Comandos Desertores",
+        "Desc": "Quando vocês pensavam que as coisas não podiam piorar, há comandos desertores ou agentes da companhia rastreando vocês, decididos a eliminá-los. 1D12 deles chegam via uma ROLAGEM DE LOCALIZAÇÃO %LOC1%, em modo BUSCA, e usando COMPORTAMENTO XENO para se mover e atacar."
+      },
+      "UsedUp": {
+        "Label": "Esgotado!",
+        "Desc": "Todo o equipamento médico foi usado, o esquadrão está em mau estado, e agora os COMANDOS devem improvisar torniquetes e bandagens. Aumente o Alvo em 3 para todas as rolagens de Medicina até o fim do OBJETIVO atual. Esta ESCALADA também pode ser anulada levando 1 ou mais COMANDOS a uma LOCALIZAÇÃO médica ou a uma ESCALADA de Suprimentos."
+      },
+      "ManDown": {
+        "Label": "Homem Ferido!",
+        "Desc": "Um COMANDO aleatório caiu criticamente doente. Você não está com boa cara, cara. Esse COMANDO deve ser levado a uma enfermaria dentro de 1 TURNO. A cada TURNO além desse, o COMANDO doente faz uma rolagem de MORTE ou morre. Se o COMANDO doente morrer PRÓXIMO a qualquer outro COMANDO, este também adoece."
+      },
+      "SomethingWicked": {
+        "Label": "Algo Perverso",
+        "Desc": "Há algo se movendo na escuridão (role LOCALIZAÇÃO normalmente) %LOC1%. É aterrorizante e perversamente rápido. Todos os seus ataques atingem todos os COMANDOS PRÓXIMOS de uma vez! Qualquer rolagem de COMANDO para matar essa coisa maldita é DIFÍCIL."
+      },
+      "Fubard": {
+        "Label": "TUDO FODIDO",
+        "Desc": "Sua nave de desembarque caiu na plataforma. As cápsulas de fuga têm a telemetria embaralhada. Torne o OBJETIVO Alinhar a Antena o OBJETIVO atual. Use uma ROLAGEM DE LOCALIZAÇÃO %LOC1% para adicionar a nova nave de desembarque ou cápsula ao mapa."
+      },
+      "SupplyDrop": {
+        "Label": "Queda de Suprimentos",
+        "Desc": "Os COMANDOS encontram um caixote de armas, munição e equipamento médico. Diminua o Alvo em 3 até o fim do OBJETIVO atual para rolagens de Armas e Medicina."
+      },
+      "OutOfAmmo": {
+        "Label": "Sem Munição",
+        "Desc": "Todos os COMANDOS ficam sem munição para suas armas principais e usam apenas armas secundárias. Aumente o Alvo em 3 até o fim do OBJETIVO atual."
+      },
+      "CombatFatigue": {
+        "Label": "Fadiga de Combate",
+        "Desc": "Todos os COMANDOS estão exaustos e ficam parados por 1D4 rodadas. Além disso, o Alvo é aumentado em 3 até o fim do OBJETIVO atual."
+      },
+      "Swarm": {
+        "Label": "Enxame!",
+        "Desc": "Os XENOS estão surgindo de repente por todos os lados! 1D12 deles chegam imediatamente na LOCALIZAÇÃO dos COMANDOS. Todos os COMANDOS rolam RESISTÊNCIA DE MORTE ou morrem."
+      },
+      "Snatched": {
+        "Label": "Sequestrado!",
+        "Desc": "Escolha aleatoriamente um COMANDO. Ele desaparece. Vítimas levadas dessa forma são casuladas para gestação. Se o esquadrão desejar, pode adicionar um OBJETIVO de Operação de Resgate."
+      },
+      "Explosion": {
+        "Label": "Explosão",
+        "Desc": "Sem aviso, 1D4 explosões ocorrem de repente pelo mapa. Faça uma ROLAGEM DE LOCALIZAÇÃO %LOCLIST% para o local de cada explosão. Se uma explosão ocorrer dentro da Área dos COMANDOS, todos os COMANDOS fazem uma rolagem de RESISTÊNCIA DE ESQUIVA ou sofrem 4 ferimentos imediatamente. Todos os XENOS pegos em uma explosão morrem instantaneamente."
+      },
+      "GameOverMan": {
+        "Label": "Fim de Jogo, Cara!",
+        "Desc": "Os XENOS eram simplesmente mortais demais, os colonos morreram todos, o VIP desapareceu, e talvez o sistema crítico não possa ser consertado. De qualquer forma, o OBJETIVO atual é um fracasso imediato, e muitos bons COMANDOS morreram como resultado. Diminua o número de COMANDOS pela metade e prossiga para o próximo OBJETIVO."
+      },
+      "ScentOfBlood": {
+        "Label": "Cheiro de Sangue",
+        "Desc": "Todos os XENOS em qualquer localização do mapa correm imediatamente para a área dos COMANDOS, e o Alvo é aumentado em 3 até o fim do OBJETIVO atual."
+      },
+      "TooQuiet": {
+        "Label": "Quieto Demais",
+        "Desc": "Fiquem alertas, vigiem os cantos. Sem escalada neste turno."
+      }
+    },
+
+    "Chat": {
+      "SpawnTitle": "SURGIMENTO DE XENO",
+      "SpawnTag": "SURGIU",
+      "AmbushTag": "EMBOSCADA"
+    },
+
+    "Direction": {
+      "N": "Norte",
+      "E": "Leste",
+      "S": "Sul",
+      "W": "Oeste"
+    },
+
+    "Settings": {
+      "SheetTheme": {
+        "Name": "Tema da Ficha",
+        "Hint": "Tema de cores usado pelas fichas de item e cartões de chat.",
+        "Green": "Verde",
+        "Blue": "Azul",
+        "Orange": "Laranja",
+        "White": "Branco"
+      },
+      "PlayWithGM": {
+        "Name": "Jogar com um Mestre",
+        "Hint": "Rolagens de surgimento ficam visíveis apenas ao Mestre, XENOS gerados e surgimentos de Escalada entram Ocultos, e surgimentos de Emboscada entram revelados (Busca)."
+      }
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "commando": "Comando",
+      "character": "Personagem",
+      "xeno": "Xeno",
+      "npc": "NPC",
+      "vehicle": "Veículo"
+    },
+    "Item": {
+      "weapon": "Arma",
+      "gear": "Item"
+    }
+  }
+}

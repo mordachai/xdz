@@ -1,0 +1,29 @@
+{
+  "name": "Recon Drone",
+  "type": "gear",
+  "_id": "4552c44ac617e739",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "A small, fast drone that can recon up to FAR range in one TURN."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3100000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!4552c44ac617e739"
+}

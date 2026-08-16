@@ -1,0 +1,29 @@
+{
+  "name": "Cutter",
+  "type": "gear",
+  "_id": "xdzAsset6Cuttrxx",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll 6. Can be used by a Commando to remove a Barricade."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xdzAsset6Cuttrxx"
+}

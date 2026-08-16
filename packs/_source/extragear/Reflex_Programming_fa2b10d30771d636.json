@@ -1,0 +1,29 @@
+{
+  "name": "Reflex Programming",
+  "type": "gear",
+  "_id": "fa2b10d30771d636",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "On a successful roll, deflect and counter one CLOSE attack per ROUND."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5600000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fa2b10d30771d636"
+}

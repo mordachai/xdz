@@ -7,20 +7,31 @@ import XDZActorSheet from './base-actor-sheet.mjs';
 export default class XenoSheet extends XDZActorSheet {
   static DEFAULT_OPTIONS = {
     classes: ['xdz', 'sheet', 'actor', 'xeno'],
-    position: { width: 480, height: 420 },
+    position: { width: 560, height: 'auto' },
     actions: {
       toggleMode: this._onToggleMode,
     },
   };
 
   static PARTS = {
-    sheet: { template: 'systems/xdz/templates/actor/xeno-sheet.hbs', scrollable: [''] },
+    sheet: { template: 'systems/xdz/templates/actor/xeno-sheet.hbs', scrollable: [] },
   };
 
   /** @override */
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.modeLabel = CONFIG.XDZ.xenoModes[this.actor.system.mode];
+    const system = this.actor.system;
+
+    context.modeLabel = CONFIG.XDZ.xenoModes[system.mode];
+    context.xenoTypeOptions = Object.entries(CONFIG.XDZ.xenoTypes).map(([key, label]) => ({
+      key,
+      label: game.i18n.localize(label),
+      selected: key === system.xenoType,
+    }));
+    context.isCustomType = system.xenoType === 'custom';
+    context.briefing = CONFIG.XDZ.xenoBriefing;
+    context.theme = game.settings.get('xdz', 'sheetTheme');
+
     return context;
   }
 

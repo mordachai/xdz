@@ -573,7 +573,8 @@ $xdz-commando-themes: (
     .xdz-title-add,
     .xdz-theme-nav,
     .xdz-track-label,
-    .xdz-gear-item .xdz-item-delete { color: $color; }
+    .xdz-gear-item .xdz-item-delete,
+    .xdz-weapon-delete { color: $color; }
 
     .xdz-page-nav:hover:not(:disabled),
     .xdz-title-add:hover,

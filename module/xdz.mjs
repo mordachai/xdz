@@ -1,17 +1,17 @@
 import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
-import { CommandoSheet, CharacterSheet, XenoSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
+import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
 import { TnTracker, RoundTimer, MapGenerator } from './apps/_module.mjs';
-import { rollEscalation } from './macros/_module.mjs';
+import { rollEscalation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
 
 globalThis.xdz = {
   documents: { XDZActor, XDZItem },
-  applications: { CommandoSheet, CharacterSheet, XenoSheet, WeaponSheet, GearSheet },
+  applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
   apps: { TnTracker, RoundTimer, MapGenerator, tnTracker: null, timers: new Map() },
-  macros: { rollEscalation, rollMission },
+  macros: { rollEscalation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm },
   models,
   config: XDZ,
 };
@@ -24,6 +24,8 @@ Hooks.once('init', function () {
     commando: models.CommandoData,
     character: models.CharacterData,
     xeno: models.XenoData,
+    npc: models.NpcData,
+    vehicle: models.VehicleData,
   };
   CONFIG.Actor.typeImages = XDZ.actorTypeImages;
 
@@ -77,6 +79,18 @@ Hooks.once('init', function () {
     },
     default: 'green',
   });
+  // GM-only play mode: spawn chat rolls go GM-whisper only, spawned tokens
+  // enter hidden, and ambush spawns are the exception that stays revealed —
+  // read by spawn-xenos.mjs for both the chat-message rollMode and the
+  // per-token `hidden` flag.
+  game.settings.register('xdz', 'playWithGM', {
+    name: 'XDZ.Settings.PlayWithGM.Name',
+    hint: 'XDZ.Settings.PlayWithGM.Hint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  });
   game.settings.register('xdz', 'hudVisible', {
     scope: 'client',
     config: false,
@@ -111,6 +125,16 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'XDZ.SheetLabels.Xeno',
   });
+  collections.Actors.registerSheet('xdz', NpcSheet, {
+    types: ['npc'],
+    makeDefault: true,
+    label: 'XDZ.SheetLabels.Npc',
+  });
+  collections.Actors.registerSheet('xdz', VehicleSheet, {
+    types: ['vehicle'],
+    makeDefault: true,
+    label: 'XDZ.SheetLabels.Vehicle',
+  });
 
   collections.Items.unregisterSheet('core', sheets.ItemSheet);
   collections.Items.registerSheet('xdz', WeaponSheet, {
@@ -129,9 +153,11 @@ Hooks.once('init', function () {
     'systems/xdz/templates/actor/parts/weapon-card.hbs',
     'systems/xdz/templates/chat/attack-card.hbs',
     'systems/xdz/templates/chat/damage-card.hbs',
+    'systems/xdz/templates/chat/chunk-damage-card.hbs',
     'systems/xdz/templates/chat/secondary-card.hbs',
     'systems/xdz/templates/chat/check-card.hbs',
     'systems/xdz/templates/chat/escalation-card.hbs',
+    'systems/xdz/templates/chat/spawn-card.hbs',
     'systems/xdz/templates/apps/map-generator.hbs',
     'systems/xdz/templates/journal/mission-objectives-page.hbs',
     'systems/xdz/templates/journal/escalation-page.hbs',
@@ -258,4 +284,42 @@ Hooks.on('renderChatMessageHTML', (message, html) => {
       if (dieMode === 'ammo') button.disabled = item.system.ammo.value <= 0;
     });
   });
+
+  // Spawn-card location names pan the GM's view to that point, center only —
+  // zoom untouched, so it never fights a GM who's mid zoom-in on the fight.
+  html.querySelectorAll('[data-action="xdzPanToLocation"]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const x = Number(button.dataset.x);
+      const y = Number(button.dataset.y);
+      if (Number.isNaN(x) || Number.isNaN(y)) return;
+      canvas.animatePan({ x, y });
+    });
+  });
+
+  wireLocationIdLinks(html);
 });
+
+// Objective/escalation `<Location>` tags (see mission-rolls.mjs's locTag)
+// only know a locationId, not a point — the map that had a matching tile
+// may not even be the active scene by the time someone reads the journal
+// page or scrolls back through chat, so resolution happens at click time
+// against whatever scene is currently active. Shared by both the escalation
+// chat card (wired above) and the mission-objectives/escalation journal
+// pages (wired below).
+function wireLocationIdLinks(root) {
+  root.querySelectorAll('[data-action="xdzPanToLocationId"]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const id = button.dataset.locationId;
+      const tile = canvas.scene?.tiles.find((t) => t.getFlag('xdz', 'locationId') === id);
+      if (!tile) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoTileForLocation'));
+      canvas.animatePan({ x: tile.x, y: tile.y });
+    });
+  });
+}
+
+// Journal Entry pages render each page as its own ApplicationV2 sheet
+// (JournalEntryPageTextSheet), re-rendered every time the journal scrolls
+// it into view — same delegated-listener approach as the chat hook above.
+Hooks.on('renderJournalEntryPageTextSheet', (sheet, html) => wireLocationIdLinks(html));

@@ -1,0 +1,29 @@
+{
+  "name": "Ability: Loader",
+  "type": "gear",
+  "_id": "ebc06979a8d4c13d",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "+3 to all rolls made to drive power loaders or power armor."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ebc06979a8d4c13d"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Psionic Ability: Illusion",
+  "type": "gear",
+  "_id": "fc7999be87d550fe",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll Systems to create a man-sized realistic illusion that lasts 1D4 ROUNDS or until touched."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5000000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fc7999be87d550fe"
+}

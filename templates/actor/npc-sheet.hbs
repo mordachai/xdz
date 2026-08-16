@@ -1,0 +1,46 @@
+<div class="xdz-sheet xdz-xeno-sheet xdz-npc-sheet" data-theme="{{theme}}">
+
+  <section class="xdz-xeno-layout">
+
+    <div class="xdz-xeno-main">
+      <div class="xdz-field-row xdz-xeno-identity-row">
+        <label class="xdz-field">
+          <span class="xdz-field-label">{{localize 'XDZ.Actor.Name'}}</span>
+          <input type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}}>
+        </label>
+
+        <label class="xdz-field xdz-field-narrow">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Threat'}}</span>
+          <input type="number" name="system.threat" value="{{system.threat}}" min="0" {{#unless editable}}disabled{{/unless}}>
+        </label>
+      </div>
+
+      <div class="xdz-field-row xdz-xeno-identity-row">
+        <label class="xdz-field">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Type'}}</span>
+          <input type="text" name="system.type" value="{{system.type}}" {{#unless editable}}disabled{{/unless}}>
+        </label>
+
+        <div class="xdz-field xdz-xeno-mode">
+          <span class="xdz-field-label">{{localize 'XDZ.Xeno.Mode'}}</span>
+          <button type="button" class="xdz-mode-toggle xdz-mode-{{system.mode}}" data-action="toggleMode">
+            {{localize modeLabel}}
+          </button>
+        </div>
+      </div>
+
+      <label class="xdz-field xdz-field-notes">
+        <span class="xdz-field-label">{{localize 'XDZ.Xeno.Notes'}}</span>
+        <textarea name="system.notes" rows="3" {{#unless editable}}disabled{{/unless}}>{{system.notes}}</textarea>
+      </label>
+    </div>
+
+    <div class="xdz-xeno-portrait-col">
+      <div class="xdz-portrait-frame xdz-portrait-frame-tall">
+        <img class="xdz-portrait" src="{{actor.img}}" data-action="onEditImage" data-edit="img" alt="{{actor.name}}">
+      </div>
+    </div>
+
+  </section>
+
+</div>

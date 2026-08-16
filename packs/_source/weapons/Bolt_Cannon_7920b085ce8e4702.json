@@ -1,0 +1,50 @@
+{
+  "name": "Bolt Cannon",
+  "type": "weapon",
+  "_id": "7920b085ce8e4702",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "equipped": false,
+    "discardOthersOnEquip": false,
+    "destroyDie": "1d6",
+    "upgradeDie": "1d8",
+    "rules": "",
+    "description": "Wired directly into its combat chassis. +2 to the destroy roll.",
+    "ammoLabel": "Charges",
+    "ammoDescription": "",
+    "ammo": {
+      "value": 3,
+      "max": 3
+    },
+    "secondary": {
+      "label": "",
+      "die": "",
+      "description": "",
+      "value": 0,
+      "max": 0
+    },
+    "damaged": {
+      "value": 0,
+      "max": 6
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7920b085ce8e4702"
+}

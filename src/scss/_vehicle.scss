@@ -1,0 +1,242 @@
+// Vehicle sheet — reuses the Xeno/NPC CRT terminal look (.xdz-xeno-sheet),
+// adds an identity row with a small portrait plus a chunk-damage table
+// (ICRPG chunk convention — XDZ has no vehicle rules of its own).
+.xdz-vehicle-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.xdz-vehicle-description { font-size: 1rem; }
+
+.xdz-vehicle-portrait {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: 0 0 auto;
+}
+
+.xdz-chunks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.xdz-chunks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.xdz-chunks-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.xdz-chunk-add, .xdz-chunk-edit-toggle {
+  @extend %xdz-display-text;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: $xdz-radius;
+  padding: 0.2rem 0.5rem;
+  background: rgba(black, 0.3);
+  color: $xdz-crt-green;
+  cursor: pointer;
+
+  &:hover { border-color: $xdz-crt-green; box-shadow: 0 0 4px rgba($xdz-crt-green, 0.5); }
+}
+
+.xdz-chunk-edit-toggle.xdz-active {
+  background: rgba($xdz-crt-green, 0.15);
+  border-color: $xdz-crt-green;
+  box-shadow: 0 0 4px rgba($xdz-crt-green, 0.5);
+}
+
+.xdz-chunk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+// Grid: row 1 is a header line (title + HP/DMG column captions + delete),
+// row 2 is the data line (description + HP value + DMG formula), each value
+// sitting directly under its row-1 caption. align-items: start keeps every
+// cell flush to the top of its row instead of centering against the
+// tallest neighbor (e.g. a short HP value next to a wrapped description).
+.xdz-chunk-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-areas:
+    "title hplabel  dmglabel  del"
+    "desc  hpvalue  dmgvalue  del";
+  align-items: start;
+  column-gap: 0.6rem;
+  row-gap: 0.15rem;
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: $xdz-radius;
+  padding: 0.35rem 0.5rem;
+  background: rgba(black, 0.25);
+}
+
+.xdz-chunk-title-link {
+  @extend %xdz-display-text;
+  grid-area: title;
+  justify-content: flex-start;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: $xdz-crt-green;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover { text-shadow: 0 0 6px rgba($xdz-crt-green, 0.7); text-decoration: underline; }
+}
+
+.xdz-chunk-title {
+  grid-area: title;
+  min-width: 0;
+  text-align: left;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba($xdz-crt-green, 0.4);
+  border-radius: 0;
+  padding: 0 0.1rem 0.05rem;
+  color: $xdz-crt-green;
+
+  &:focus { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+}
+
+.xdz-chunk-dmg-label { grid-area: dmglabel; justify-self: center; }
+
+// Left-click knocks HP down 1, right-click bumps it up 1 (see VehicleSheet
+// #_onChunkHpAdjust) — cursor + hover glow live on the label, not the
+// number, so the readout itself stays plain text.
+.xdz-chunk-hp-label {
+  grid-area: hplabel;
+  justify-self: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover { color: $xdz-crt-green; text-shadow: 0 0 6px rgba($xdz-crt-green, 0.6); }
+}
+
+.xdz-chunk-hp-value { grid-area: hpvalue; display: flex; justify-content: center; }
+.xdz-chunk-dmg-value { grid-area: dmgvalue; display: flex; justify-content: center; }
+
+.xdz-chunk-hp-text, .xdz-chunk-damage-text {
+  font-size: 1rem;
+  color: rgba($xdz-crt-green, 0.9);
+}
+
+.xdz-chunk-hp-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: rgba($xdz-crt-green, 0.75);
+
+  input {
+    width: 2.2rem;
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba($xdz-crt-green, 0.4);
+    color: $xdz-crt-green;
+
+    &:focus { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+  }
+}
+
+.xdz-chunk-dmg-value input {
+  width: 3.5rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba($xdz-crt-green, 0.4);
+  color: $xdz-crt-green;
+
+  &:focus { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+}
+
+.xdz-chunk-delete {
+  grid-area: del;
+  align-self: center;
+  background: none;
+  border: none;
+  color: rgba($xdz-crt-red, 0.8);
+  cursor: pointer;
+
+  &:hover { color: $xdz-crt-red; text-shadow: 0 0 6px rgba($xdz-crt-red, 0.7); }
+}
+
+// Description sits directly under the title (grid-template-areas above),
+// stopping before the HP/DMG columns — plain wrapped text in view mode, an
+// auto-growing textarea in edit mode.
+.xdz-chunk-desc-row { grid-area: desc; min-width: 0; }
+
+.xdz-chunk-desc-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: rgba($xdz-crt-green, 0.75);
+}
+
+// Auto-grows to fit wrapped content instead of scrolling — no resize handle,
+// no manual JS height sync needed.
+.xdz-chunk-desc {
+  width: 100%;
+  font-size: 1rem;
+  resize: none;
+  overflow: hidden;
+  field-sizing: content;
+  white-space: normal;
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba($xdz-crt-green, 0.4);
+  border-radius: 0;
+  padding: 0 0.1rem 0.05rem;
+  color: $xdz-crt-green;
+
+  &:focus { border-bottom-color: $xdz-crt-green; box-shadow: none; }
+}
+
+// Blue/orange/white theme overrides — same pattern as _xeno.scss.
+$xdz-vehicle-themes: (
+  blue: (main: $xdz-crt-blue, dim: $xdz-crt-blue-dim),
+  orange: (main: $xdz-crt-orange, dim: $xdz-crt-orange-dim),
+  white: (main: $xdz-crt-white, dim: $xdz-crt-white-dim),
+);
+
+@each $name, $t in $xdz-vehicle-themes {
+  $c: map-get($t, main);
+  $d: map-get($t, dim);
+
+  .xdz-vehicle-sheet[data-theme="#{$name}"] {
+    .xdz-chunk-add, .xdz-chunk-edit-toggle { border-color: $d; color: $c; &:hover { border-color: $c; box-shadow: 0 0 4px rgba($c, 0.5); } }
+    .xdz-chunk-edit-toggle.xdz-active { background: rgba($c, 0.15); border-color: $c; box-shadow: 0 0 4px rgba($c, 0.5); }
+    .xdz-chunk-row { border-color: $d; }
+    .xdz-chunk-title-link { color: $c; &:hover { text-shadow: 0 0 6px rgba($c, 0.7); } }
+    .xdz-chunk-title, .xdz-chunk-dmg-value input, .xdz-chunk-desc {
+      color: $c;
+      border-bottom-color: rgba($c, 0.4);
+      &:focus { border-bottom-color: $c; }
+    }
+    .xdz-chunk-hp-text, .xdz-chunk-damage-text, .xdz-chunk-desc-text { color: rgba($c, 0.85); }
+    .xdz-chunk-hp-label:hover { color: $c; text-shadow: 0 0 6px rgba($c, 0.6); }
+    .xdz-chunk-hp-inputs { color: rgba($c, 0.75); input { color: $c; border-bottom-color: rgba($c, 0.4); &:focus { border-bottom-color: $c; } } }
+  }
+}

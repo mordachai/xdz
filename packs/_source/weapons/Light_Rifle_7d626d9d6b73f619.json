@@ -1,0 +1,50 @@
+{
+  "name": "Light Rifle",
+  "type": "weapon",
+  "_id": "7d626d9d6b73f619",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "equipped": false,
+    "discardOthersOnEquip": false,
+    "destroyDie": "1d6",
+    "upgradeDie": "1d10",
+    "rules": "",
+    "description": "Light, accurate, dependable. +3 to the destroy roll.",
+    "ammoLabel": "Rounds",
+    "ammoDescription": "",
+    "ammo": {
+      "value": 3,
+      "max": 3
+    },
+    "secondary": {
+      "label": "",
+      "die": "",
+      "description": "",
+      "value": 0,
+      "max": 0
+    },
+    "damaged": {
+      "value": 0,
+      "max": 6
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 400000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7d626d9d6b73f619"
+}

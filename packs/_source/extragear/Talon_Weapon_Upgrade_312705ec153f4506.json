@@ -1,0 +1,29 @@
+{
+  "name": "Talon Weapon Upgrade",
+  "type": "gear",
+  "_id": "312705ec153f4506",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Your primary weapon deals D8 destroy damage instead of its usual die."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!312705ec153f4506"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Barricade",
+  "type": "gear",
+  "_id": "xdzAsset2Barrcad",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Roll 2. Place where two Locations meet to permanently block that door."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 200000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xdzAsset2Barrcad"
+}

@@ -85,7 +85,7 @@
   .xdz-field { flex: 1; }
 }
 
-.xdz-field-row-baseline { align-items: baseline; }
+.xdz-field-row-baseline { align-items: flex-end; }
 
 .xdz-field-label {
   @extend %xdz-display-text;

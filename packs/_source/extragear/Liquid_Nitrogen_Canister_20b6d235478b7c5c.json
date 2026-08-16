@@ -1,0 +1,29 @@
+{
+  "name": "Liquid Nitrogen Canister",
+  "type": "gear",
+  "_id": "20b6d235478b7c5c",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 3,
+    "description": "Instantly freeze a lock or small piece of metal."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2800000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!20b6d235478b7c5c"
+}

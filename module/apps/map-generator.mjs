@@ -124,16 +124,17 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
 
   /** Next unused "Locations X" letter, scanning existing scene names A-Z. */
   static suggestName() {
+    const base = game.i18n.localize('XDZ.MapGenerator.LocationsSceneName');
     const used = new Set(
       game.scenes
-        .filter((s) => /^Locations [A-Z]$/.test(s.name))
+        .filter((s) => new RegExp(`^${base} [A-Z]$`).test(s.name))
         .map((s) => s.name.slice(-1)),
     );
     for (let i = 0; i < 26; i++) {
       const letter = String.fromCharCode(65 + i);
-      if (!used.has(letter)) return `Locations ${letter}`;
+      if (!used.has(letter)) return game.i18n.format('XDZ.MapGenerator.LocationsSceneNameLetter', { letter });
     }
-    return 'Locations';
+    return base;
   }
 
   static async _onSubmit(event, form, formData) {
@@ -336,7 +337,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
         strokeColor: AREA_COLORS[(area - 1) % AREA_COLORS.length],
         strokeWidth: 8,
         strokeAlpha: 0.15,
-        text: `Area ${area}`,
+        text: game.i18n.format('XDZ.MapGenerator.Area', { area }),
         textColor: AREA_COLORS[(area - 1) % AREA_COLORS.length],
       };
     });
@@ -360,7 +361,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     ];
     const scenes = [];
     for (const { letter, type, style } of combos) {
-      scenes.push(await MapGenerator.build({ type, style, name: `Locations ${letter}` }));
+      scenes.push(await MapGenerator.build({ type, style, name: game.i18n.format('XDZ.MapGenerator.LocationsSceneNameLetter', { letter }) }));
     }
     return scenes;
   }

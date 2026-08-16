@@ -1,0 +1,29 @@
+{
+  "name": "Motion Tracker",
+  "type": "gear",
+  "_id": "463ef39451c764ce",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "On a successful Systems roll, locate all moving XENOS up to FAR range. Does not read elevation of targets."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!463ef39451c764ce"
+}

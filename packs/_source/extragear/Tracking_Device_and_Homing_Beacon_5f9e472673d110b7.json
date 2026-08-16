@@ -1,0 +1,29 @@
+{
+  "name": "Tracking Device and Homing Beacon",
+  "type": "gear",
+  "_id": "5f9e472673d110b7",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Provide the homing beacon to a person, or place it in a LOCATION. Always able to find that person or LOCATION."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4500000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!5f9e472673d110b7"
+}

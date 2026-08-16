@@ -1,0 +1,29 @@
+{
+  "name": "Schematics Datapad",
+  "type": "gear",
+  "_id": "a66684c4bcb543ef",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "On a successful Systems roll, instantly know the location to travel, structural weaknesses, ambush points, or other data in any structure."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2600000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!a66684c4bcb543ef"
+}

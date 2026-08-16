@@ -94,10 +94,30 @@
   }
 
   .xdz-journal-loc {
-    display: inline-block;
     color: $xdz-crt-amber;
     font-weight: 700;
     text-shadow: 0 0 4px rgba($xdz-crt-amber, 0.7);
+  }
+}
+
+// <Location> tags double as pan-to-location buttons (mission-rolls.mjs's
+// locTag), rendered both here and inside the escalation chat card — reset
+// lives unscoped so it applies in both places; the amber color above is
+// journal-only, matching the chat card's plain (un-highlighted) look.
+.xdz-journal-loc {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  text-underline-offset: 0.15em;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline dotted;
   }
 }
 

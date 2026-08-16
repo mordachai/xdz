@@ -1,6 +1,7 @@
 /** Finds or creates the "Mission Objectives" JournalEntry that MissionGenerator/escalation-roll log into. */
 export async function getMissionJournal() {
-  return game.journal.getName('Mission Objectives') ?? JournalEntry.create({ name: 'Mission Objectives' });
+  const name = game.i18n.localize('XDZ.MissionGenerator.JournalName');
+  return game.journal.getName(name) ?? JournalEntry.create({ name });
 }
 
 /** Appends a new text page (pre-built inner HTML) to `journal`, sorted after every existing page. */

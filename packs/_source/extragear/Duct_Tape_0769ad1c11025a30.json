@@ -1,0 +1,29 @@
+{
+  "name": "Duct Tape",
+  "type": "gear",
+  "_id": "0769ad1c11025a30",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Duct tape 2 weapons together. Roll double damage with the combined weapon."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4600000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!0769ad1c11025a30"
+}

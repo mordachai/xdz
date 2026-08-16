@@ -16,6 +16,10 @@
       <input type="radio" data-action="toggleEquip" {{#if system.equipped}}checked{{/if}}>
       <span></span>
     </label>
+
+    {{#if removable}}
+      <a class="xdz-item-delete xdz-weapon-delete" data-action="itemDelete"><i class="fa-solid fa-trash"></i></a>
+    {{/if}}
   </div>
 
   <div class="xdz-weapon-body">

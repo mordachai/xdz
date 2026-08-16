@@ -1,0 +1,50 @@
+{
+  "name": "Autocannons",
+  "type": "weapon",
+  "_id": "b312c254173601fb",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "equipped": false,
+    "discardOthersOnEquip": false,
+    "destroyDie": "1d6",
+    "upgradeDie": "1d8",
+    "rules": "",
+    "description": "Deploy two automated guns once per MISSION. Each has 1 HEART and 1D6 bursts; each burst destroys one HEART of a XENO.",
+    "ammoLabel": "Bursts",
+    "ammoDescription": "",
+    "ammo": {
+      "value": 6,
+      "max": 6
+    },
+    "secondary": {
+      "label": "",
+      "die": "",
+      "description": "",
+      "value": 0,
+      "max": 0
+    },
+    "damaged": {
+      "value": 0,
+      "max": 6
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!b312c254173601fb"
+}

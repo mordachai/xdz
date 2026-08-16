@@ -1,0 +1,29 @@
+{
+  "name": "Ability: Take-Charge",
+  "type": "gear",
+  "_id": "236d7fd19317f4ed",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "All of your rolls are EASY for the next 4 ROUNDS, then this ability is disabled for 4 ROUNDS."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1800000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!236d7fd19317f4ed"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Assault Shield",
+  "type": "gear",
+  "_id": "e2728e934edba28b",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "+3 Armor; sacrifice to absorb all damage from one attack."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3000000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!e2728e934edba28b"
+}

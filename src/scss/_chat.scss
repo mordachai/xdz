@@ -1,22 +1,8 @@
 // Chat cards — Nostromo terminal / motion-tracker readout. Distinct from the
 // warm paper-dossier sheet theme: black CRT housing, phosphor-green text,
 // scanline overlay. Dice results show the bare number for now; a die-face
-// background image gets layered in later.
-$xdz-crt-bg: #030d08;
-$xdz-crt-bg-panel: #071f13;
-$xdz-crt-green: #4dff8a;
-$xdz-crt-green-dim: #1f8a4c;
-$xdz-crt-amber: #ffb000;
-$xdz-crt-red: #ff4b3e;
-
-// Theme swaps for the CRT readout (settable via the "Sheet Theme" world
-// setting, xdz.sheetTheme). Green (above) is the default/unthemed look.
-$xdz-crt-blue: #4dc3ff;
-$xdz-crt-blue-dim: #1f6f8a;
-$xdz-crt-orange: #ffa64d;
-$xdz-crt-orange-dim: #8a551f;
-$xdz-crt-white: #f2f5f2;
-$xdz-crt-white-dim: #8a938a;
+// background image gets layered in later. CRT palette lives in _variables.scss
+// (shared with the Xeno sheet, which reuses this same "old screen" look).
 
 .xdz-chatcard {
   position: relative;
@@ -165,6 +151,100 @@ $xdz-crt-white-dim: #8a938a;
   &::after { content: '}'; }
 }
 
+// Secondary count shown beside a main digits readout (e.g. spawn card's
+// <3> location count next to the [11] xeno total) — smaller and dimmer so
+// the primary number still reads first.
+.xdz-chatcard-digits-angle {
+  font-size: 1.1rem;
+  opacity: 0.7;
+  margin-left: 0.5rem;
+
+  &::before { content: '<'; }
+  &::after { content: '>'; }
+}
+
+// SPAWN card — one block per xeno group: a slash-fill divider banner
+// carrying the group's count as its title, a row of raw location-roll
+// dice, and the resolved area/room/direction labels beneath them.
+.xdz-chatcard-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0.3rem;
+}
+
+.xdz-chatcard-divider-fill {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: rgba($xdz-crt-green, 0.3);
+}
+
+.xdz-chatcard-divider-title {
+  @extend %xdz-display-text;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 6px rgba($xdz-crt-green, 0.7);
+}
+
+.xdz-chatcard-spawn-group + .xdz-chatcard-spawn-group {
+  margin-top: 0.1rem;
+}
+
+// Dice row and resolved-label row are the same grid, one below the other
+// (dice fill row 1, labels fill row 2) so each label lines up under its die.
+.xdz-chatcard-spawn-grid {
+  display: grid;
+  align-items: baseline;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  row-gap: 0.05rem;
+  margin-bottom: 0.15rem;
+}
+
+.xdz-chatcard-spawn-die {
+  text-align: center;
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 4px rgba($xdz-crt-green, 0.7);
+}
+
+.xdz-chatcard-spawn-label {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba($xdz-crt-green, 0.75);
+}
+
+// Location-name cell doubles as a pan-to-location button — no button chrome,
+// no color change, just a dotted underline on hover so it reads as clickable.
+.xdz-chatcard-spawn-locbtn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  text-underline-offset: 0.15em;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline dotted;
+  }
+}
+
 .xdz-chatcard-status {
   @extend %xdz-display-text;
   text-align: center;
@@ -281,6 +361,11 @@ $xdz-chatcard-themes: (
     .xdz-chatcard-digits { color: $c; text-shadow: 0 0 4px rgba($c, 0.9), 0 0 14px rgba($c, 0.5); }
     .xdz-chatcard-status.xdz-success { color: $c; text-shadow: 0 0 8px rgba($c, 0.8); }
     .xdz-chatcard-desc { color: rgba($c, 0.85); }
+
+    .xdz-chatcard-divider-fill { color: rgba($c, 0.3); }
+    .xdz-chatcard-divider-title { color: $c; text-shadow: 0 0 6px rgba($c, 0.7); }
+    .xdz-chatcard-spawn-die { color: $c; text-shadow: 0 0 4px rgba($c, 0.7); }
+    .xdz-chatcard-spawn-label { color: rgba($c, 0.75); }
 
     .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
       color: $c;

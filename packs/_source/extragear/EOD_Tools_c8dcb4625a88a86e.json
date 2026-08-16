@@ -1,0 +1,29 @@
+{
+  "name": "EOD Tools",
+  "type": "gear",
+  "_id": "c8dcb4625a88a86e",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Disable all explosive devices with an Easy Systems roll."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!c8dcb4625a88a86e"
+}
