@@ -2,7 +2,7 @@
   "id": "xdz",
   "title": "Xeno Dead Zone",
   "description": "Non-official Xeno Dead Zone system for Foundry VTT. A micro-setting, adventure toolkit, and GM-less bug-hunt system for 1-4 players. Aliens/Colonial-Marines tone.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     {
       "name": "Gus",
@@ -44,35 +44,40 @@
       "label": "NPCS",
       "path": "packs/npcs",
       "type": "Actor",
-      "system": "xdz"
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_npcs.webp"
     },
     {
       "name": "vehicles",
       "label": "VEHICLES",
       "path": "packs/vehicles",
       "type": "Actor",
-      "system": "xdz"
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_vehicles.webp"
     },
     {
       "name": "assets",
       "label": "ASSETS",
       "path": "packs/assets",
       "type": "Item",
-      "system": "xdz"
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_assets.webp"
     },
     {
       "name": "weapons",
       "label": "WEAPONS",
       "path": "packs/weapons",
       "type": "Item",
-      "system": "xdz"
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_weapons.webp"
     },
     {
       "name": "extragear",
       "label": "EXTRA GEAR",
       "path": "packs/extragear",
       "type": "Item",
-      "system": "xdz"
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_extragear.webp"
     }
   ],
   "flags": {

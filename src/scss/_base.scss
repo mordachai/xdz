@@ -1,5 +1,13 @@
 .application.xdz .window-content { padding: 0; overflow-x: hidden; }
 
+// Compendium sidebar entries: only xdz-system packs (data-pack "xdz.*")
+// get the right-aligned, smaller name — other systems' packs untouched.
+.compendium-sidebar .compendium[data-pack^="xdz."] .compendium-name {
+  text-align: right;
+  font-size: 0.7em;
+  padding: 4px 8px;
+}
+
 // Compact commando sheet is fixed-width/auto-height — no legitimate
 // horizontal/vertical overflow — so let its hint tooltips paint past the
 // window edge instead of being clipped by the frame.

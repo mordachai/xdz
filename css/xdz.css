@@ -25,6 +25,12 @@
   overflow-x: hidden;
 }
 
+.compendium-sidebar .compendium[data-pack^="xdz."] .compendium-name {
+  text-align: right;
+  font-size: 0.7em;
+  padding: 4px 8px;
+}
+
 .application.xdz:has(.xdz-commando-compact) {
   overflow: visible !important;
   contain: none !important;
