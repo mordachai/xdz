@@ -2,7 +2,7 @@
   "id": "xdz",
   "title": "Xeno Dead Zone",
   "description": "Non-official Xeno Dead Zone system for Foundry VTT. A micro-setting, adventure toolkit, and GM-less bug-hunt system for 1-4 players. Aliens/Colonial-Marines tone.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "authors": [
     {
       "name": "Gus",
@@ -145,7 +145,7 @@
   "socket": true,
   "url": "https://github.com/mordachai/xdz",
   "manifest": "https://github.com/mordachai/xdz/releases/latest/download/system.json",
-  "download": "https://github.com/mordachai/xdz/releases/download/v0.1.1/system.zip",
+  "download": "https://github.com/mordachai/xdz/releases/download/v1.0.4/system.zip",
   "readme": "https://github.com/mordachai/xdz/blob/main/README.md",
   "bugs": "https://github.com/mordachai/xdz/issues",
   "license": "LICENSE"

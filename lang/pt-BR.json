@@ -45,9 +45,9 @@
 
     "Actor": {
       "Name": "Nome:",
-      "Rank": "Patente:",
+      "Rank": "Pat.:",
       "Story": "História:",
-      "Quirk": "Peculiaridade:",
+      "Quirk": "Pec.:",
       "Injury": "Ferimento",
       "InjuryHint1": "Uma vez caído, sofra 1 ferimento a cada turno.",
       "InjuryHint2": "Aliados curam 1 ferimento com um teste de Medicina.",

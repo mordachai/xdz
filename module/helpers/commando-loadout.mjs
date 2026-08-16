@@ -73,7 +73,7 @@ export const COMMANDO_LOADOUT = [
       rules: '<p>Backup weapon — always on hand even when a primary is destroyed.</p>',
       ammo: { value: 3, max: 3 },
       secondary: { label: '', die: '', description: '', value: 0, max: 0 },
-      damaged: { value: 0, max: 6 },
+      damaged: { value: 0, max: 9 },
     },
   },
 ];
