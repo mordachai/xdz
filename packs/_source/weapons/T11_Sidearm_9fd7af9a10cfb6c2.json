@@ -2,12 +2,12 @@
   "name": "T11 Sidearm",
   "type": "weapon",
   "_id": "9fd7af9a10cfb6c2",
-  "img": "icons/svg/sword.svg",
+  "img": "systems/xdz/assets/ui/Sidearm.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,
     "destroyDie": "1d4",
-    "upgradeDie": "1d6",
+    "upgradeDie": "1d4",
     "rules": "Backup weapon — always on hand even when a primary is destroyed.",
     "description": "Standard-issue Commando sidearm. Compact, reliable, 20-round mag.",
     "ammoLabel": "Rounds",
@@ -25,7 +25,7 @@
     },
     "damaged": {
       "value": 0,
-      "max": 6
+      "max": 10
     }
   },
   "effects": [],

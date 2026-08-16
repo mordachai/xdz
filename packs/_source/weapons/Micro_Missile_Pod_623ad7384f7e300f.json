@@ -2,7 +2,7 @@
   "name": "Micro-Missile Pod",
   "type": "weapon",
   "_id": "623ad7384f7e300f",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

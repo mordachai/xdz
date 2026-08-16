@@ -26,9 +26,12 @@
 }
 
 .compendium-sidebar .compendium[data-pack^="xdz."] .compendium-name {
-  text-align: right;
   font-size: 0.7em;
   padding: 4px 8px;
+  opacity: 0.7;
+}
+.compendium-sidebar .compendium[data-pack^="xdz."] .compendium-name:hover {
+  opacity: 1;
 }
 
 .application.xdz:has(.xdz-commando-compact) {
@@ -41,7 +44,7 @@
 }
 
 .xdz-hud-label,
-.xdz-hud-label-input, .chat-message:has(.xdz-chatcard) .message-sender, .xdz-chatcard-status, .xdz-chatcard-divider-title, .xdz-chatcard-tag, .xdz-chatcard-title, .xdz-item-name, .xdz-chunk-title-link, .xdz-chunk-add, .xdz-chunk-edit-toggle, .xdz-briefing-num, .xdz-briefing-title, .xdz-mode-toggle, .xdz-commando-compact .xdz-ecg-flag, .xdz-weapon-name, .xdz-loadout-title, .xdz-status-flag, .xdz-block-title, .xdz-btn, .xdz-field-label {
+.xdz-hud-label-input, .chat-message:has(.xdz-chatcard) .message-sender, .xdz-chatcard-table-name, .xdz-chatcard-status, .xdz-chatcard-divider-title, .xdz-chatcard-tag, .xdz-chatcard-title, .xdz-item-name, .xdz-chunk-title-link, .xdz-chunk-add, .xdz-chunk-edit-toggle, .xdz-briefing-num, .xdz-briefing-title, .xdz-mode-toggle, .xdz-commando-compact .xdz-ecg-flag, .xdz-weapon-name, .xdz-loadout-title, .xdz-status-flag, .xdz-block-title, .xdz-btn, .xdz-field-label {
   font-family: "XDZ Audiowide", "Arial Narrow", "Oswald", "Segoe UI Semibold", sans-serif;
   text-transform: uppercase;
 }
@@ -2788,6 +2791,25 @@
   position: relative;
 }
 
+.xdz-chatcard .content-link,
+.xdz-chatcard .inline-roll {
+  background: rgba(77, 255, 138, 0.12);
+  border: 1px solid rgba(77, 255, 138, 0.5);
+  border-radius: 2px;
+  color: #4dff8a;
+  text-shadow: none;
+}
+.xdz-chatcard .content-link i,
+.xdz-chatcard .inline-roll i {
+  color: inherit;
+}
+
+.xdz-chatcard .content-link:hover,
+.xdz-chatcard .inline-roll:hover {
+  background: rgba(77, 255, 138, 0.22);
+  cursor: pointer;
+}
+
 .xdz-chatcard-line {
   font-size: 0.72rem;
   letter-spacing: 0.03em;
@@ -2982,6 +3004,62 @@
   margin-top: 0.15rem;
 }
 
+.xdz-chatcard-table-summary {
+  font-family: "XDZ Teko", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  color: rgba(77, 255, 138, 0.85);
+  font-style: italic;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px dashed rgba(77, 255, 138, 0.35);
+}
+
+.xdz-chatcard-table-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.xdz-chatcard-table-result + .xdz-chatcard-table-result {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(77, 255, 138, 0.35);
+}
+
+.xdz-chatcard-table-icon {
+  width: 2.4rem;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 2px;
+  flex: 0 0 auto;
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(4);
+}
+
+.xdz-chatcard-table-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #4dff8a;
+  text-shadow: 0 0 6px rgba(77, 255, 138, 0.7);
+}
+
+.xdz-chatcard .xdz-chatcard-table-name-link .content-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-shadow: inherit;
+}
+.xdz-chatcard .xdz-chatcard-table-name-link .content-link i {
+  color: inherit;
+}
+.xdz-chatcard .xdz-chatcard-table-name-link .content-link:hover {
+  text-decoration: underline dotted;
+}
+
 .xdz-damage-row {
   display: flex;
   gap: 0.4rem;
@@ -3066,6 +3144,14 @@
 .xdz-chatcard[data-theme=blue] .xdz-chatcard-line strong {
   color: #4dc3ff;
 }
+.xdz-chatcard[data-theme=blue] .content-link, .xdz-chatcard[data-theme=blue] .inline-roll {
+  background: rgba(77, 195, 255, 0.12);
+  border-color: rgba(77, 195, 255, 0.5);
+  color: #4dc3ff;
+}
+.xdz-chatcard[data-theme=blue] .content-link:hover, .xdz-chatcard[data-theme=blue] .inline-roll:hover {
+  background: rgba(77, 195, 255, 0.22);
+}
 .xdz-chatcard[data-theme=blue] .xdz-chatcard-readout {
   border-top-color: rgba(77, 195, 255, 0.35);
   border-bottom-color: rgba(77, 195, 255, 0.35);
@@ -3094,6 +3180,20 @@
 }
 .xdz-chatcard[data-theme=blue] .xdz-chatcard-spawn-label {
   color: rgba(77, 195, 255, 0.75);
+}
+.xdz-chatcard[data-theme=blue] .xdz-chatcard-table-summary {
+  color: rgba(77, 195, 255, 0.65);
+  border-bottom-color: rgba(77, 195, 255, 0.35);
+}
+.xdz-chatcard[data-theme=blue] .xdz-chatcard-table-result + .xdz-chatcard-table-result {
+  border-top-color: rgba(77, 195, 255, 0.35);
+}
+.xdz-chatcard[data-theme=blue] .xdz-chatcard-table-icon {
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(190deg) saturate(4);
+}
+.xdz-chatcard[data-theme=blue] .xdz-chatcard-table-name {
+  color: #4dc3ff;
+  text-shadow: 0 0 6px rgba(77, 195, 255, 0.7);
 }
 .xdz-chatcard[data-theme=blue] .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
   color: #4dc3ff;
@@ -3145,6 +3245,14 @@
 .xdz-chatcard[data-theme=orange] .xdz-chatcard-line strong {
   color: #ffa64d;
 }
+.xdz-chatcard[data-theme=orange] .content-link, .xdz-chatcard[data-theme=orange] .inline-roll {
+  background: rgba(255, 166, 77, 0.12);
+  border-color: rgba(255, 166, 77, 0.5);
+  color: #ffa64d;
+}
+.xdz-chatcard[data-theme=orange] .content-link:hover, .xdz-chatcard[data-theme=orange] .inline-roll:hover {
+  background: rgba(255, 166, 77, 0.22);
+}
 .xdz-chatcard[data-theme=orange] .xdz-chatcard-readout {
   border-top-color: rgba(255, 166, 77, 0.35);
   border-bottom-color: rgba(255, 166, 77, 0.35);
@@ -3173,6 +3281,20 @@
 }
 .xdz-chatcard[data-theme=orange] .xdz-chatcard-spawn-label {
   color: rgba(255, 166, 77, 0.75);
+}
+.xdz-chatcard[data-theme=orange] .xdz-chatcard-table-summary {
+  color: rgba(255, 166, 77, 0.65);
+  border-bottom-color: rgba(255, 166, 77, 0.35);
+}
+.xdz-chatcard[data-theme=orange] .xdz-chatcard-table-result + .xdz-chatcard-table-result {
+  border-top-color: rgba(255, 166, 77, 0.35);
+}
+.xdz-chatcard[data-theme=orange] .xdz-chatcard-table-icon {
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(0deg) saturate(4);
+}
+.xdz-chatcard[data-theme=orange] .xdz-chatcard-table-name {
+  color: #ffa64d;
+  text-shadow: 0 0 6px rgba(255, 166, 77, 0.7);
 }
 .xdz-chatcard[data-theme=orange] .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
   color: #ffa64d;
@@ -3224,6 +3346,14 @@
 .xdz-chatcard[data-theme=white] .xdz-chatcard-line strong {
   color: #f2f5f2;
 }
+.xdz-chatcard[data-theme=white] .content-link, .xdz-chatcard[data-theme=white] .inline-roll {
+  background: rgba(242, 245, 242, 0.12);
+  border-color: rgba(242, 245, 242, 0.5);
+  color: #f2f5f2;
+}
+.xdz-chatcard[data-theme=white] .content-link:hover, .xdz-chatcard[data-theme=white] .inline-roll:hover {
+  background: rgba(242, 245, 242, 0.22);
+}
 .xdz-chatcard[data-theme=white] .xdz-chatcard-readout {
   border-top-color: rgba(242, 245, 242, 0.35);
   border-bottom-color: rgba(242, 245, 242, 0.35);
@@ -3252,6 +3382,20 @@
 }
 .xdz-chatcard[data-theme=white] .xdz-chatcard-spawn-label {
   color: rgba(242, 245, 242, 0.75);
+}
+.xdz-chatcard[data-theme=white] .xdz-chatcard-table-summary {
+  color: rgba(242, 245, 242, 0.65);
+  border-bottom-color: rgba(242, 245, 242, 0.35);
+}
+.xdz-chatcard[data-theme=white] .xdz-chatcard-table-result + .xdz-chatcard-table-result {
+  border-top-color: rgba(242, 245, 242, 0.35);
+}
+.xdz-chatcard[data-theme=white] .xdz-chatcard-table-icon {
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(0deg) saturate(4);
+}
+.xdz-chatcard[data-theme=white] .xdz-chatcard-table-name {
+  color: #f2f5f2;
+  text-shadow: 0 0 6px rgba(242, 245, 242, 0.7);
 }
 .xdz-chatcard[data-theme=white] .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
   color: #f2f5f2;

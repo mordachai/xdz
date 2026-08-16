@@ -2,7 +2,7 @@ import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
 import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
 import { TnTracker, RoundTimer, MapGenerator } from './apps/_module.mjs';
-import { rollEscalation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm } from './macros/_module.mjs';
+import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
@@ -11,7 +11,7 @@ globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
   apps: { TnTracker, RoundTimer, MapGenerator, tnTracker: null, timers: new Map() },
-  macros: { rollEscalation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm },
+  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm },
   models,
   config: XDZ,
 };
@@ -158,6 +158,8 @@ Hooks.once('init', function () {
     'systems/xdz/templates/chat/check-card.hbs',
     'systems/xdz/templates/chat/escalation-card.hbs',
     'systems/xdz/templates/chat/spawn-card.hbs',
+    'systems/xdz/templates/chat/location-card.hbs',
+    'systems/xdz/templates/chat/table-card.hbs',
     'systems/xdz/templates/apps/map-generator.hbs',
     'systems/xdz/templates/journal/mission-objectives-page.hbs',
     'systems/xdz/templates/journal/escalation-page.hbs',
@@ -271,7 +273,9 @@ Hooks.on('renderJournalDirectory', (app, html) => {
 // "Roll Damage" is a one-time base damage die and locks itself after use.
 // "Spray and Pray" adds extra damage on top and stays rollable across
 // multiple clicks, limited only by remaining ammo.
-Hooks.on('renderChatMessageHTML', (message, html) => {
+Hooks.on('renderChatMessageHTML', async (message, html) => {
+  await reskinTableDraw(message, html);
+
   html.querySelectorAll('[data-action="xdzRollDamage"]').forEach((button) => {
     button.addEventListener('click', async (event) => {
       event.preventDefault();
@@ -299,6 +303,49 @@ Hooks.on('renderChatMessageHTML', (message, html) => {
 
   wireLocationIdLinks(html);
 });
+
+// Native RollTable draws (GM clicking "Draw" on a table sheet, e.g. the
+// ASSETS or COMMANDO QUIRK tables) render Foundry's default plain-text
+// template. This reskins that message into the same CRT chat-card look as
+// the rest of the system's rolls, once it's in the DOM — the flag core
+// stores for the source table has switched between a bare id and a full
+// UUID across Foundry versions, so both are tried. Silently no-ops for any
+// chat message that isn't a table draw.
+async function reskinTableDraw(message, html) {
+  const flag = message.getFlag('core', 'RollTable');
+  if (!flag) return;
+  const table = (await fromUuid(flag).catch(() => null)) ?? game.tables.get(flag);
+  if (!table) return;
+
+  const total = message.rolls?.[0]?.total;
+  const results = total === undefined ? [] : table.getResultsForRoll(total);
+  if (!results.length) return;
+
+  const enrichHTML = foundry.applications.ux.TextEditor.implementation.enrichHTML;
+  const enriched = await Promise.all(
+    results.map(async (result) => {
+      const label = result.name ?? result.text;
+      return {
+        name: result.documentUuid
+          ? await enrichHTML(`@UUID[${result.documentUuid}]{${label}}`, { relativeTo: table })
+          : label,
+        isLink: !!result.documentUuid,
+        img: result.icon ?? result.img,
+        description: result.description ? await enrichHTML(result.description, { relativeTo: table }) : '',
+      };
+    }),
+  );
+  const summary = table.description ? await enrichHTML(table.description, { relativeTo: table }) : '';
+
+  const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/table-card.hbs', {
+    tableName: table.name,
+    total,
+    summary,
+    results: enriched,
+  });
+  const target = html.querySelector('.message-content') ?? html;
+  target.innerHTML = content;
+}
 
 // Objective/escalation `<Location>` tags (see mission-rolls.mjs's locTag)
 // only know a locationId, not a point — the map that had a matching tile

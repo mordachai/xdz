@@ -2,7 +2,7 @@
   "name": "Remote Mines",
   "type": "weapon",
   "_id": "890321508cd0452d",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

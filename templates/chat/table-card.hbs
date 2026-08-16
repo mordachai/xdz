@@ -1,0 +1,19 @@
+<div class="xdz-chatcard xdz-chatcard-table">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{tableName}}</span>
+    {{#if total}}<span class="xdz-chatcard-tag">{{total}}</span>{{/if}}
+  </div>
+  <div class="xdz-chatcard-body">
+    {{#if summary}}<div class="xdz-chatcard-table-summary">{{{summary}}}</div>{{/if}}
+    {{#each results}}
+    <div class="xdz-chatcard-table-result">
+      {{#if img}}<img class="xdz-chatcard-table-icon" src="{{img}}" alt="">{{/if}}
+      <div class="xdz-chatcard-table-info">
+        <div class="xdz-chatcard-table-name{{#if isLink}} xdz-chatcard-table-name-link{{/if}}">{{{name}}}</div>
+        {{#if description}}<div class="xdz-chatcard-desc">{{{description}}}</div>{{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>

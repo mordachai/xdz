@@ -2,7 +2,7 @@
   "name": "Gel Explosive",
   "type": "weapon",
   "_id": "2072dc895fc8d609",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

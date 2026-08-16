@@ -1,0 +1,28 @@
+{
+  "name": "Spawn Xenos",
+  "type": "script",
+  "_id": "9cdb314c54f8806e",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "systems/xdz/assets/images/Xeno_2.webp",
+  "scope": "global",
+  "command": "await xdz.macros.spawnXenos();",
+  "folder": null,
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!9cdb314c54f8806e"
+}

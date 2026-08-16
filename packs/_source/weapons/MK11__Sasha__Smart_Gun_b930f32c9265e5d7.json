@@ -2,7 +2,7 @@
   "name": "MK11 \"Sasha\" Smart Gun",
   "type": "weapon",
   "_id": "b930f32c9265e5d7",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

@@ -2,7 +2,7 @@
   "name": "Light Rifle",
   "type": "weapon",
   "_id": "7d626d9d6b73f619",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

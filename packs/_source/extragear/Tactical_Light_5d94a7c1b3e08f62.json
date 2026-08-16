@@ -1,0 +1,29 @@
+{
+  "name": "Tactical Light",
+  "type": "gear",
+  "_id": "5d94a7c1b3e08f62",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Weapon-mounted light. Illuminates a small area ahead, cuts through darkness at close range."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!5d94a7c1b3e08f62"
+}

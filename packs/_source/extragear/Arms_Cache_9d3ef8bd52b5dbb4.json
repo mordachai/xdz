@@ -1,0 +1,29 @@
+{
+  "name": "Arms Cache",
+  "type": "gear",
+  "_id": "9d3ef8bd52b5dbb4",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "A hidden stash of ammo and spare parts. Refill 1 weapon's AMMO to max."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1750000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9d3ef8bd52b5dbb4"
+}

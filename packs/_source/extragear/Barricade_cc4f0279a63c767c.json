@@ -1,0 +1,29 @@
+{
+  "name": "Barricade",
+  "type": "gear",
+  "_id": "cc4f0279a63c767c",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Deployable cover thrown up fast. COMMANDOS behind it add 1D4 to a DODGE roll."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1760000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cc4f0279a63c767c"
+}

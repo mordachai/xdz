@@ -2,7 +2,7 @@
   "name": "Autocannons",
   "type": "weapon",
   "_id": "b312c254173601fb",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

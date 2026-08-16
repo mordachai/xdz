@@ -2,7 +2,7 @@
   "name": "Bolt Cannon",
   "type": "weapon",
   "_id": "7920b085ce8e4702",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

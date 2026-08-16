@@ -1,0 +1,29 @@
+{
+  "name": "Night Vision Goggles",
+  "type": "gear",
+  "_id": "b1e6d0a247c9f358",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "See clearly in total darkness. No penalty for low-light or dark conditions."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5800000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!b1e6d0a247c9f358"
+}

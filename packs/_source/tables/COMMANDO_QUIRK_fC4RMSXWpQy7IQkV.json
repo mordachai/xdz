@@ -1,0 +1,549 @@
+{
+  "name": "COMMANDO QUIRK",
+  "description": "<p>Roll 1D20 to give a COMMANDO a personality quirk.</p>",
+  "results": [
+    {
+      "name": "1 - Chicken",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "QPLHRCs5ckzYFKJE",
+      "description": "This soldier isn't fooling anyone: he's scared to death of most everything",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.QPLHRCs5ckzYFKJE"
+    },
+    {
+      "name": "2 - Sell Out",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "Sa6GnMrb1FBODwLN",
+      "description": "No one knows it at first, but this one is a company scab",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.Sa6GnMrb1FBODwLN"
+    },
+    {
+      "name": "3 - Gettin' Paid",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "0nHJc6It9vJMbWyd",
+      "description": "Just here for the shares. Can we discuss the bonus situation?",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.0nHJc6It9vJMbWyd"
+    },
+    {
+      "name": "4 - Two Weeks",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "JbclYPnLi7KqLXf5",
+      "description": "Due to retire in two weeks, this soldier doesn't let anyone forget it",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.JbclYPnLi7KqLXf5"
+    },
+    {
+      "name": "5 - Scrappy",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "0dI74kybMUjclX6d",
+      "description": "This grunt never gives up, never sweats, always on mission",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.0dI74kybMUjclX6d"
+    },
+    {
+      "name": "6 - Country",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "xDtLwiCQQOEDdoAK",
+      "description": "Accent thick as molasses and all the dang ol' slang to go wit'it",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.xDtLwiCQQOEDdoAK"
+    },
+    {
+      "name": "7 - Specs",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "_id": "zLfCLOD0BHdhYnAd",
+      "description": "Glasses thick as coke bottles. Keeps dropping the damn things",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.zLfCLOD0BHdhYnAd"
+    },
+    {
+      "name": "8 - Old School",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "_id": "PysIQREJWuuMoYaq",
+      "description": "Prefers to use pistols, shotguns, and bare fists",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.PysIQREJWuuMoYaq"
+    },
+    {
+      "name": "9 - Street",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "_id": "GhzO7sdezAHuHrDD",
+      "description": "Raised in the ghetto, still representin' it",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.GhzO7sdezAHuHrDD"
+    },
+    {
+      "name": "10 - Comics",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "_id": "W2V7c8DQ1Lj1ZGd8",
+      "description": "This soldier is always buried in a comic book at the weirdest moments",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.W2V7c8DQ1Lj1ZGd8"
+    },
+    {
+      "name": "11 - Sunny Side Up",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "_id": "sMwK1H1EYWvVmZHq",
+      "description": "A quintessential optimist, to the annoyance of all",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.sMwK1H1EYWvVmZHq"
+    },
+    {
+      "name": "12 - Pyro",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "_id": "2UWWkMBY6z1hSNhK",
+      "description": "Joined the corps to see it all burn, and generally gets his way",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.2UWWkMBY6z1hSNhK"
+    },
+    {
+      "name": "13 - Vet",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        13,
+        13
+      ],
+      "drawn": false,
+      "_id": "2HvxJYVpvmg0xpHW",
+      "description": "Old as dirt, tough as leather, seen it all",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.2HvxJYVpvmg0xpHW"
+    },
+    {
+      "name": "14 - Juicer",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        14,
+        14
+      ],
+      "drawn": false,
+      "_id": "eI0S7HuOsXjfJh1Z",
+      "description": "This grunt smuggled a vile of NUKE on the drop ship. A tweaker",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.eI0S7HuOsXjfJh1Z"
+    },
+    {
+      "name": "15 - Washout",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        15,
+        15
+      ],
+      "drawn": false,
+      "_id": "0oy0N0uHydLlsdmi",
+      "description": "Some folks make terrible soldiers, but wind up here anyway",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.0oy0N0uHydLlsdmi"
+    },
+    {
+      "name": "16 - Black Ops",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        16,
+        16
+      ],
+      "drawn": false,
+      "_id": "G6GjDUjoGX4LJtUq",
+      "description": "No talking, black gear, cool goggles, ninja style",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.G6GjDUjoGX4LJtUq"
+    },
+    {
+      "name": "17 - Hybrid",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        17,
+        17
+      ],
+      "drawn": false,
+      "_id": "URBn3PsMSgG91iLc",
+      "description": "The company has been dabbling in genetically altered warriors",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.URBn3PsMSgG91iLc"
+    },
+    {
+      "name": "18 - Tech",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        18,
+        18
+      ],
+      "drawn": false,
+      "_id": "JzyA45cgscHEYSKw",
+      "description": "No one better with wires and microchips. People? Nah. Pass.",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.JzyA45cgscHEYSKw"
+    },
+    {
+      "name": "19 - Native",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        19,
+        19
+      ],
+      "drawn": false,
+      "_id": "jH48gBZrntjZq8TC",
+      "description": "Prefers to use a knife and the 'old ways'",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.jH48gBZrntjZq8TC"
+    },
+    {
+      "name": "20 - Sarge",
+      "type": "text",
+      "img": "icons/svg/d20-black.svg",
+      "weight": 1,
+      "range": [
+        20,
+        20
+      ],
+      "drawn": false,
+      "_id": "ZUuAWqai72LWW1LG",
+      "description": "A glorious, loud-mouthed, cigar-chompin' boot in your ass",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!tables.results!fC4RMSXWpQy7IQkV.ZUuAWqai72LWW1LG"
+    }
+  ],
+  "formula": "1d20",
+  "img": "icons/svg/d20-black.svg",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_id": "fC4RMSXWpQy7IQkV",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786901164475,
+    "modifiedTime": 1786901164475,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!tables!fC4RMSXWpQy7IQkV"
+}

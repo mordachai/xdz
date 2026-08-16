@@ -1,0 +1,29 @@
+{
+  "name": "Drop Crate",
+  "type": "gear",
+  "_id": "46422c4c7827fbf5",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "A supply crate dropped in by evac. Contains 1D4 random ASSETS."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1780000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!46422c4c7827fbf5"
+}

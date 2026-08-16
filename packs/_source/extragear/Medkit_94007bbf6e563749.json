@@ -5,7 +5,7 @@
   "img": "icons/containers/boxes/crate-tech-silver.webp",
   "system": {
     "quantity": 1,
-    "description": "Heal a target using a Medical roll with D8 effort."
+    "description": "Heal a target using a Medical roll with D4 bonus."
   },
   "effects": [],
   "folder": null,

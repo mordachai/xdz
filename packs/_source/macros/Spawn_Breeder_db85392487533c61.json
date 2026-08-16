@@ -1,0 +1,28 @@
+{
+  "name": "Spawn Breeder",
+  "type": "script",
+  "_id": "db85392487533c61",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "icons/svg/skull.svg",
+  "scope": "global",
+  "command": "await xdz.macros.spawnBreeder();",
+  "folder": null,
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!db85392487533c61"
+}

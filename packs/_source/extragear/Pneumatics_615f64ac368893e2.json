@@ -1,0 +1,29 @@
+{
+  "name": "Pneumatics",
+  "type": "gear",
+  "_id": "615f64ac368893e2",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "A tank of compressed air for tools and rigs. Powers 1 MECHANIC roll with D4 bonus."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1770000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!615f64ac368893e2"
+}

@@ -2,7 +2,7 @@
   "name": "Combat Shotgun",
   "type": "weapon",
   "_id": "5d3d026f5d489cd8",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

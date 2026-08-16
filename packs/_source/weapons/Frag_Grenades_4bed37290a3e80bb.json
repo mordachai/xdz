@@ -2,7 +2,7 @@
   "name": "Frag Grenades",
   "type": "weapon",
   "_id": "4bed37290a3e80bb",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

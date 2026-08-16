@@ -75,6 +75,27 @@
   position: relative;
 }
 
+// Core enrichHTML output (@UUID content-links, [[/r ]] inline-roll pills)
+// ships with light-theme CSS vars (--content-link-background etc.) that
+// read as a pale grey blob against the black CRT housing — override to the
+// terminal palette wherever they land inside a card.
+.xdz-chatcard .content-link,
+.xdz-chatcard .inline-roll {
+  background: rgba($xdz-crt-green, 0.12);
+  border: 1px solid rgba($xdz-crt-green, 0.5);
+  border-radius: 2px;
+  color: $xdz-crt-green;
+  text-shadow: none;
+
+  i { color: inherit; }
+}
+
+.xdz-chatcard .content-link:hover,
+.xdz-chatcard .inline-roll:hover {
+  background: rgba($xdz-crt-green, 0.22);
+  cursor: pointer;
+}
+
 .xdz-chatcard-line {
   font-size: 0.72rem;
   letter-spacing: 0.03em;
@@ -267,6 +288,67 @@
   margin-top: 0.15rem;
 }
 
+// TABLE DRAW card — reskin of a native RollTable draw (see reskinTableDraw
+// in xdz.mjs). One row per drawn result: item icon beside name + description,
+// stacked when a table draws more than one result at once.
+.xdz-chatcard-table-summary {
+  font-family: $xdz-font-body;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  color: rgba($xdz-crt-green, 0.85);
+  font-style: italic;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px dashed rgba($xdz-crt-green, 0.35);
+}
+
+.xdz-chatcard-table-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.xdz-chatcard-table-result + .xdz-chatcard-table-result {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba($xdz-crt-green, 0.35);
+}
+
+.xdz-chatcard-table-icon {
+  width: 2.4rem;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 2px;
+  flex: 0 0 auto;
+  filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(70deg) saturate(4);
+}
+
+.xdz-chatcard-table-name {
+  @extend %xdz-display-text;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: $xdz-crt-green;
+  text-shadow: 0 0 6px rgba($xdz-crt-green, 0.7);
+}
+
+// Result linked to a real document (documentUuid set) — enriched @UUID
+// content-link, restyled to sit flush in the readout instead of Foundry's
+// default pill-with-icon look.
+.xdz-chatcard .xdz-chatcard-table-name-link .content-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-shadow: inherit;
+
+  i { color: inherit; }
+
+  &:hover { text-decoration: underline dotted; }
+}
+
 .xdz-damage-row {
   display: flex;
   gap: 0.4rem;
@@ -357,6 +439,13 @@ $xdz-chatcard-themes: (
       strong { color: $c; }
     }
 
+    .content-link, .inline-roll {
+      background: rgba($c, 0.12);
+      border-color: rgba($c, 0.5);
+      color: $c;
+    }
+    .content-link:hover, .inline-roll:hover { background: rgba($c, 0.22); }
+
     .xdz-chatcard-readout { border-top-color: rgba($c, 0.35); border-bottom-color: rgba($c, 0.35); }
     .xdz-chatcard-digits { color: $c; text-shadow: 0 0 4px rgba($c, 0.9), 0 0 14px rgba($c, 0.5); }
     .xdz-chatcard-status.xdz-success { color: $c; text-shadow: 0 0 8px rgba($c, 0.8); }
@@ -366,6 +455,11 @@ $xdz-chatcard-themes: (
     .xdz-chatcard-divider-title { color: $c; text-shadow: 0 0 6px rgba($c, 0.7); }
     .xdz-chatcard-spawn-die { color: $c; text-shadow: 0 0 4px rgba($c, 0.7); }
     .xdz-chatcard-spawn-label { color: rgba($c, 0.75); }
+
+    .xdz-chatcard-table-summary { color: rgba($c, 0.65); border-bottom-color: rgba($c, 0.35); }
+    .xdz-chatcard-table-result + .xdz-chatcard-table-result { border-top-color: rgba($c, 0.35); }
+    .xdz-chatcard-table-icon { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(#{$h}) saturate(4); }
+    .xdz-chatcard-table-name { color: $c; text-shadow: 0 0 6px rgba($c, 0.7); }
 
     .xdz-damage-row .xdz-btn:not(.xdz-spray-btn) {
       color: $c;

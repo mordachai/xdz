@@ -58,4 +58,22 @@ export const COMMANDO_LOADOUT = [
       damaged: { value: 0, max: 4 },
     },
   },
+  {
+    name: 'T11 Sidearm',
+    type: 'weapon',
+    img: 'systems/xdz/assets/ui/Sidearm.webp',
+    system: {
+      equipped: false,
+      discardOthersOnEquip: false,
+      destroyDie: '1d4',
+      description: 'Standard-issue Commando sidearm. Compact, reliable, 20-round mag.',
+      upgradeDie: '1d4',
+      ammoLabel: 'Rounds',
+      ammoDescription: '',
+      rules: '<p>Backup weapon — always on hand even when a primary is destroyed.</p>',
+      ammo: { value: 3, max: 3 },
+      secondary: { label: '', die: '', description: '', value: 0, max: 0 },
+      damaged: { value: 0, max: 6 },
+    },
+  },
 ];

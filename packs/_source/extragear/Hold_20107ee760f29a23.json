@@ -1,0 +1,29 @@
+{
+  "name": "Hold",
+  "type": "gear",
+  "_id": "20107ee760f29a23",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "A defensible chokepoint. COMMANDOS dug in here roll DODGE with D4 bonus."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1790000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786904880168,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!20107ee760f29a23"
+}

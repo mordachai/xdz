@@ -2,7 +2,7 @@
   "name": "Solar Lightcannon",
   "type": "weapon",
   "_id": "21e6bb59b09843db",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

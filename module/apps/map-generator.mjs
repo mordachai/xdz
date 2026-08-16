@@ -25,9 +25,6 @@ const DIRECTIONS = [
 // of these instead of a random pick.
 const HUB_LOCATIONS = { ship: 'crawlspace', colony: 'substructure' };
 
-// One outline color per AREA (1-4) — cycles if ever >4 areas.
-const AREA_COLORS = ['#ff5555', '#55ff55', '#5599ff', '#ffdd55'];
-
 // Compass order matching DIRECTIONS' index (N,E,S,W) — used to rotate a
 // location's `sides` list by 90/180/270 (see fitsRotation below).
 const CYCLE = ['N', 'E', 'S', 'W'];
@@ -117,7 +114,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
   async _prepareContext(options) {
     return {
       type: 'ship',
-      style: 'color',
+      artStyle: 'color',
       name: MapGenerator.suggestName(),
     };
   }
@@ -138,8 +135,8 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
   }
 
   static async _onSubmit(event, form, formData) {
-    const { type, style, name } = formData.object;
-    const scene = await MapGenerator.build({ type, style, name });
+    const { type, artStyle, name } = formData.object;
+    const scene = await MapGenerator.build({ type, style: artStyle, name });
     scene.sheet.render(true);
   }
 
@@ -299,6 +296,8 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
           c: [x, cell.row * CELL_HEIGHT, x, (cell.row + 1) * CELL_HEIGHT],
           door: CONST.WALL_DOOR_TYPES.DOOR,
           ds: CONST.WALL_DOOR_STATES.CLOSED,
+          doorSound: 'futuristicHydraulic',
+          animation: { type: '' },
         });
       }
       const southKey = `${cell.col},${cell.row + 1}`;
@@ -308,40 +307,12 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
           c: [cell.col * CELL_WIDTH, y, (cell.col + 1) * CELL_WIDTH, y],
           door: CONST.WALL_DOOR_TYPES.DOOR,
           ds: CONST.WALL_DOOR_STATES.CLOSED,
+          doorSound: 'futuristicHydraulic',
+          animation: { type: '' },
         });
       }
     }
     await scene.createEmbeddedDocuments('Wall', walls);
-
-    // Rectangle Drawing around each AREA's bounding box (its 4 LOCATION
-    // cells), per KB §8 nesting — organic layout means the box can include
-    // gaps not owned by that AREA, but it still frames where the cluster is.
-    const byArea = new Map();
-    for (const cell of cells) {
-      if (!byArea.has(cell.area)) byArea.set(cell.area, []);
-      byArea.get(cell.area).push(cell);
-    }
-    const drawings = Array.from(byArea.entries()).map(([area, areaCells]) => {
-      const aMinCol = Math.min(...areaCells.map((c) => c.col));
-      const aMinRow = Math.min(...areaCells.map((c) => c.row));
-      const aMaxCol = Math.max(...areaCells.map((c) => c.col));
-      const aMaxRow = Math.max(...areaCells.map((c) => c.row));
-      return {
-        shape: {
-          type: foundry.data.ShapeData.TYPES.RECTANGLE,
-          width: (aMaxCol - aMinCol + 1) * CELL_WIDTH,
-          height: (aMaxRow - aMinRow + 1) * CELL_HEIGHT,
-        },
-        x: aMinCol * CELL_WIDTH,
-        y: aMinRow * CELL_HEIGHT,
-        strokeColor: AREA_COLORS[(area - 1) % AREA_COLORS.length],
-        strokeWidth: 8,
-        strokeAlpha: 0.15,
-        text: game.i18n.format('XDZ.MapGenerator.Area', { area }),
-        textColor: AREA_COLORS[(area - 1) % AREA_COLORS.length],
-      };
-    });
-    await scene.createEmbeddedDocuments('Drawing', drawings);
 
     return scene;
   }

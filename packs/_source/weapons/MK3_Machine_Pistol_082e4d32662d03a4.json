@@ -2,7 +2,7 @@
   "name": "MK3 Machine Pistol",
   "type": "weapon",
   "_id": "082e4d32662d03a4",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

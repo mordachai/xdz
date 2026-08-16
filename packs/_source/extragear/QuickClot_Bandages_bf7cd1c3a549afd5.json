@@ -5,7 +5,7 @@
   "img": "icons/containers/boxes/crate-tech-silver.webp",
   "system": {
     "quantity": 3,
-    "description": "Heal a target with Medical D8 effort instantly, no roll required."
+    "description": "Heal a target with Medical D4 bonus instantly, no roll required."
   },
   "effects": [],
   "folder": null,

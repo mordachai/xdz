@@ -399,7 +399,9 @@
     "Chat": {
       "SpawnTitle": "XENO SPAWN",
       "SpawnTag": "SPAWN",
-      "AmbushTag": "AMBUSH"
+      "AmbushTag": "AMBUSH",
+      "LocationTitle": "LOCATION ROLL",
+      "LocationTag": "LOCATION"
     },
 
     "Direction": {

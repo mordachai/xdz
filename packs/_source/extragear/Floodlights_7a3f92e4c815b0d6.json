@@ -1,0 +1,29 @@
+{
+  "name": "Floodlights",
+  "type": "gear",
+  "_id": "7a3f92e4c815b0d6",
+  "img": "icons/containers/boxes/crate-tech-silver.webp",
+  "system": {
+    "quantity": 1,
+    "description": "Deployable floodlights that fully illuminate one entire LOCATION."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5700000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.0",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7a3f92e4c815b0d6"
+}

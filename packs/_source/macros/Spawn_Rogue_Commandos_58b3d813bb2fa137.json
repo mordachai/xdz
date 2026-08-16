@@ -1,0 +1,28 @@
+{
+  "name": "Spawn Rogue Commandos",
+  "type": "script",
+  "_id": "58b3d813bb2fa137",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "icons/svg/skull.svg",
+  "scope": "global",
+  "command": "await xdz.macros.spawnRogueCommandos();",
+  "folder": null,
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!58b3d813bb2fa137"
+}

@@ -2,7 +2,7 @@
   "name": "M39 Infantry Rifle",
   "type": "weapon",
   "_id": "b4518ad091889348",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

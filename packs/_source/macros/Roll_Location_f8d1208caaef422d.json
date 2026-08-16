@@ -1,0 +1,28 @@
+{
+  "name": "Roll Location",
+  "type": "script",
+  "_id": "f8d1208caaef422d",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "systems/xdz/assets/ui/location_badge.webp",
+  "scope": "global",
+  "command": "await xdz.macros.rollLocation();",
+  "folder": null,
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786800000000,
+    "modifiedTime": 1786800000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!f8d1208caaef422d"
+}

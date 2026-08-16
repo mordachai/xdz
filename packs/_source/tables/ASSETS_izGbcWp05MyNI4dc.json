@@ -1,0 +1,353 @@
+{
+  "name": "ASSETS",
+  "description": "<p>Hard to believe, but every once in a while, COMMANDOS catch a break.</p><p>Every MISSION has <strong>[[/r 1D8]] ASSETS</strong>. When the MISSION starts, roll how many and where they are. If playing with a GM, these can be kept secret. Aye-firmative</p>",
+  "results": [
+    {
+      "name": "01 - Autoguns",
+      "type": "text",
+      "img": "/icons/weapons/guns/gun-chain-gatling-heavy.webp",
+      "weight": 1,
+      "range": [
+        1,
+        1
+      ],
+      "drawn": false,
+      "_id": "zdHWcxN5ie8CtjYm",
+      "description": "<p>Place in a LOCATION. The Autocannon will kill [[/r 1D8]] XENOS there for [[/r 1D8]] ROUNDS </p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904264913,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.zdHWcxN5ie8CtjYm"
+    },
+    {
+      "name": "02 - Barricade",
+      "type": "text",
+      "img": "/icons/environment/settlement/rubble-scrap-refuse-wood-metal.webp",
+      "weight": 1,
+      "range": [
+        2,
+        2
+      ],
+      "drawn": false,
+      "_id": "sR1eoolPxjmuPwhZ",
+      "description": "<p>Place where two LOCATIONS meet to permanently block that door</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904344853,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.sR1eoolPxjmuPwhZ"
+    },
+    {
+      "name": "03 - Drop Crate",
+      "type": "text",
+      "img": "/icons/weapons/ammunition/ammunition-brass-automatic.webp",
+      "weight": 1,
+      "range": [
+        3,
+        3
+      ],
+      "drawn": false,
+      "_id": "2hZHJk4OP7vrae6L",
+      "description": "<p>Replenish squad ammo and medical supplies</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904356337,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.2hZHJk4OP7vrae6L"
+    },
+    {
+      "name": "04 - Med Kits",
+      "type": "text",
+      "img": "/icons/tools/medical/medkit-white-red.webp",
+      "weight": 1,
+      "range": [
+        4,
+        4
+      ],
+      "drawn": false,
+      "_id": "RF2ckDEkhD0O7fRm",
+      "description": "<p>All COMMANDOS heal 2 INJURIES</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904363989,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.RF2ckDEkhD0O7fRm"
+    },
+    {
+      "name": "05 - Arms Cache",
+      "type": "text",
+      "img": "/icons/weapons/guns/machine-gun-sub-pistol.webp",
+      "weight": 1,
+      "range": [
+        5,
+        5
+      ],
+      "drawn": false,
+      "_id": "QhkPD88s12t89Yyn",
+      "description": "<p>All COMMANDOS acquire a weapon of choice (Pulse Rifle, Flamer, or Heavy)</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904371614,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.QhkPD88s12t89Yyn"
+    },
+    {
+      "name": "06 - Cutter",
+      "type": "text",
+      "img": "/icons/sundries/survival/fire-lighter-torch.webp",
+      "weight": 1,
+      "range": [
+        6,
+        6
+      ],
+      "drawn": false,
+      "_id": "QMUuP2VMGM11005s",
+      "description": "<p>Can be used by a COMMANDO to remove a Barricade</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904378441,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.QMUuP2VMGM11005s"
+    },
+    {
+      "name": "07 - Pneumatics",
+      "type": "text",
+      "img": "/icons/tools/hand/shovel-trench.webp",
+      "weight": 1,
+      "range": [
+        7,
+        7
+      ],
+      "drawn": false,
+      "_id": "sOD8XjA7XAHFMAfZ",
+      "description": "<p>Excavate a tunnel between any 2 LOCATIONS</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904384369,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.sOD8XjA7XAHFMAfZ"
+    },
+    {
+      "name": "08 - Explosives",
+      "type": "text",
+      "img": "/icons/weapons/thrown/explosive-dynamite-fuse.webp",
+      "weight": 1,
+      "range": [
+        8,
+        8
+      ],
+      "drawn": false,
+      "_id": "OxgkvhyKH7VfDQCH",
+      "description": "<p>Using a [[/r 1D4]] ROUND fuse, destroy a LOCATION and everything in it</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904390073,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.OxgkvhyKH7VfDQCH"
+    },
+    {
+      "name": "09 - Cover",
+      "type": "text",
+      "img": "/icons/equipment/head/gas-mask-cloth-hood.webp",
+      "weight": 1,
+      "range": [
+        9,
+        9
+      ],
+      "drawn": false,
+      "_id": "03LNigzwFXnehTQV",
+      "description": "<p>Place in a LOCATION. XENOS cannot AMBUSH there</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904397221,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.03LNigzwFXnehTQV"
+    },
+    {
+      "name": "10 - Hold",
+      "type": "text",
+      "img": "/icons/sundries/survival/tape-duct.webp",
+      "weight": 1,
+      "range": [
+        10,
+        10
+      ],
+      "drawn": false,
+      "_id": "95QwGSkZB8tFmC8s",
+      "description": "<p>A brief rest. Replenish all ammo and heal all INJURIES</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904402646,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.95QwGSkZB8tFmC8s"
+    },
+    {
+      "name": "11 - Loader",
+      "type": "text",
+      "img": "/icons/equipment/head/tech-heavy.webp",
+      "weight": 1,
+      "range": [
+        11,
+        11
+      ],
+      "drawn": false,
+      "_id": "i4Kd8hti2rDeujYQ",
+      "description": "<p>A cargo moving machine, can be used in all kinds of creative, destructive ways @UUID[Compendium.xdz.vehicles.Actor.cx8kNwgvAaeHO0oG]{Lift Truck}</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904781781,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.i4Kd8hti2rDeujYQ"
+    },
+    {
+      "name": "12 - APC",
+      "type": "text",
+      "img": "/icons/equipment/head/helm-gas-mask.webp",
+      "weight": 1,
+      "range": [
+        12,
+        12
+      ],
+      "drawn": false,
+      "_id": "j2MOtHzfwicwQ7Cn",
+      "description": "<p>Move 8 COMMANDOS to any LOCATION instantly, then too damaged to use @UUID[Compendium.xdz.vehicles.Actor.GDPd02w1tPs7OYel]{APC}</p>",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.2",
+        "createdTime": 1786901164475,
+        "modifiedTime": 1786904763949,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "documentUuid": null,
+      "_key": "!tables.results!izGbcWp05MyNI4dc.j2MOtHzfwicwQ7Cn"
+    }
+  ],
+  "formula": "1d12",
+  "img": "/icons/containers/boxes/crate-modern-open.webp",
+  "replacement": true,
+  "displayRoll": true,
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_id": "izGbcWp05MyNI4dc",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.2",
+    "createdTime": 1786901164475,
+    "modifiedTime": 1786901245885,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!tables!izGbcWp05MyNI4dc"
+}

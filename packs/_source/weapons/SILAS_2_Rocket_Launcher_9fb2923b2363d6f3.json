@@ -2,7 +2,7 @@
   "name": "SILAS 2 Rocket Launcher",
   "type": "weapon",
   "_id": "9fb2923b2363d6f3",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

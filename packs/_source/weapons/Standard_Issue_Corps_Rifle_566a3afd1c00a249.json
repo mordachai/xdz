@@ -2,7 +2,7 @@
   "name": "Standard Issue Corps Rifle",
   "type": "weapon",
   "_id": "566a3afd1c00a249",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

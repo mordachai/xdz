@@ -2,7 +2,7 @@
   "name": "EMP Grenades",
   "type": "weapon",
   "_id": "3beeace6fee66094",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

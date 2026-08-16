@@ -2,7 +2,7 @@
   "name": "CM8 Sniper Rifle",
   "type": "weapon",
   "_id": "adcf011f2fc329b0",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,

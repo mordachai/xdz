@@ -2,7 +2,7 @@
   "name": "MK1 Talon Rifle",
   "type": "weapon",
   "_id": "a3b128221c65908b",
-  "img": "icons/svg/sword.svg",
+  "img": "icons/weapons/ammunition/ammunition-bullet-rifle.webp",
   "system": {
     "equipped": false,
     "discardOthersOnEquip": false,
