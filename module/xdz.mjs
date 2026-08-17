@@ -315,6 +315,7 @@ Hooks.on('renderChatMessageHTML', async (message, html) => {
       const y = Number(button.dataset.y);
       if (Number.isNaN(x) || Number.isNaN(y)) return;
       canvas.animatePan({ x, y });
+      pingLocation(x, y);
     });
   });
 
@@ -379,8 +380,19 @@ function wireLocationIdLinks(root) {
       const tile = canvas.scene?.tiles.find((t) => t.getFlag('xdz', 'locationId') === id);
       if (!tile) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoTileForLocation'));
       canvas.animatePan({ x: tile.x, y: tile.y });
+      pingLocation(tile.x, tile.y);
     });
   });
+}
+
+// Big HUD-style pulse, player-colored (pulse's default color already falls
+// back to game.user.color — left unset here so it does), fired alongside
+// every pan-to-location click. size/rings/duration pushed well past
+// CONFIG.Canvas.pings.styles.pulse's defaults so it reads as a deliberate
+// target-lock rather than the stock ping-a-teammate blip; color2 swapped to
+// cyan for the sci-fi flash-in instead of the default white.
+function pingLocation(x, y) {
+  canvas.ping({ x, y }, { style: 'pulse', size: 400, rings: 5, duration: 1600, color2: '#00faff' });
 }
 
 // CRT journal pages (mission log + the "Mission Objectives"/"Escalations"/
