@@ -1,0 +1,52 @@
+{
+  "name": "Escalations",
+  "pages": [
+    {
+      "name": "Escalations",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<div class=\"xdz xdz-journal-sheet\">\n  <div class=\"xdz-journal-scanlines\"></div>\n  <div class=\"xdz-journal-header\">\n    <span class=\"xdz-journal-title\">@Localize[XDZ.JournalCompendium.Escalations]</span>\n  </div>\n  <div class=\"xdz-journal-objectives\">\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">1. @Localize[XDZ.Escalations.KillMe.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.KillMe.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">2. @Localize[XDZ.Escalations.TheyCutThePower.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.TheyCutThePower.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">3. @Localize[XDZ.Escalations.Blocked.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.Blocked.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">4. @Localize[XDZ.Escalations.FlameUnitsOnly.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.FlameUnitsOnly.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">5. @Localize[XDZ.Escalations.TheBreeder.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.TheBreeder.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">6. @Localize[XDZ.Escalations.PraetorianGuards.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.PraetorianGuards.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">7. @Localize[XDZ.Escalations.RogueCommandos.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.RogueCommandos.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">8. @Localize[XDZ.Escalations.UsedUp.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.UsedUp.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">9. @Localize[XDZ.Escalations.ManDown.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.ManDown.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">10. @Localize[XDZ.Escalations.SomethingWicked.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.SomethingWicked.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">11. @Localize[XDZ.Escalations.Fubard.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.Fubard.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">12. @Localize[XDZ.Escalations.SupplyDrop.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.SupplyDrop.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">13. @Localize[XDZ.Escalations.OutOfAmmo.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.OutOfAmmo.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">14. @Localize[XDZ.Escalations.CombatFatigue.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.CombatFatigue.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">15. @Localize[XDZ.Escalations.Swarm.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.Swarm.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">16. @Localize[XDZ.Escalations.Snatched.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.Snatched.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">17. @Localize[XDZ.Escalations.Explosion.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.Explosion.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">18. @Localize[XDZ.Escalations.GameOverMan.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.GameOverMan.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">19. @Localize[XDZ.Escalations.ScentOfBlood.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.ScentOfBlood.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">20. @Localize[XDZ.Escalations.TooQuiet.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Escalations.TooQuiet.Desc]</div>\n    </div>\n  </div>\n</div>",
+        "markdown": ""
+      },
+      "sort": 100,
+      "_id": "5iQH8Vbrgra4Jlbw",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.4",
+        "createdTime": 1786969420299,
+        "modifiedTime": 1786969420299,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!journal.pages!ubnOXOhSXZQ5SeAc.5iQH8Vbrgra4Jlbw"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 2
+  },
+  "flags": {},
+  "_id": "ubnOXOhSXZQ5SeAc",
+  "_key": "!journal!ubnOXOhSXZQ5SeAc",
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.4",
+    "createdTime": 1786969420299,
+    "modifiedTime": 1786969420299,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

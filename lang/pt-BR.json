@@ -183,6 +183,16 @@
       "SwarmErupts": "{count} XENOS irrompem na localização dos COMANDOS!"
     },
 
+    "JournalCompendium": {
+      "MissionObjectives": "Objetivos de Missão",
+      "Escalations": "Escaladas",
+      "LocationStarship": "Localização: Nave",
+      "LocationColony": "Localização: Colônia",
+      "LocationHeader": "LOCALIZAÇÃO",
+      "InfoHeader": "INFO",
+      "LocationRoll": "uma LOCALIZAÇÃO sorteada"
+    },
+
     "Notifications": {
       "NoTileForArea": "Nenhum tile para a Área {area} Localização {location}.",
       "NoTileForLocation": "Nenhum tile para essa localização na cena atual.",
@@ -208,7 +218,25 @@
         "Crawlspace": "Espaço de Serviço",
         "Sump": "Poço de Drenagem",
         "ObsDeck": "Deque de Observação",
-        "LifeSupport": "Suporte de Vida"
+        "LifeSupport": "Suporte de Vida",
+        "Info": {
+          "EscapePod": "Assim que o EVAC for desbloqueado, cheguem até aqui para ejetar! Vocês estarão na fronteira em algumas semanas",
+          "Bridge": "Controle de voo, diagnósticos da nave e terminal de autodestruição do reator",
+          "EngineRoom": "Um labirinto mecânico apertado, com calor intenso, pouca visibilidade e respiros de vapor",
+          "Airlock": "Porta para o exterior da nave. Pode levar tempo extra para abrir",
+          "MedBay": "Ambiente de laboratório branco e plástico, com suprimentos, recipientes e macas",
+          "Quarters": "Espaço de convivência bagunçado, com clima acolhedor, mas silêncio perturbador",
+          "Galley": "Instalações comunitárias de cozinha e refeições com iluminação fluorescente forte",
+          "Refinery": "Faixas de aviso, luzes de alerta, corrimãos e tubulações. Um ambiente confuso",
+          "Hydroponics": "Cúpula geodésica úmida com samambaias, plantações de vegetais e plantas ricas em oxigênio",
+          "Garage": "Armazenamento de escavadeiras, buggies, carregadeiras e outros veículos",
+          "LoadingBay": "Espaço cavernoso de armazém repleto de caixotes reforçados e tanques de ar",
+          "Corridor": "Um longo corredor que conecta 2 ou mais ÁREAS",
+          "Crawlspace": "Dutos estreitos e subpisos normalmente não usados por humanos",
+          "Sump": "Um coletor de água residual e lixo de toda a nave. A lama é processada para o espaço",
+          "ObsDeck": "Enormes janelas curvas que dão vista para a beleza desolada do espaço profundo",
+          "LifeSupport": "Os depuradores de ar ressoam aqui enquanto reciclam o ar e mantêm a temperatura"
+        }
       },
       "Colony": {
         "LandingPad": "Plataforma de Pouso",
@@ -226,7 +254,25 @@
         "Substructure": "Subestrutura",
         "MotorPool": "Pátio de Veículos",
         "PotatoFarm": "Fazenda de Batatas",
-        "Astrophysics": "Astrofísica"
+        "Astrophysics": "Astrofísica",
+        "Info": {
+          "LandingPad": "Usada para operações aéreas planetárias e pouso de naves de desembarque orbitais",
+          "RadioDish": "Enorme antena de uplink suscetível a mau tempo ou falha mecânica",
+          "Command": "Vigilância central, controle de sistemas e salas de reunião",
+          "MedBay": "Grande instalação médica com amplos suprimentos, quarentena e capacidade de emergência",
+          "Armory": "Armazenamento de armas e ferramentas. Também contém trajes hazmat e de vácuo",
+          "Refinery": "Recuperação de energia e combustível em grande escala, com líquidos voláteis e tubulações",
+          "Reactor": "A célula de energia central da colônia. Risco de radiação",
+          "Cafeteria": "O piso branco e as bandejas de lata fazem deste um lugar arrepiante para ver um XENO",
+          "Causeway": "Um enorme espaço público central que conecta 3 ou 4 ÁREAS da COLÔNIA",
+          "Surface": "Esses exoplanetas são todos iguais: frio brutal, vento uivante, pedras afiadas, XENOS",
+          "Residential": "Alojamentos para famílias. Agora um cemitério",
+          "Dump": "Entulho de construção, água residual e montes de lixo residencial em compactadores enormes",
+          "Substructure": "Sob os níveis do piso da colônia há labirintos de dutos de manutenção e vigas",
+          "MotorPool": "Tratores, carregadeiras, escavadeiras, buggies e veículos de perfuração presos por correntes",
+          "PotatoFarm": "Onde a comida é cultivada para toda a colônia. Plantações altas e densas tornam o local um pesadelo tático",
+          "Astrophysics": "As comunidades científicas em exoplanetas precisam de instalações de última geração"
+        }
       }
     },
 

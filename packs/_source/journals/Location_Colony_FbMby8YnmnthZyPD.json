@@ -1,0 +1,52 @@
+{
+  "name": "Location: Colony",
+  "pages": [
+    {
+      "name": "Location: Colony",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<div class=\"xdz xdz-journal-sheet\">\n  <div class=\"xdz-journal-scanlines\"></div>\n  <div class=\"xdz-journal-header\">\n    <span class=\"xdz-journal-title\">@Localize[XDZ.JournalCompendium.LocationColony]</span>\n  </div>\n  <table class=\"xdz-journal-loctable\">\n    <thead>\n      <tr><th>@Localize[XDZ.JournalCompendium.LocationHeader]</th><th>@Localize[XDZ.JournalCompendium.InfoHeader]</th></tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"landingPad\">@Localize[XDZ.Locations.Colony.LandingPad]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.LandingPad]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"radioDish\">@Localize[XDZ.Locations.Colony.RadioDish]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.RadioDish]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"command\">@Localize[XDZ.Locations.Colony.Command]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Command]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"medBay\">@Localize[XDZ.Locations.Colony.MedBay]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.MedBay]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"armory\">@Localize[XDZ.Locations.Colony.Armory]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Armory]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"refinery\">@Localize[XDZ.Locations.Colony.Refinery]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Refinery]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"reactor\">@Localize[XDZ.Locations.Colony.Reactor]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Reactor]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"cafeteria\">@Localize[XDZ.Locations.Colony.Cafeteria]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Cafeteria]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"causeway\">@Localize[XDZ.Locations.Colony.Causeway]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Causeway]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"surface\">@Localize[XDZ.Locations.Colony.Surface]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Surface]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"residential\">@Localize[XDZ.Locations.Colony.Residential]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Residential]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"dump\">@Localize[XDZ.Locations.Colony.Dump]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Dump]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"substructure\">@Localize[XDZ.Locations.Colony.Substructure]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Substructure]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"motorPool\">@Localize[XDZ.Locations.Colony.MotorPool]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.MotorPool]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"potatoFarm\">@Localize[XDZ.Locations.Colony.PotatoFarm]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.PotatoFarm]</td>\n      </tr>\n      <tr>\n        <td><button type=\"button\" class=\"xdz-journal-loc\" data-action=\"xdzPanToLocationId\" data-location-id=\"astrophysics\">@Localize[XDZ.Locations.Colony.Astrophysics]</button></td>\n        <td>@Localize[XDZ.Locations.Colony.Info.Astrophysics]</td>\n      </tr>\n    </tbody>\n  </table>\n</div>",
+        "markdown": ""
+      },
+      "sort": 100,
+      "_id": "B58o8HLm63Lb9bOm",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.4",
+        "createdTime": 1786969420299,
+        "modifiedTime": 1786969420299,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!journal.pages!FbMby8YnmnthZyPD.B58o8HLm63Lb9bOm"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 2
+  },
+  "flags": {},
+  "_id": "FbMby8YnmnthZyPD",
+  "_key": "!journal!FbMby8YnmnthZyPD",
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.4",
+    "createdTime": 1786969420299,
+    "modifiedTime": 1786969420299,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

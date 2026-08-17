@@ -2,7 +2,7 @@
   "id": "xdz",
   "title": "Xeno Dead Zone",
   "description": "Non-official Xeno Dead Zone system for Foundry VTT. A micro-setting, adventure toolkit, and GM-less bug-hunt system for 1-4 players. Aliens/Colonial-Marines tone.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "authors": [
     {
       "name": "Gus",
@@ -94,6 +94,14 @@
       "type": "Macro",
       "system": "xdz",
       "banner": "systems/xdz/assets/art/banners/banner_macros.webp"
+    },
+    {
+      "name": "journals",
+      "label": "JOURNALS",
+      "path": "packs/journals",
+      "type": "JournalEntry",
+      "system": "xdz",
+      "banner": "systems/xdz/assets/art/banners/banner_journals.webp"
     }
   ],
   "packFolders": [
@@ -101,7 +109,7 @@
       "name": "Xeno Dead Zone",
       "sorting": "a",
       "color": "#37474f",
-      "packs": ["npcs", "vehicles", "assets", "weapons", "extragear", "tables", "macros"]
+      "packs": ["npcs", "vehicles", "assets", "weapons", "extragear", "tables", "macros", "journals"]
     }
   ],
   "flags": {

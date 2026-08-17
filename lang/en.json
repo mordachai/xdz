@@ -183,6 +183,16 @@
       "SwarmErupts": "{count} XENOS erupt at the COMMANDOS' location!"
     },
 
+    "JournalCompendium": {
+      "MissionObjectives": "Mission Objectives",
+      "Escalations": "Escalations",
+      "LocationStarship": "Location: Starship",
+      "LocationColony": "Location: Colony",
+      "LocationHeader": "LOCATION",
+      "InfoHeader": "INFO",
+      "LocationRoll": "a rolled LOCATION"
+    },
+
     "Notifications": {
       "NoTileForArea": "No tile for Area {area} Location {location}.",
       "NoTileForLocation": "No tile for that location on the current scene.",
@@ -208,7 +218,25 @@
         "Crawlspace": "Crawlspace",
         "Sump": "Sump",
         "ObsDeck": "Obs Deck",
-        "LifeSupport": "Life Support"
+        "LifeSupport": "Life Support",
+        "Info": {
+          "EscapePod": "Once EVAC is unlocked, make it here to eject! You'll be to the frontier in a few weeks",
+          "Bridge": "Flight control, ship's diagnostics, and reactor-destruct terminal",
+          "EngineRoom": "A cramped mechanical maze with high heat, bad visibility and steam vents",
+          "Airlock": "Door to the exterior of the ship. Can take extra time to open",
+          "MedBay": "Creepy white-plastic lab feel, with supplies, canisters, and gurneys",
+          "Quarters": "Messy living space with a homey feel, but eerie quiet",
+          "Galley": "Community cooking and eating facilities with bright fluorescent lighting",
+          "Refinery": "Caution stripes, alert lights, hand rails and piping. A baffling environment",
+          "Hydroponics": "Humid, damp geodesic dome with ferns, vegetable crops and oxygen rich plants",
+          "Garage": "Storage for excavators, buggies, loaders and other vehicles",
+          "LoadingBay": "Huge, cavernous warehouse space littered with reinforced crates and air tanks",
+          "Corridor": "A long hallway that connects 2 or more AREAS",
+          "Crawlspace": "Narrow ducts and sub floors normally unused by humans",
+          "Sump": "A catch for waste water and trash ship-wide. The muck is processed into space",
+          "ObsDeck": "Huge bowed windows that look out onto the desolate beauty of deep space",
+          "LifeSupport": "Air scrubbers rumble here as they recycle the air and maintain temperature"
+        }
       },
       "Colony": {
         "LandingPad": "Landing Pad",
@@ -226,7 +254,25 @@
         "Substructure": "Substructure",
         "MotorPool": "Motor Pool",
         "PotatoFarm": "Potato Farm",
-        "Astrophysics": "Astrophysics"
+        "Astrophysics": "Astrophysics",
+        "Info": {
+          "LandingPad": "Used for on-planet air ops and orbital drop ship dust-off",
+          "RadioDish": "Huge uplink dish that is susceptible to bad weather or mechanical failure",
+          "Command": "Central surveillance, systems control, and meeting chambers",
+          "MedBay": "Large medical facility with extensive supplies, quarantine, and ER capability",
+          "Armory": "Weapons and tools storage. Also contains hazmat and vac suits",
+          "Refinery": "Power and fuel reclamation on a large scale, complete with volatile liquids and piping",
+          "Reactor": "The central power cell for the colony. Radiation hazard",
+          "Cafeteria": "The white tile and pressed tin trays make this a creepy place to see a XENO",
+          "Causeway": "A huge central public space that connects 3 or 4 AREAS of the COLONY",
+          "Surface": "These exo planets are all the same: brutal cold, howling wind, sharp rocks, XENOS",
+          "Residential": "Living quarters for families. Now a graveyard",
+          "Dump": "Construction debris, waste water, and heaps of residential trash in massive compactors",
+          "Substructure": "Beneath the colony floor levels are labyrinths of maintenance tubes and girders",
+          "MotorPool": "Chained-down dozers, loaders, excavators, buggies and drilling vehicles",
+          "PotatoFarm": "Where the food is grown for the entire colony. Tall, thick crops make it a tactical nightmare",
+          "Astrophysics": "The science communities on exo planets need state of the art facilities"
+        }
       }
     },
 

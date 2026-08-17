@@ -98,6 +98,40 @@
     font-weight: 700;
     text-shadow: 0 0 4px rgba($xdz-crt-amber, 0.7);
   }
+
+  // Compendium reference journals (Location: Starship/Colony — see
+  // packs/_source/journals) — plain 2-column LOCATION/INFO readout, same
+  // chassis as the objectives list. The LOCATION cell's button reuses
+  // .xdz-journal-loc above (fixed amber, not theme-tinted, same as the
+  // <Location> tags in the mission/escalation log pages).
+  .xdz-journal-loctable {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+
+    th,
+    td {
+      text-align: left;
+      padding: 0.35rem 0.6rem;
+      border-bottom: 1px solid rgba($xdz-crt-green, 0.25);
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.75rem;
+      color: $xdz-crt-green;
+      text-shadow: 0 0 4px rgba($xdz-crt-green, 0.6);
+      border-bottom: 1px solid rgba($xdz-crt-green, 0.5);
+    }
+
+    td { color: rgba($xdz-crt-green, 0.9); }
+
+    tbody tr:nth-child(even) { background: rgba(black, 0.15); }
+
+    td:first-child { white-space: nowrap; width: 1%; }
+  }
 }
 
 // <Location> tags double as pan-to-location buttons (mission-rolls.mjs's
@@ -141,5 +175,45 @@
   .xdz-journal-objective-title {
     color: $xdz-crt-red;
     text-shadow: 0 0 4px rgba($xdz-crt-red, 0.6);
+  }
+}
+
+// Sheet Theme (xdz.sheetTheme) overrides — green above is the default/
+// unthemed look. data-theme is stamped onto .xdz-journal-sheet at render
+// time (xdz.mjs's applyJournalTheme), not baked into the page HTML, so
+// static compendium journals (the Mission Objectives/Escalations/Location
+// reference pages in packs/_source/journals) stay in sync with whatever
+// theme is picked, same as chat cards — see _chat.scss's $xdz-chatcard-themes
+// for the same pattern. The escalation-log red variant above stays fixed
+// regardless of theme (it's a danger accent, not a palette).
+$xdz-journal-themes: (
+  blue: (main: $xdz-crt-blue, dim: $xdz-crt-blue-dim),
+  orange: (main: $xdz-crt-orange, dim: $xdz-crt-orange-dim),
+  white: (main: $xdz-crt-white, dim: $xdz-crt-white-dim),
+);
+
+@each $name, $t in $xdz-journal-themes {
+  $c: map-get($t, main);
+  $d: map-get($t, dim);
+
+  .xdz.xdz-journal-sheet[data-theme="#{$name}"] {
+    background: radial-gradient(ellipse at 50% 0%, mix($c, $xdz-crt-bg, 15%) 0%, $xdz-crt-bg 70%);
+    border-color: $d;
+    box-shadow: inset 0 0 30px rgba(black, 0.6), 0 0 8px rgba($c, 0.25);
+    color: $c;
+
+    .xdz-journal-header { border-bottom-color: rgba($c, 0.4); }
+    .xdz-journal-title { text-shadow: 0 0 6px rgba($c, 0.8); }
+    .xdz-journal-timestamp { color: rgba($c, 0.7); }
+
+    .xdz-journal-objective { border-color: rgba($c, 0.3); }
+    .xdz-journal-objective-title { color: $c; text-shadow: 0 0 4px rgba($c, 0.6); }
+    .xdz-journal-objective-desc { color: rgba($c, 0.9); }
+
+    .xdz-journal-loctable {
+      th { color: $c; text-shadow: 0 0 4px rgba($c, 0.6); border-bottom-color: rgba($c, 0.5); }
+      th, td { border-bottom-color: rgba($c, 0.25); }
+      td { color: rgba($c, 0.9); }
+    }
   }
 }

@@ -1,0 +1,52 @@
+{
+  "name": "Mission Objectives",
+  "pages": [
+    {
+      "name": "Mission Objectives",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<div class=\"xdz xdz-journal-sheet\">\n  <div class=\"xdz-journal-scanlines\"></div>\n  <div class=\"xdz-journal-header\">\n    <span class=\"xdz-journal-title\">@Localize[XDZ.JournalCompendium.MissionObjectives]</span>\n  </div>\n  <div class=\"xdz-journal-objectives\">\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">1. @Localize[XDZ.Objectives.SweepAndClear.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.SweepAndClear.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">2. @Localize[XDZ.Objectives.RestorePower.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.RestorePower.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">3. @Localize[XDZ.Objectives.AnomalyRecon.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.AnomalyRecon.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">4. @Localize[XDZ.Objectives.FallBack.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.FallBack.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">5. @Localize[XDZ.Objectives.RescueTheColonists.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.RescueTheColonists.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">6. @Localize[XDZ.Objectives.ExterminateTheAlpha.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.ExterminateTheAlpha.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">7. @Localize[XDZ.Objectives.DestroyTheHive.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.DestroyTheHive.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">8. @Localize[XDZ.Objectives.RepairTheMachinery.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.RepairTheMachinery.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">9. @Localize[XDZ.Objectives.Stronghold.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.Stronghold.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">10. @Localize[XDZ.Objectives.EscortACivi.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.EscortACivi.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">11. @Localize[XDZ.Objectives.SpecimenCollection.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.SpecimenCollection.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">12. @Localize[XDZ.Objectives.Demolitions.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.Demolitions.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">13. @Localize[XDZ.Objectives.DataRetrieval.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.DataRetrieval.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">14. @Localize[XDZ.Objectives.RescueOp.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.RescueOp.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">15. @Localize[XDZ.Objectives.AlignTheUplinkDish.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.AlignTheUplinkDish.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">16. @Localize[XDZ.Objectives.AidASurvivor.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.AidASurvivor.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">17. @Localize[XDZ.Objectives.GetTheTech.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.GetTheTech.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">18. @Localize[XDZ.Objectives.WayPoints.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.WayPoints.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">19. @Localize[XDZ.Objectives.FindTheirOrigin.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.FindTheirOrigin.Desc]</div>\n    </div>\n    <div class=\"xdz-journal-objective\">\n      <div class=\"xdz-journal-objective-title\">20. @Localize[XDZ.Objectives.HostileAgents.Label]</div>\n      <div class=\"xdz-journal-objective-desc\">@Localize[XDZ.Objectives.HostileAgents.Desc]</div>\n    </div>\n  </div>\n</div>",
+        "markdown": ""
+      },
+      "sort": 100,
+      "_id": "PfReBTphn7qpe98T",
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.365",
+        "systemId": "xdz",
+        "systemVersion": "1.0.4",
+        "createdTime": 1786969420299,
+        "modifiedTime": 1786969420299,
+        "lastModifiedBy": "P0vokdR1GDvHsok3",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!journal.pages!B8vcjom9gxjro1cF.PfReBTphn7qpe98T"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 3
+  },
+  "flags": {},
+  "_id": "B8vcjom9gxjro1cF",
+  "_key": "!journal!B8vcjom9gxjro1cF",
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "1.0.4",
+    "createdTime": 1786969420299,
+    "modifiedTime": 1786969420299,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  }
+}

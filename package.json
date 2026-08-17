@@ -5,8 +5,8 @@
   "scripts": {
     "build": "sass src/scss/xdz.scss css/xdz.css --style=expanded --no-source-map",
     "watch": "sass src/scss/xdz.scss css/xdz.css --style=expanded --source-map --watch",
-    "pack": "npm run pack:npcs && npm run pack:vehicles && npm run pack:assets && npm run pack:weapons && npm run pack:extragear && npm run pack:tables && npm run pack:macros",
-    "unpack": "npm run unpack:npcs && npm run unpack:vehicles && npm run unpack:assets && npm run unpack:weapons && npm run unpack:extragear && npm run unpack:tables && npm run unpack:macros",
+    "pack": "npm run pack:npcs && npm run pack:vehicles && npm run pack:assets && npm run pack:weapons && npm run pack:extragear && npm run pack:tables && npm run pack:macros && npm run pack:journals",
+    "unpack": "npm run unpack:npcs && npm run unpack:vehicles && npm run unpack:assets && npm run unpack:weapons && npm run unpack:extragear && npm run unpack:tables && npm run unpack:macros && npm run unpack:journals",
     "pack:npcs": "fvtt package pack npcs --in packs/_source/npcs --out packs --type System --id xdz -v",
     "unpack:npcs": "fvtt package unpack npcs --in packs --out packs/_source/npcs --type System --id xdz -v --clean",
     "pack:vehicles": "fvtt package pack vehicles --in packs/_source/vehicles --out packs --type System --id xdz -v",
@@ -20,7 +20,9 @@
     "pack:tables": "fvtt package pack tables --in packs/_source/tables --out packs --type System --id xdz -v",
     "unpack:tables": "fvtt package unpack tables --in packs --out packs/_source/tables --type System --id xdz -v --clean",
     "pack:macros": "fvtt package pack macros --in packs/_source/macros --out packs --type System --id xdz -v",
-    "unpack:macros": "fvtt package unpack macros --in packs --out packs/_source/macros --type System --id xdz -v --clean"
+    "unpack:macros": "fvtt package unpack macros --in packs --out packs/_source/macros --type System --id xdz -v --clean",
+    "pack:journals": "fvtt package pack journals --in packs/_source/journals --out packs --type System --id xdz -v",
+    "unpack:journals": "fvtt package unpack journals --in packs --out packs/_source/journals --type System --id xdz -v --clean"
   },
   "browserslist": [
     "last 3 versions"

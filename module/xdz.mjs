@@ -19,6 +19,23 @@ globalThis.xdz = {
 Hooks.once('init', function () {
   CONFIG.XDZ = XDZ;
 
+  // Custom @Localize[key] enricher — core has no built-in one. Used by the
+  // static compendium reference journals (packs/_source/journals) so their
+  // page content stays in the player's own language instead of baking in
+  // English at pack-build time; TextEditor.enrichHTML resolves it against
+  // game.i18n at render time, same lifecycle as @UUID/inline rolls. `\n` ->
+  // `<br>` matches resolveEntry()'s convention for multiline Desc entries
+  // (e.g. Escalation "Kill Me!"'s Who's-Infected sub-list).
+  CONFIG.TextEditor.enrichers.push({
+    id: 'xdzLocalize',
+    pattern: /@Localize\[([\w.]+)\]/g,
+    enricher: async (match) => {
+      const span = document.createElement('span');
+      span.innerHTML = game.i18n.localize(match[1]).replace(/\n/g, '<br>');
+      return span;
+    },
+  });
+
   CONFIG.Actor.documentClass = XDZActor;
   CONFIG.Actor.dataModels = {
     commando: models.CommandoData,
@@ -366,7 +383,34 @@ function wireLocationIdLinks(root) {
   });
 }
 
+// CRT journal pages (mission log + the "Mission Objectives"/"Escalations"/
+// "Location: Starship"/"Location: Colony" compendium reference journals) are
+// baked once as static HTML with no data-theme, unlike chat cards which
+// re-render per message. Stamping the current xdz.sheetTheme setting on
+// every render (instead of baking it into the page content) is what makes
+// them follow the Sheet Theme setting live.
+function applyJournalTheme(root) {
+  const theme = game.settings.get('xdz', 'sheetTheme');
+  root.querySelectorAll('.xdz-journal-sheet').forEach((el) => (el.dataset.theme = theme));
+}
+
+// The compendium reference journals reuse XDZ.objectives/XDZ.escalations'
+// %LOC1%/%LOC2%/%LOC3%/%LOCLIST% Desc placeholders via @Localize (see
+// packs/_source/journals) since they're a static rules table, not an actual
+// rolled mission — resolveEntry()'s tile-roll substitution doesn't apply
+// here. Swapped for a localized generic placeholder post-enrichment instead.
+function localizeLocationPlaceholders(root) {
+  const placeholder = game.i18n.localize('XDZ.JournalCompendium.LocationRoll');
+  root.querySelectorAll('.xdz-journal-objective-desc').forEach((el) => {
+    el.innerHTML = el.innerHTML.replace(/%LOC\d%|%LOCLIST%/g, placeholder);
+  });
+}
+
 // Journal Entry pages render each page as its own ApplicationV2 sheet
 // (JournalEntryPageTextSheet), re-rendered every time the journal scrolls
 // it into view — same delegated-listener approach as the chat hook above.
-Hooks.on('renderJournalEntryPageTextSheet', (sheet, html) => wireLocationIdLinks(html));
+Hooks.on('renderJournalEntryPageTextSheet', (sheet, html) => {
+  wireLocationIdLinks(html);
+  applyJournalTheme(html);
+  localizeLocationPlaceholders(html);
+});
