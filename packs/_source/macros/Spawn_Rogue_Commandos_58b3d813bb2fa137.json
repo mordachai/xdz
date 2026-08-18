@@ -3,7 +3,7 @@
   "type": "script",
   "_id": "58b3d813bb2fa137",
   "author": "P0vokdR1GDvHsok3",
-  "img": "icons/svg/skull.svg",
+  "img": "systems/xdz/assets/images/xdz%20tokens%20hazmat%20guard%202.png",
   "scope": "global",
   "command": "await xdz.macros.spawnRogueCommandos();",
   "folder": null,

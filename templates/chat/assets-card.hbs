@@ -1,0 +1,19 @@
+<div class="xdz-chatcard xdz-chatcard-assets" data-theme="{{theme}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{localize "XDZ.Chat.AssetsTitle"}}</span>
+    <span class="xdz-chatcard-tag">{{total}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    {{#each assets}}
+    <div class="xdz-chatcard-table-result">
+      {{#if img}}<img class="xdz-chatcard-table-icon" src="{{img}}" alt="">{{/if}}
+      <div class="xdz-chatcard-table-info">
+        <div class="xdz-chatcard-table-name">{{name}}</div>
+        <div class="xdz-chatcard-desc">{{{description}}}</div>
+        <button type="button" class="xdz-chatcard-spawn-label xdz-chatcard-spawn-locbtn" data-action="xdzPanToLocationId" data-location-id="{{locationId}}">{{locationLabel}}</button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>

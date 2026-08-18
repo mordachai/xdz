@@ -3,7 +3,7 @@
   "type": "script",
   "_id": "bccba38b6c737bfc",
   "author": "P0vokdR1GDvHsok3",
-  "img": "icons/svg/skull.svg",
+  "img": "systems/xdz/assets/images/xdz%20tokens%20xeno%20rager.png",
   "scope": "global",
   "command": "await xdz.macros.spawnWicked();",
   "folder": null,

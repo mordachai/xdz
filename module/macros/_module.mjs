@@ -1,3 +1,5 @@
 export { rollEscalation } from './escalation-roll.mjs';
 export { rollLocation } from './location-roll.mjs';
 export { spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm } from './spawn-xenos.mjs';
+export { areaLegends } from './area-legends.mjs';
+export { rollAssets } from './assets-roll.mjs';

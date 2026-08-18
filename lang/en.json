@@ -157,9 +157,13 @@
       "Starship": "Starship",
       "Colony": "Colony",
       "SceneName": "Scene Name",
+      "SplitAreas": "Also generate 4 Area scenes",
+      "SplitAreasHint": "Adds one scene per Area (4 Locations each), linked back to the full map with teleport regions outside each cross-Area door.",
       "Generate": "Generate",
       "Area": "Area {area}",
-      "LocationsSceneName": "Locations",
+      "AreaSceneName": "{name} - Area {area}",
+      "RegionExit": "Exit {n}",
+      "RegionTeleport": "Teleport",
       "LocationsSceneNameLetter": "Locations {letter}"
     },
 
@@ -178,9 +182,12 @@
     "Escalation": {
       "Title": "ESCALATION",
       "BreederDialogTitle": "ESCALATION 5 — The Breeder",
-      "BreederDialogContent": "<p>Is the current OBJECTIVE <strong>Kill the Breeder</strong>?</p><p>If so, a second giant Breeder XENO joins the fight.</p>",
-      "BreederJoins": "A second giant Breeder XENO tears into the fight.",
+      "BreederDialogContent": "<p>A giant Breeder XENO joins the fight via a LOCATION ROLL.</p><p>If the current OBJECTIVE is <strong>Kill the Breeder</strong>, this is a second one — there are now two.</p>",
       "SwarmErupts": "{count} XENOS erupt at the COMMANDOS' location!"
+    },
+
+    "Assets": {
+      "Title": "DEPLOYED ASSETS"
     },
 
     "JournalCompendium": {
@@ -195,10 +202,11 @@
 
     "Notifications": {
       "NoTileForArea": "No tile for Area {area} Location {location}.",
-      "NoTileForLocation": "No tile for that location on the current scene.",
       "NoActiveScene": "No active scene.",
       "NoCommandoTokens": "No COMMANDO tokens on the scene.",
-      "CouldNotLoadActor": "Could not load actor {uuid}."
+      "CouldNotLoadActor": "Could not load actor {uuid}.",
+      "CouldNotLoadTable": "Could not load table {uuid}.",
+      "NoLocationTiles": "No LOCATION tiles on this scene."
     },
 
     "Locations": {
@@ -447,7 +455,12 @@
       "SpawnTag": "SPAWN",
       "AmbushTag": "AMBUSH",
       "LocationTitle": "LOCATION ROLL",
-      "LocationTag": "LOCATION"
+      "LocationTag": "LOCATION",
+      "AssetsTitle": "ASSETS",
+      "OffMapTitle": "OUT OF RANGE",
+      "OffMapTag": "NAV",
+      "OffMapDesc": "Not in this area. Location is {direction} from here.",
+      "OffMapUnknown": "Not in this area."
     },
 
     "Direction": {

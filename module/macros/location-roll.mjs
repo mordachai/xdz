@@ -36,8 +36,9 @@ export async function rollLocationPoint() {
     return { roll, point: null };
   }
   const point = tile.getFlag('xdz', 'quadrants')?.[quadrant];
-  const label = tile.getFlag('xdz', 'label') ?? tile.getFlag('xdz', 'locationId');
-  return { roll, point, area, location, quadrantDie, quadrant, label };
+  const locationId = tile.getFlag('xdz', 'locationId');
+  const label = tile.getFlag('xdz', 'label') ?? locationId;
+  return { roll, point, area, location, quadrantDie, quadrant, label, locationId };
 }
 
 /**
@@ -50,7 +51,7 @@ export async function rollLocation() {
   if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
-  const { roll, point, area, location, quadrantDie, quadrant, label } = await rollLocationPoint();
+  const { roll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
   const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/location-card.hbs', {
@@ -61,8 +62,7 @@ export async function rollLocation() {
     areaLabel: game.i18n.format('XDZ.MapGenerator.Area', { area }),
     label: game.i18n.localize(label),
     quadrantWord: game.i18n.localize(`XDZ.Direction.${quadrant}`),
-    x: point.x,
-    y: point.y,
+    locationId,
   });
 
   await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [roll] }));

@@ -3,7 +3,7 @@
   "type": "script",
   "_id": "db85392487533c61",
   "author": "P0vokdR1GDvHsok3",
-  "img": "icons/svg/skull.svg",
+  "img": "systems/xdz/assets/images/xdz%20tokens%20xeno%20breeder.png",
   "scope": "global",
   "command": "await xdz.macros.spawnBreeder();",
   "folder": null,

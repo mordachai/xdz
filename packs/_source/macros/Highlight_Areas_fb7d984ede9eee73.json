@@ -1,13 +1,13 @@
 {
-  "name": "Roll Colony Mission",
+  "name": "Highlight Areas",
   "type": "script",
-  "_id": "69b0a7eff288dc5c",
+  "_id": "fb7d984ede9eee73",
   "author": "P0vokdR1GDvHsok3",
-  "img": "/icons/environment/settlement/watchtower-cliff.webp",
+  "img": "/icons/tools/navigation/map-nautical-compass.webp",
   "scope": "global",
-  "command": "await xdz.macros.rollMission('colony');",
+  "command": "await xdz.macros.areaLegends.toggle();",
   "folder": null,
-  "sort": 300000,
+  "sort": 900000,
   "ownership": {
     "default": 0,
     "P0vokdR1GDvHsok3": 3
@@ -16,13 +16,13 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "xdz",
-    "systemVersion": "1.0.2",
-    "createdTime": 1786800000000,
-    "modifiedTime": 1786800000000,
+    "systemVersion": "1.0.6",
+    "createdTime": 1787076298481,
+    "modifiedTime": 1787076298481,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!macros!69b0a7eff288dc5c"
+  "_key": "!macros!fb7d984ede9eee73"
 }

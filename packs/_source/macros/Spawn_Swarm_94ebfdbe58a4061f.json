@@ -3,7 +3,7 @@
   "type": "script",
   "_id": "94ebfdbe58a4061f",
   "author": "P0vokdR1GDvHsok3",
-  "img": "icons/svg/skull.svg",
+  "img": "systems/xdz/assets/images/xeno%20token%201.png",
   "scope": "global",
   "command": "await xdz.macros.spawnSwarm();",
   "folder": null,

@@ -96,7 +96,7 @@ export async function spawnXenos() {
   const locationRolls = [];
 
   for (const count of counts) {
-    const { roll: locRoll, point, area, location, quadrantDie, quadrant, label } = await rollLocationPoint();
+    const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
     locationRolls.push(locRoll);
     if (!point) continue;
 
@@ -106,7 +106,7 @@ export async function spawnXenos() {
       return Math.hypot(dx, dy) <= canvas.grid.size * 1.5;
     });
 
-    groups.push({ count, area, location, quadrantDie, quadrant, label, ambush, point });
+    groups.push({ count, area, location, quadrantDie, quadrant, label, ambush, point, locationId });
     allTokenData.push(...(await buildTokenGroup(actor, count, point, { forceSeek: ambush })));
   }
 
@@ -121,8 +121,7 @@ export async function spawnXenos() {
     label: game.i18n.localize(g.label),
     quadrantWord: game.i18n.localize(`XDZ.Direction.${g.quadrant}`),
     ambush: g.ambush,
-    x: g.point.x,
-    y: g.point.y,
+    locationId: g.locationId,
   }));
 
   const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/spawn-card.hbs', {
@@ -140,9 +139,10 @@ export async function spawnXenos() {
 }
 
 /**
- * ESCALATION 5 "The Breeder": only if the current OBJECTIVE is Kill the
- * Breeder (no state tracks that — GM confirms), a second Queen joins the
- * fight at the COMMANDOS' location. KB: `locationRolls: 0`, no LOCATION ROLL.
+ * ESCALATION 5 "The Breeder": a Queen joins the fight via a LOCATION ROLL —
+ * never on the commandos themselves. Only if the current OBJECTIVE is Kill
+ * the Breeder (no state tracks that — GM confirms) does this become a
+ * *second* giant Breeder XENO already on the scene; otherwise it's the first.
  */
 export async function spawnBreeder() {
   if (!game.user.isGM) return;
@@ -154,18 +154,33 @@ export async function spawnBreeder() {
   });
   if (!confirmed) return;
 
-  const point = commandoPoint();
-  if (!point) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoCommandoTokens'));
+  const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
+  if (!point) return;
 
   const actor = await fromUuid(BREEDER_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: BREEDER_UUID }));
 
   const tokenData = await buildTokenGroup(actor, 1, point, { forceSeek: true });
   await canvas.scene.createEmbeddedDocuments('Token', tokenData);
-  await ChatMessage.create(applyGmSecrecy({
-    speaker: ChatMessage.getSpeaker(),
-    content: `<p>${game.i18n.localize('XDZ.Escalation.BreederJoins')}</p>`,
-  }));
+
+  const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/spawn-card.hbs', {
+    theme: game.settings.get('xdz', 'sheetTheme'),
+    total: 1,
+    groupCount: 1,
+    groups: [
+      {
+        count: 1,
+        area,
+        location,
+        quadrantDie,
+        areaLabel: game.i18n.format('XDZ.MapGenerator.Area', { area }),
+        label: game.i18n.localize(label),
+        quadrantWord: game.i18n.localize(`XDZ.Direction.${quadrant}`),
+        locationId,
+      },
+    ],
+  });
+  await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [locRoll] }));
 }
 
 /**
@@ -177,7 +192,7 @@ export async function spawnRogueCommandos() {
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const countRoll = await new Roll('1d12').evaluate();
-  const { roll: locRoll, point, area, location, quadrantDie, quadrant, label } = await rollLocationPoint();
+  const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
   const actor = await fromUuid(ROGUE_COMMAND_UUID);
@@ -199,8 +214,7 @@ export async function spawnRogueCommandos() {
         areaLabel: game.i18n.format('XDZ.MapGenerator.Area', { area }),
         label: game.i18n.localize(label),
         quadrantWord: game.i18n.localize(`XDZ.Direction.${quadrant}`),
-        x: point.x,
-        y: point.y,
+        locationId,
       },
     ],
   });
@@ -216,7 +230,7 @@ export async function spawnWicked() {
   if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
-  const { roll: locRoll, point, area, location, quadrantDie, quadrant, label } = await rollLocationPoint();
+  const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
   const actor = await fromUuid(WICKED_UUID);
@@ -238,8 +252,7 @@ export async function spawnWicked() {
         areaLabel: game.i18n.format('XDZ.MapGenerator.Area', { area }),
         label: game.i18n.localize(label),
         quadrantWord: game.i18n.localize(`XDZ.Direction.${quadrant}`),
-        x: point.x,
-        y: point.y,
+        locationId,
       },
     ],
   });

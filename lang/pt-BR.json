@@ -157,9 +157,13 @@
       "Starship": "Nave Estelar",
       "Colony": "Colônia",
       "SceneName": "Nome da Cena",
+      "SplitAreas": "Gerar também as 4 cenas de Área",
+      "SplitAreasHint": "Cria uma cena por Área (4 Localizações cada), ligada ao mapa completo por regiões de teletransporte do lado de fora de cada porta entre Áreas.",
       "Generate": "Gerar",
       "Area": "Área {area}",
-      "LocationsSceneName": "Localizações",
+      "AreaSceneName": "{name} - Área {area}",
+      "RegionExit": "Saída {n}",
+      "RegionTeleport": "Teletransporte",
       "LocationsSceneNameLetter": "Localizações {letter}"
     },
 
@@ -178,9 +182,12 @@
     "Escalation": {
       "Title": "ESCALADA",
       "BreederDialogTitle": "ESCALADA 5 — A Procriadora",
-      "BreederDialogContent": "<p>O OBJETIVO atual é <strong>Matar a Procriadora</strong>?</p><p>Se sim, uma segunda Procriadora XENO gigante entra na luta.</p>",
-      "BreederJoins": "Uma segunda Procriadora XENO gigante entra na luta.",
+      "BreederDialogContent": "<p>Uma Procriadora XENO gigante entra na luta via ROLAGEM DE LOCALIZAÇÃO.</p><p>Se o OBJETIVO atual for <strong>Matar a Procriadora</strong>, esta é a segunda — agora são duas.</p>",
       "SwarmErupts": "{count} XENOS irrompem na localização dos COMANDOS!"
+    },
+
+    "Assets": {
+      "Title": "RECURSOS IMPLANTADOS"
     },
 
     "JournalCompendium": {
@@ -195,10 +202,11 @@
 
     "Notifications": {
       "NoTileForArea": "Nenhum tile para a Área {area} Localização {location}.",
-      "NoTileForLocation": "Nenhum tile para essa localização na cena atual.",
       "NoActiveScene": "Nenhuma cena ativa.",
       "NoCommandoTokens": "Nenhum token de COMANDO na cena.",
-      "CouldNotLoadActor": "Não foi possível carregar o ator {uuid}."
+      "CouldNotLoadActor": "Não foi possível carregar o ator {uuid}.",
+      "CouldNotLoadTable": "Não foi possível carregar a tabela {uuid}.",
+      "NoLocationTiles": "Nenhum tile de LOCALIZAÇÃO nesta cena."
     },
 
     "Locations": {
@@ -445,7 +453,12 @@
     "Chat": {
       "SpawnTitle": "SURGIMENTO DE XENO",
       "SpawnTag": "SURGIU",
-      "AmbushTag": "EMBOSCADA"
+      "AmbushTag": "EMBOSCADA",
+      "AssetsTitle": "RECURSOS",
+      "OffMapTitle": "FORA DE ALCANCE",
+      "OffMapTag": "NAV",
+      "OffMapDesc": "Não está nesta área. A localização fica {direction} daqui.",
+      "OffMapUnknown": "Não está nesta área."
     },
 
     "Direction": {

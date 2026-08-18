@@ -1,6 +1,7 @@
 # Xeno Dead Zone
-Non-official Xeno Dead Zone system for Foundry VTT.
+Non-official Xeno Dead Zone system for Foundry VTT. XENO DEAD ZONE is a one-stop solution to scratch your itch for a night of great gaming in the world of deadly space predators and the badasses who fight them. 
 
+**DTRPG page ahead**, less than 5 bucks and it comes with cool VTT art! Check it out >> https://www.drivethrurpg.com/en/product/272915/xeno-dead-zone
 
 ### Random Scene Generator — 16 unique locations each for ship & colony, B&W or Color
 

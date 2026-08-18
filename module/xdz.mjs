@@ -2,7 +2,7 @@ import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
 import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
 import { TnTracker, RoundTimer, MapGenerator } from './apps/_module.mjs';
-import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm } from './macros/_module.mjs';
+import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
@@ -11,7 +11,7 @@ globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
   apps: { TnTracker, RoundTimer, MapGenerator, tnTracker: null, timers: new Map() },
-  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm },
+  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets },
   models,
   config: XDZ,
 };
@@ -177,9 +177,11 @@ Hooks.once('init', function () {
     'systems/xdz/templates/chat/spawn-card.hbs',
     'systems/xdz/templates/chat/location-card.hbs',
     'systems/xdz/templates/chat/table-card.hbs',
+    'systems/xdz/templates/chat/assets-card.hbs',
     'systems/xdz/templates/apps/map-generator.hbs',
     'systems/xdz/templates/journal/mission-objectives-page.hbs',
     'systems/xdz/templates/journal/escalation-page.hbs',
+    'systems/xdz/templates/journal/assets-page.hbs',
   ]);
 });
 
@@ -306,19 +308,6 @@ Hooks.on('renderChatMessageHTML', async (message, html) => {
     });
   });
 
-  // Spawn-card location names pan the GM's view to that point, center only —
-  // zoom untouched, so it never fights a GM who's mid zoom-in on the fight.
-  html.querySelectorAll('[data-action="xdzPanToLocation"]').forEach((button) => {
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      const x = Number(button.dataset.x);
-      const y = Number(button.dataset.y);
-      if (Number.isNaN(x) || Number.isNaN(y)) return;
-      canvas.animatePan({ x, y });
-      pingLocation(x, y);
-    });
-  });
-
   wireLocationIdLinks(html);
 });
 
@@ -365,20 +354,66 @@ async function reskinTableDraw(message, html) {
   target.innerHTML = content;
 }
 
-// Objective/escalation `<Location>` tags (see mission-rolls.mjs's locTag)
-// only know a locationId, not a point — the map that had a matching tile
-// may not even be the active scene by the time someone reads the journal
-// page or scrolls back through chat, so resolution happens at click time
-// against whatever scene is currently active. Shared by both the escalation
-// chat card (wired above) and the mission-objectives/escalation journal
-// pages (wired below).
+// Location-name buttons (spawn/location-roll chat cards, and objective/
+// escalation `<Location>` tags — see mission-rolls.mjs's locTag) only know a
+// locationId, not a point, and only pan/ping if that LOCATION's Tile is on
+// the *currently active* scene — never auto-switching scenes to chase it.
+// With the Map Generator's split-AREA scenes the GM is routinely viewing a
+// different scene than the one the click's LOCATION lives on; the full map
+// scene always has every LOCATION (so it always resolves here), while a
+// single AREA scene only has its own 4. A miss posts a themed "not in this
+// area" card with a compass hint instead of a UI notification.
+function findLocationTileHere(id) {
+  return canvas.scene?.tiles.find((t) => t.getFlag('xdz', 'locationId') === id) ?? null;
+}
+
+// Used only to work out *which direction* to report, never to pan/switch to.
+// Restricted to the active scene's own Folder siblings (one Map Generator
+// set) and to AREA scenes specifically (identified by the `areaCentroid`
+// flag MapGenerator stamps on them, absent on the full map) — a locationId
+// isn't unique world-wide, every generated map reuses the same canonical ids
+// (e.g. 'medBay'), so searching wider could point at some unrelated map.
+function findLocationTileInOtherArea(id) {
+  if (!canvas.scene?.folder) return null;
+  for (const scene of canvas.scene.folder.contents) {
+    if (scene === canvas.scene || !scene.getFlag('xdz', 'areaCentroid')) continue;
+    const tile = scene.tiles.find((t) => t.getFlag('xdz', 'locationId') === id);
+    if (tile) return tile;
+  }
+  return null;
+}
+
+/** N/E/S/W from `from` to `to`, both {col, row} in MapGenerator's shared build-time grid space. */
+function directionBetween(from, to) {
+  const dx = to.col - from.col;
+  const dy = to.row - from.row;
+  if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? 'E' : 'W';
+  return dy >= 0 ? 'S' : 'N';
+}
+
+async function postOffMapCard(id) {
+  const there = findLocationTileInOtherArea(id);
+  const fromCentroid = canvas.scene?.getFlag('xdz', 'areaCentroid');
+  const toCentroid = there?.parent.getFlag('xdz', 'areaCentroid');
+  const dir = fromCentroid && toCentroid ? directionBetween(fromCentroid, toCentroid) : null;
+  const message = dir
+    ? game.i18n.format('XDZ.Chat.OffMapDesc', { direction: `<${game.i18n.localize(`XDZ.Direction.${dir}`)}>` })
+    : game.i18n.localize('XDZ.Chat.OffMapUnknown');
+
+  const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/off-map-card.hbs', {
+    theme: game.settings.get('xdz', 'sheetTheme'),
+    message,
+  });
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker(), content });
+}
+
 function wireLocationIdLinks(root) {
   root.querySelectorAll('[data-action="xdzPanToLocationId"]').forEach((button) => {
-    button.addEventListener('click', (event) => {
+    button.addEventListener('click', async (event) => {
       event.preventDefault();
       const id = button.dataset.locationId;
-      const tile = canvas.scene?.tiles.find((t) => t.getFlag('xdz', 'locationId') === id);
-      if (!tile) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoTileForLocation'));
+      const tile = findLocationTileHere(id);
+      if (!tile) return postOffMapCard(id);
       canvas.animatePan({ x: tile.x, y: tile.y });
       pingLocation(tile.x, tile.y);
     });
@@ -422,7 +457,10 @@ function localizeLocationPlaceholders(root) {
 // (JournalEntryPageTextSheet), re-rendered every time the journal scrolls
 // it into view — same delegated-listener approach as the chat hook above.
 Hooks.on('renderJournalEntryPageTextSheet', (sheet, html) => {
+  // Must run before wireLocationIdLinks: it reassigns innerHTML on
+  // .xdz-journal-objective-desc (even a no-op replace re-parses the DOM),
+  // which would wipe listeners already attached to any <button> inside it.
+  localizeLocationPlaceholders(html);
   wireLocationIdLinks(html);
   applyJournalTheme(html);
-  localizeLocationPlaceholders(html);
 });

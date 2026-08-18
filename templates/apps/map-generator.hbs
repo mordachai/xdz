@@ -16,6 +16,10 @@
 
     <label for="xdz-map-generator-name">{{localize "XDZ.MapGenerator.SceneName"}}</label>
     <input type="text" id="xdz-map-generator-name" name="name" value="{{name}}">
+
+    <label class="xdz-map-generator-row" data-tooltip="{{localize "XDZ.MapGenerator.SplitAreasHint"}}">
+      <input type="checkbox" name="splitAreas"> {{localize "XDZ.MapGenerator.SplitAreas"}}
+    </label>
   </fieldset>
 
   <button type="submit">

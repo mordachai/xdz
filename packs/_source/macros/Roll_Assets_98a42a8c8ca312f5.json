@@ -1,13 +1,13 @@
 {
-  "name": "Roll Colony Mission",
+  "name": "Roll Assets",
   "type": "script",
-  "_id": "69b0a7eff288dc5c",
+  "_id": "98a42a8c8ca312f5",
   "author": "P0vokdR1GDvHsok3",
-  "img": "/icons/environment/settlement/watchtower-cliff.webp",
+  "img": "icons/containers/boxes/crate-modern-open.webp",
   "scope": "global",
-  "command": "await xdz.macros.rollMission('colony');",
+  "command": "await xdz.macros.rollAssets();",
   "folder": null,
-  "sort": 300000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "P0vokdR1GDvHsok3": 3
@@ -16,7 +16,7 @@
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "xdz",
-    "systemVersion": "1.0.2",
+    "systemVersion": "1.0.6",
     "createdTime": 1786800000000,
     "modifiedTime": 1786800000000,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
@@ -24,5 +24,5 @@
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!macros!69b0a7eff288dc5c"
+  "_key": "!macros!98a42a8c8ca312f5"
 }

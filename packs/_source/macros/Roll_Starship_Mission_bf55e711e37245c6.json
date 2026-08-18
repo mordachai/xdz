@@ -3,7 +3,7 @@
   "type": "script",
   "_id": "bf55e711e37245c6",
   "author": "P0vokdR1GDvHsok3",
-  "img": "icons/svg/d20-black.svg",
+  "img": "/icons/commodities/tech/engine-tech-thrust-teal.webp",
   "scope": "global",
   "command": "await xdz.macros.rollMission('ship');",
   "folder": null,

@@ -1,0 +1,15 @@
+<div class="xdz-journal-scanlines"></div>
+
+<div class="xdz-journal-header">
+  <span class="xdz-journal-title">{{localize "XDZ.Assets.Title"}}</span>
+  <span class="xdz-journal-timestamp">{{timestamp}}</span>
+</div>
+
+<ol class="xdz-journal-objectives">
+  {{#each assets}}
+  <li class="xdz-journal-objective">
+    <div class="xdz-journal-objective-title">{{name}} {{{locationTag}}}</div>
+    <div class="xdz-journal-objective-desc">{{{description}}}</div>
+  </li>
+  {{/each}}
+</ol>

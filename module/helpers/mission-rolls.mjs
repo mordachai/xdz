@@ -11,7 +11,7 @@ function rollDie(sides) {
  * scene's tile by `locationId` at click time, not baked-in coordinates,
  * since these read out of journal pages long after the roll that made them.
  */
-function locTag(label, id) {
+export function locTag(label, id) {
   return `<button type="button" class="xdz-journal-loc" data-action="xdzPanToLocationId" data-location-id="${id}">&lt;${label}&gt;</button>`;
 }
 

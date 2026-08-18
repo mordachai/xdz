@@ -35,6 +35,41 @@ function fitsRotation(cellDirs, sides, k) {
   return cellDirs.every((d) => rotated.has(d));
 }
 
+/**
+ * Per-compass-direction geometry for a door between `(col, row)` and its
+ * neighbor, in a scene's local cell coordinates: the Wall segment on the
+ * shared edge, and a half-cell Region rectangle just outside that edge (used
+ * only for AREA scenes, to teleport a token that walks through a door
+ * leading to a LOCATION that isn't in this scene).
+ */
+const EDGE = {
+  E: {
+    opposite: 'W',
+    wall: (col, row) => [(col + 1) * CELL_WIDTH, row * CELL_HEIGHT, (col + 1) * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
+    region: (col, row) => ({ x: (col + 1) * CELL_WIDTH, y: row * CELL_HEIGHT, width: CELL_WIDTH / 2, height: CELL_HEIGHT }),
+  },
+  W: {
+    opposite: 'E',
+    wall: (col, row) => [col * CELL_WIDTH, row * CELL_HEIGHT, col * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
+    region: (col, row) => ({ x: col * CELL_WIDTH - CELL_WIDTH / 2, y: row * CELL_HEIGHT, width: CELL_WIDTH / 2, height: CELL_HEIGHT }),
+  },
+  S: {
+    opposite: 'N',
+    wall: (col, row) => [col * CELL_WIDTH, (row + 1) * CELL_HEIGHT, (col + 1) * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
+    region: (col, row) => ({ x: col * CELL_WIDTH, y: (row + 1) * CELL_HEIGHT, width: CELL_WIDTH, height: CELL_HEIGHT / 2 }),
+  },
+  N: {
+    opposite: 'S',
+    wall: (col, row) => [col * CELL_WIDTH, row * CELL_HEIGHT, (col + 1) * CELL_WIDTH, row * CELL_HEIGHT],
+    region: (col, row) => ({ x: col * CELL_WIDTH, y: row * CELL_HEIGHT - CELL_HEIGHT / 2, width: CELL_WIDTH, height: CELL_HEIGHT / 2 }),
+  },
+};
+
+/** A closed door Wall from a `c` coordinate array (see EDGE[dir].wall). */
+function doorWall(c) {
+  return { c, door: CONST.WALL_DOOR_TYPES.DOOR, ds: CONST.WALL_DOOR_STATES.CLOSED, doorSound: 'futuristicHydraulic', animation: { type: '' } };
+}
+
 export function shuffleArray(array) {
   const copy = [...array];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -115,28 +150,36 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     return {
       type: 'ship',
       artStyle: 'color',
-      name: MapGenerator.suggestName(),
+      name: MapGenerator.suggestName('ship'),
     };
   }
 
-  /** Next unused "Locations X" letter, scanning existing scene names A-Z. */
-  static suggestName() {
-    const base = game.i18n.localize('XDZ.MapGenerator.LocationsSceneName');
+  /** @override */
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this.element.querySelectorAll('input[name="type"]').forEach((el) =>
+      el.addEventListener('change', () => {
+        this.element.querySelector('#xdz-map-generator-name').value = MapGenerator.suggestName(el.value);
+      }),
+    );
+  }
+
+  /** Next unused "Starship X"/"Colony X" number, scanning existing scene names. */
+  static suggestName(type) {
+    const base = game.i18n.localize(type === 'colony' ? 'XDZ.MapGenerator.Colony' : 'XDZ.MapGenerator.Starship');
     const used = new Set(
       game.scenes
-        .filter((s) => new RegExp(`^${base} [A-Z]$`).test(s.name))
-        .map((s) => s.name.slice(-1)),
+        .filter((s) => new RegExp(`^${base} \\d+$`).test(s.name))
+        .map((s) => Number(s.name.slice(base.length + 1))),
     );
-    for (let i = 0; i < 26; i++) {
-      const letter = String.fromCharCode(65 + i);
-      if (!used.has(letter)) return game.i18n.format('XDZ.MapGenerator.LocationsSceneNameLetter', { letter });
-    }
-    return base;
+    let n = 1;
+    while (used.has(n)) n++;
+    return `${base} ${n}`;
   }
 
   static async _onSubmit(event, form, formData) {
-    const { type, artStyle, name } = formData.object;
-    const scene = await MapGenerator.build({ type, style: artStyle, name });
+    const { type, artStyle, name, splitAreas } = formData.object;
+    const scene = await MapGenerator.build({ type, style: artStyle, name, splitAreas });
     scene.sheet.render(true);
   }
 
@@ -226,35 +269,11 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     return { cells, occupied, minCol, minRow, maxCol, maxRow };
   }
 
-  /**
-   * Build a full layout (retrying up to 40 times so side-restricted
-   * locations get a fitting cell), then create the Scene, its 16 location
-   * Tiles (each tagged with AREA/LOCATION/QUADRANT metadata and rotated
-   * to match its assigned cell), and a closed door Wall for every touching
-   * pair of tiles.
-   */
-  static async build({ type, style, name }) {
-    let result = null;
-    for (let attempt = 0; attempt < 40 && !result; attempt++) result = MapGenerator.#attemptLayout(type, false);
-    if (!result) result = MapGenerator.#attemptLayout(type, true);
-    if (!result) throw new Error('XDZ | MapGenerator: failed to build a 16-cell layout.');
-
-    const { cells, occupied, minCol, minRow, maxCol, maxRow } = result;
-
-    const scene = await Scene.create({
-      name,
-      width: (maxCol - minCol + 1) * CELL_WIDTH,
-      height: (maxRow - minRow + 1) * CELL_HEIGHT,
-      grid: { type: CONST.GRID_TYPES.SQUARE, size: 75 },
-      levels: [{ name: 'Level', background: { color: '#0f0f0f' } }],
-      padding: 0,
-      tokenVision: false,
-      fogExploration: false,
-    });
-
-    const tiles = cells.map((cell) => {
-      const x0 = cell.col * CELL_WIDTH;
-      const y0 = cell.row * CELL_HEIGHT;
+  /** Tile-creation data for `cellsList`, positioned relative to `origin` (a {originCol, originRow} local offset). */
+  static #buildTiles(cellsList, origin, style) {
+    return cellsList.map((cell) => {
+      const x0 = (cell.col - origin.originCol) * CELL_WIDTH;
+      const y0 = (cell.row - origin.originRow) * CELL_HEIGHT;
       const quadrants = Object.fromEntries(
         Object.entries(CONFIG.XDZ.tileQuadrants).map(([compass, frac]) => [
           compass,
@@ -282,39 +301,186 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
         },
       };
     });
-    await scene.createEmbeddedDocuments('Tile', tiles);
+  }
+
+  /** Create a Scene with the standard XDZ map settings (dark background, no fog/vision). */
+  static async #createSceneDoc({ name, widthCells, heightCells, folderId, flags }) {
+    return Scene.create({
+      name,
+      folder: folderId ?? null,
+      width: widthCells * CELL_WIDTH,
+      height: heightCells * CELL_HEIGHT,
+      grid: { type: CONST.GRID_TYPES.SQUARE, size: 75 },
+      levels: [{ name: 'Level', background: { color: '#0f0f0f' } }],
+      padding: 0,
+      tokenVision: false,
+      fogExploration: false,
+      flags: flags ?? {},
+    });
+  }
+
+  /**
+   * Groups `cells` by AREA and computes each AREA scene's local coordinate
+   * space: a 1-cell margin around the AREA's own cell bounding box, room
+   * enough for a Region rectangle to sit just outside a cross-AREA door.
+   */
+  static #buildAreaGeometry(cells) {
+    const areas = {};
+    for (const cell of cells) {
+      const area = (areas[cell.area] ??= { cells: [], minCol: Infinity, minRow: Infinity, maxCol: -Infinity, maxRow: -Infinity });
+      area.cells.push(cell);
+      area.minCol = Math.min(area.minCol, cell.col);
+      area.minRow = Math.min(area.minRow, cell.row);
+      area.maxCol = Math.max(area.maxCol, cell.col);
+      area.maxRow = Math.max(area.maxRow, cell.row);
+    }
+    for (const area of Object.values(areas)) {
+      area.originCol = area.minCol - 1;
+      area.originRow = area.minRow - 1;
+      area.widthCells = area.maxCol - area.minCol + 3;
+      area.heightCells = area.maxRow - area.minRow + 3;
+    }
+    return areas;
+  }
+
+  /**
+   * Single sweep (east/south, like the full-map door pass) over every
+   * touching cell pair, sorting each door into its owning AREA scene(s):
+   * same-AREA pairs get one Wall in that AREA's own scene; cross-AREA pairs
+   * get a mirrored door Wall in *each* AREA's scene (the far side of the
+   * physical door doesn't exist in either scene) plus a Region rectangle
+   * just outside it, tagged with a shared `edgeId` so build() can link the
+   * two Regions' teleportToken behaviors to each other afterward.
+   */
+  static #buildAreaDoors(cells, areas) {
+    const cellByKey = new Map(cells.map((c) => [`${c.col},${c.row}`, c]));
+    const areaWalls = { 1: [], 2: [], 3: [], 4: [] };
+    const areaRegions = { 1: [], 2: [], 3: [], 4: [] };
+
+    for (const cell of cells) {
+      for (const dir of ['E', 'S']) {
+        const { dc, dr } = DIRECTIONS[CYCLE.indexOf(dir)];
+        const neighbor = cellByKey.get(`${cell.col + dc},${cell.row + dr}`);
+        if (!neighbor) continue;
+
+        const originA = areas[cell.area];
+        if (cell.area === neighbor.area) {
+          areaWalls[cell.area].push(doorWall(EDGE[dir].wall(cell.col - originA.originCol, cell.row - originA.originRow)));
+          continue;
+        }
+
+        const originB = areas[neighbor.area];
+        const oppDir = EDGE[dir].opposite;
+        areaWalls[cell.area].push(doorWall(EDGE[dir].wall(cell.col - originA.originCol, cell.row - originA.originRow)));
+        areaWalls[neighbor.area].push(doorWall(EDGE[oppDir].wall(neighbor.col - originB.originCol, neighbor.row - originB.originRow)));
+
+        const edgeId = `${cell.col},${cell.row}:${dir}`;
+        areaRegions[cell.area].push({ edgeId, ...EDGE[dir].region(cell.col - originA.originCol, cell.row - originA.originRow) });
+        areaRegions[neighbor.area].push({ edgeId, ...EDGE[oppDir].region(neighbor.col - originB.originCol, neighbor.row - originB.originRow) });
+      }
+    }
+    return { areaWalls, areaRegions };
+  }
+
+  /**
+   * Build a full layout (retrying up to 40 times so side-restricted
+   * locations get a fitting cell), then create the full-map Scene, its 16
+   * location Tiles (each tagged with AREA/LOCATION/QUADRANT metadata and
+   * rotated to match its assigned cell), and a closed door Wall for every
+   * touching pair of tiles.
+   *
+   * When `splitAreas` is set, also creates one Scene per AREA (4 Locations
+   * each) with the same Tiles/doors, all placed in a Folder together with
+   * the full map. Doors that lead to a Location outside that AREA's own
+   * scene get a Region rectangle just past the door instead — a
+   * teleportToken behavior pointing at the mirrored Region on the
+   * neighboring AREA's scene, so walking through the door moves the token
+   * across scenes.
+   */
+  static async build({ type, style, name, splitAreas }) {
+    let result = null;
+    for (let attempt = 0; attempt < 40 && !result; attempt++) result = MapGenerator.#attemptLayout(type, false);
+    if (!result) result = MapGenerator.#attemptLayout(type, true);
+    if (!result) throw new Error('XDZ | MapGenerator: failed to build a 16-cell layout.');
+
+    const { cells, occupied, minCol, minRow, maxCol, maxRow } = result;
+    const mainOrigin = { originCol: 0, originRow: 0 };
+
+    const folder = splitAreas ? await Folder.create({ name, type: 'Scene' }) : null;
+
+    const mainScene = await MapGenerator.#createSceneDoc({
+      name,
+      widthCells: maxCol - minCol + 1,
+      heightCells: maxRow - minRow + 1,
+      folderId: folder?.id,
+    });
+    await mainScene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(cells, mainOrigin, style));
 
     // A door wherever two placed cells actually touch — including
     // "accidental" adjacency from the walk looping near itself, per KB's
     // "any two touching locations are connected by a DOOR."
-    const walls = [];
+    const mainWalls = [];
     for (const cell of cells) {
-      const eastKey = `${cell.col + 1},${cell.row}`;
-      if (occupied.has(eastKey)) {
-        const x = (cell.col + 1) * CELL_WIDTH;
-        walls.push({
-          c: [x, cell.row * CELL_HEIGHT, x, (cell.row + 1) * CELL_HEIGHT],
-          door: CONST.WALL_DOOR_TYPES.DOOR,
-          ds: CONST.WALL_DOOR_STATES.CLOSED,
-          doorSound: 'futuristicHydraulic',
-          animation: { type: '' },
-        });
-      }
-      const southKey = `${cell.col},${cell.row + 1}`;
-      if (occupied.has(southKey)) {
-        const y = (cell.row + 1) * CELL_HEIGHT;
-        walls.push({
-          c: [cell.col * CELL_WIDTH, y, (cell.col + 1) * CELL_WIDTH, y],
-          door: CONST.WALL_DOOR_TYPES.DOOR,
-          ds: CONST.WALL_DOOR_STATES.CLOSED,
-          doorSound: 'futuristicHydraulic',
-          animation: { type: '' },
-        });
+      if (occupied.has(`${cell.col + 1},${cell.row}`)) mainWalls.push(doorWall(EDGE.E.wall(cell.col, cell.row)));
+      if (occupied.has(`${cell.col},${cell.row + 1}`)) mainWalls.push(doorWall(EDGE.S.wall(cell.col, cell.row)));
+    }
+    await mainScene.createEmbeddedDocuments('Wall', mainWalls);
+
+    if (!splitAreas) return mainScene;
+
+    const areas = MapGenerator.#buildAreaGeometry(cells);
+    const { areaWalls, areaRegions } = MapGenerator.#buildAreaDoors(cells, areas);
+
+    // areaNum -> [{ edgeId, doc: Region }], for the cross-linking pass below.
+    const regionsByArea = {};
+
+    for (let areaNum = 1; areaNum <= 4; areaNum++) {
+      const origin = areas[areaNum];
+      const scene = await MapGenerator.#createSceneDoc({
+        name: game.i18n.format('XDZ.MapGenerator.AreaSceneName', { name, area: areaNum }),
+        widthCells: origin.widthCells,
+        heightCells: origin.heightCells,
+        folderId: folder.id,
+        // Centroid in the shared build-time grid space (see #buildAreaGeometry),
+        // not this scene's own local space — lets xdz.mjs compare two AREA
+        // scenes' positions to work out a compass direction between them.
+        flags: { xdz: { areaCentroid: { col: (origin.minCol + origin.maxCol) / 2, row: (origin.minRow + origin.maxRow) / 2 } } },
+      });
+
+      await scene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(origin.cells, origin, style));
+      if (areaWalls[areaNum].length) await scene.createEmbeddedDocuments('Wall', areaWalls[areaNum]);
+
+      regionsByArea[areaNum] = [];
+      if (areaRegions[areaNum].length) {
+        const regionData = areaRegions[areaNum].map(({ x, y, width, height }, i) => ({
+          name: game.i18n.format('XDZ.MapGenerator.RegionExit', { n: i + 1 }),
+          shapes: [{ type: 'rectangle', x, y, width, height, rotation: 0 }],
+        }));
+        const created = await scene.createEmbeddedDocuments('Region', regionData);
+        created.forEach((doc, i) => regionsByArea[areaNum].push({ edgeId: areaRegions[areaNum][i].edgeId, doc }));
       }
     }
-    await scene.createEmbeddedDocuments('Wall', walls);
 
-    return scene;
+    // Link each cross-AREA door's two Regions to teleport into each other.
+    const seenEdges = new Map();
+    for (let areaNum = 1; areaNum <= 4; areaNum++) {
+      for (const { edgeId, doc } of regionsByArea[areaNum]) {
+        const other = seenEdges.get(edgeId);
+        if (!other) {
+          seenEdges.set(edgeId, doc);
+          continue;
+        }
+        const teleportName = game.i18n.localize('XDZ.MapGenerator.RegionTeleport');
+        await doc.createEmbeddedDocuments('RegionBehavior', [
+          { name: teleportName, type: 'teleportToken', system: { destinations: [other.uuid], placement: 'center', snap: true } },
+        ]);
+        await other.createEmbeddedDocuments('RegionBehavior', [
+          { name: teleportName, type: 'teleportToken', system: { destinations: [doc.uuid], placement: 'center', snap: true } },
+        ]);
+      }
+    }
+
+    return mainScene;
   }
 
   /**
