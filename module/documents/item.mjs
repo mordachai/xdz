@@ -50,6 +50,14 @@ export default class XDZItem extends Item {
       }
     }
 
+    // Snapshot targets once, at the attack roll, not per damage-button click.
+    // Multiple damage rolls (Roll Damage, then Spray and Pray) can follow the
+    // same successful attack, and the first one may kill/delete the target —
+    // which clears it from game.user.targets — before the second is clicked.
+    // Reusing this snapshot keeps every damage roll off this attack aimed at
+    // what was actually targeted when the shot was declared.
+    const targetIds = [...game.user.targets].map((t) => t.id);
+
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/attack-card.hbs', {
       weapon: this,
       theme: game.settings.get('xdz', 'sheetTheme'),
@@ -62,6 +70,7 @@ export default class XDZItem extends Item {
       success,
       buttons,
       itemUuid: this.uuid,
+      targetIds: JSON.stringify(targetIds),
       spend: mode === 'grenade',
     });
 
@@ -78,13 +87,16 @@ export default class XDZItem extends Item {
    * Roll the "damage" die (how many xenos are destroyed) for a prior
    * successful attack, triggered by the damage-row chat button.
    * @param {"normal"|"ammo"|"grenade"} dieMode
+   * @param {string[]} [targetIds] Target snapshot from rollAttack() — see the
+   *   comment there for why this isn't re-read from game.user.targets here.
    */
-  async rollDamage(dieMode) {
+  async rollDamage(dieMode, targetIds = []) {
     if (this.type !== 'weapon') return;
 
     let formula;
     let description;
     let tag = '';
+    let killMode;
     if (dieMode === 'ammo') {
       if (this.system.ammo.value <= 0) {
         ui.notifications.warn(game.i18n.localize('XDZ.Weapon.NoAmmo'));
@@ -93,14 +105,19 @@ export default class XDZItem extends Item {
       formula = this.system.upgradeDie;
       description = this.system.ammoDescription;
       tag = this.system.ammoLabel || game.i18n.localize('XDZ.Weapon.Ammo');
+      killMode = this.system.ammo.killMode;
       await this.update({ 'system.ammo.value': this.system.ammo.value - 1 });
     } else if (dieMode === 'grenade') {
       formula = this.system.secondary.die;
       description = this.system.secondary.description;
       tag = this.system.secondary.label;
+      killMode = this.system.secondary.killMode;
     } else {
       formula = this.system.destroyDie;
       description = this.system.description;
+      // Primary fire has its own Kill Mode too (e.g. a rocket launcher is
+      // Explosive), independent of the ammo/secondary tracks above.
+      killMode = this.system.killMode;
     }
 
     const roll = await new Roll(formula).evaluate();
@@ -113,11 +130,24 @@ export default class XDZItem extends Item {
       description,
     });
 
+    // Snapshot targeting now (roller's client) rather than reading
+    // game.user.targets later from the GM's client, which could have drifted
+    // by the time the createChatMessage hook runs — see auto-kill.mjs.
+    const actorTokenId = this.actor?.getActiveTokens(true)[0]?.id ?? null;
+
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content,
       rolls: [roll],
       sound: CONFIG.sounds.dice,
+      flags: {
+        xdz: {
+          // dieMode here is the auto-kill targeting mode (normal/explosive/
+          // piercing), a separate axis from rollDamage()'s own dieMode arg
+          // above (which resource/formula was rolled).
+          autoKill: { total: roll.total, sceneId: canvas.scene?.id ?? null, actorTokenId, dieMode: killMode, targetIds },
+        },
+      },
     });
     return roll;
   }

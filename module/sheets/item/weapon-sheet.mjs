@@ -9,4 +9,20 @@ export default class WeaponSheet extends XDZItemSheet {
   static PARTS = {
     sheet: { template: 'systems/xdz/templates/item/weapon-sheet.hbs' },
   };
+
+  /** @override */
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const system = this.item.system;
+    const killModeOptions = (value) =>
+      Object.entries(CONFIG.XDZ.weaponKillModes).map(([key, label]) => ({
+        key,
+        label: game.i18n.localize(label),
+        selected: key === value,
+      }));
+    context.killModeOptions = killModeOptions(system.killMode);
+    context.ammoKillModeOptions = killModeOptions(system.ammo.killMode);
+    context.secondaryKillModeOptions = killModeOptions(system.secondary.killMode);
+    return context;
+  }
 }

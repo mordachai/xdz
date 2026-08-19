@@ -25,6 +25,14 @@
         <input type="text" name="system.destroyDie" value="{{system.destroyDie}}" {{#unless editable}}disabled{{/unless}}>
       </label>
       <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.KillMode'}}</span>
+        <select name="system.killMode" {{#unless editable}}disabled{{/unless}}>
+          {{#each killModeOptions}}
+            <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </label>
+      <label class="xdz-field">
         <span class="xdz-field-label">{{localize 'XDZ.Weapon.Damaged'}}</span>
         <div class="xdz-minmax-field">
           <input type="number" name="system.damaged.value" value="{{system.damaged.value}}" min="0" {{#unless editable}}disabled{{/unless}}>
@@ -56,6 +64,14 @@
           <input type="number" name="system.ammo.max" value="{{system.ammo.max}}" min="0" {{#unless editable}}disabled{{/unless}}>
         </div>
       </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.KillMode'}}</span>
+        <select name="system.ammo.killMode" {{#unless editable}}disabled{{/unless}}>
+          {{#each ammoKillModeOptions}}
+            <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </label>
     </div>
 
     <label class="xdz-field">
@@ -79,6 +95,14 @@
           <span>/</span>
           <input type="number" name="system.secondary.max" value="{{system.secondary.max}}" min="0" {{#unless editable}}disabled{{/unless}}>
         </div>
+      </label>
+      <label class="xdz-field">
+        <span class="xdz-field-label">{{localize 'XDZ.Weapon.KillMode'}}</span>
+        <select name="system.secondary.killMode" {{#unless editable}}disabled{{/unless}}>
+          {{#each secondaryKillModeOptions}}
+            <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
       </label>
     </div>
 

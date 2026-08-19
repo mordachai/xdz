@@ -87,6 +87,10 @@
       "SprayAndPray": "Spray and Pray",
       "Destroy": "Destroy",
       "Destroyed": "{name} is destroyed and cannot be used.",
+      "KillMode": "Kill Mode",
+      "KillModeNormal": "Normal",
+      "KillModeExplosive": "Explosive (blast radius from target)",
+      "KillModePiercing": "Piercing (beeline through target)",
       "NoAmmo": "No ammo remaining.",
       "NoSecondary": "No {label} remaining.",
       "AmmoLabelPlaceholder": "Ammo / Fuel",
@@ -482,7 +486,32 @@
       "PlayWithGM": {
         "Name": "Play with a GM",
         "Hint": "Spawn rolls stay GM-only, spawned XENOS and Escalation spawns enter Hidden, and Ambush spawns enter revealed (Seek)."
+      },
+      "CombatCarousel": {
+        "Name": "Combat Carousel",
+        "Hint": "Floating combat-order bar: MARINES act first and reorder freely, unique threats get their own card, and the Drone swarm collapses into one symbolic XENOS card."
+      },
+      "AutoKillOnDamage": {
+        "Name": "Auto-Kill Xenos on Destroy Roll",
+        "Hint": "When a destroy die is rolled, automatically remove that many points of xeno threat from the scene, per the weapon's Kill Mode — closest to the attacker (Normal), around the target (Explosive), or along the beeline through the target (Piercing)."
+      },
+      "CarouselPosition": {
+        "Name": "Combat Carousel Position",
+        "Hint": "Which edge of your screen the Combat Carousel is pinned to. Left/Right switch it to a vertical column.",
+        "Top": "Top",
+        "Bottom": "Bottom",
+        "Left": "Left",
+        "Right": "Right"
       }
+    },
+
+    "Combat": {
+      "Marines": "Marines",
+      "Others": "Others",
+      "Xenos": "Xenos",
+      "XenosTooltip": "The Xenos act — roll to spawn, resolve their attacks, then advance.",
+      "Prev": "Previous Turn",
+      "Next": "Next Turn"
     }
   },
 

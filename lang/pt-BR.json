@@ -87,6 +87,10 @@
       "SprayAndPray": "Fogo Descontrolado",
       "Destroy": "Destruir",
       "Destroyed": "{name} está destruída e não pode ser usada.",
+      "KillMode": "Modo de Destruição",
+      "KillModeNormal": "Normal",
+      "KillModeExplosive": "Explosivo (raio a partir do alvo)",
+      "KillModePiercing": "Perfurante (linha reta através do alvo)",
       "NoAmmo": "Sem munição restante.",
       "NoSecondary": "Sem {label} restante.",
       "AmmoLabelPlaceholder": "Munição / Combustível",
@@ -480,7 +484,32 @@
       "PlayWithGM": {
         "Name": "Jogar com um Mestre",
         "Hint": "Rolagens de surgimento ficam visíveis apenas ao Mestre, XENOS gerados e surgimentos de Escalada entram Ocultos, e surgimentos de Emboscada entram revelados (Busca)."
+      },
+      "CombatCarousel": {
+        "Name": "Carrossel de Combate",
+        "Hint": "Barra flutuante de ordem de combate: MARINES agem primeiro e podem reordenar livremente, ameaças únicas ganham sua própria carta, e o enxame de Drones vira uma única carta simbólica de XENOS."
+      },
+      "AutoKillOnDamage": {
+        "Name": "Matar Xenos Automaticamente na Rolagem de Destruição",
+        "Hint": "Ao rolar o dado de destruição, remove automaticamente essa quantidade de pontos de ameaça de xenos da cena, conforme o Modo de Destruição da arma — os mais próximos do atacante (Normal), ao redor do alvo (Explosivo), ou em linha reta através do alvo (Perfurante)."
+      },
+      "CarouselPosition": {
+        "Name": "Posição do Carrossel de Combate",
+        "Hint": "Em qual borda da tela o Carrossel de Combate fica fixado. Esquerda/Direita transformam em uma coluna vertical.",
+        "Top": "Topo",
+        "Bottom": "Base",
+        "Left": "Esquerda",
+        "Right": "Direita"
       }
+    },
+
+    "Combat": {
+      "Marines": "Marines",
+      "Others": "Outros",
+      "Xenos": "Xenos",
+      "XenosTooltip": "Os Xenos agem — role para surgir, resolva os ataques, então avance.",
+      "Prev": "Turno Anterior",
+      "Next": "Próximo Turno"
     }
   },
 

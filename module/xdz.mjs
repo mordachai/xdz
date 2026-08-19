@@ -1,7 +1,10 @@
 import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
+import XDZCombat from './documents/combat.mjs';
 import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
-import { TnTracker, RoundTimer, MapGenerator } from './apps/_module.mjs';
+import { TnTracker, RoundTimer, MapGenerator, CombatCarousel } from './apps/_module.mjs';
+import { appendToOrder } from './helpers/combat-groups.mjs';
+import { autoKillXenos } from './helpers/auto-kill.mjs';
 import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
@@ -10,7 +13,7 @@ import * as models from './data/_module.mjs';
 globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
-  apps: { TnTracker, RoundTimer, MapGenerator, tnTracker: null, timers: new Map() },
+  apps: { TnTracker, RoundTimer, MapGenerator, CombatCarousel, tnTracker: null, timers: new Map(), combatCarousel: null },
   macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets },
   models,
   config: XDZ,
@@ -45,6 +48,8 @@ Hooks.once('init', function () {
     vehicle: models.VehicleData,
   };
   CONFIG.Actor.typeImages = XDZ.actorTypeImages;
+
+  CONFIG.Combat.documentClass = XDZCombat;
 
   CONFIG.Item.documentClass = XDZItem;
   CONFIG.Item.dataModels = {
@@ -95,6 +100,7 @@ Hooks.once('init', function () {
       white: 'XDZ.Settings.SheetTheme.White',
     },
     default: 'green',
+    onChange: () => xdz.apps.combatCarousel?.render(),
   });
   // GM-only play mode: spawn chat rolls go GM-whisper only, spawned tokens
   // enter hidden, and ambush spawns are the exception that stays revealed —
@@ -107,6 +113,52 @@ Hooks.once('init', function () {
     config: true,
     type: Boolean,
     default: false,
+    // Combat Carousel's Next/Previous need every player to be able to write
+    // to the active Combat when nobody's running the table — only the GM
+    // can flip this world setting, so this always executes GM-side.
+    onChange: (gmOnly) => game.combat?.update({ ownership: { default: gmOnly ? CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE : CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER } }),
+  });
+  // Floating combat-order bar: Marines act first and reorder freely, unique
+  // hostiles ("Others") get their own card, the Drone swarm collapses into
+  // one symbolic "Xenos" card. See CombatCarousel.
+  game.settings.register('xdz', 'combatCarouselEnabled', {
+    name: 'XDZ.Settings.CombatCarousel.Name',
+    hint: 'XDZ.Settings.CombatCarousel.Hint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: (enabled) => xdz.apps.combatCarousel?.syncVisibility(enabled),
+  });
+  // Per-client screen edge for the carousel — left/right switch it to a
+  // vertical column (see _combat-carousel.scss's [data-position] rules).
+  game.settings.register('xdz', 'carouselPosition', {
+    name: 'XDZ.Settings.CarouselPosition.Name',
+    hint: 'XDZ.Settings.CarouselPosition.Hint',
+    scope: 'client',
+    config: true,
+    type: String,
+    choices: {
+      top: 'XDZ.Settings.CarouselPosition.Top',
+      bottom: 'XDZ.Settings.CarouselPosition.Bottom',
+      left: 'XDZ.Settings.CarouselPosition.Left',
+      right: 'XDZ.Settings.CarouselPosition.Right',
+    },
+    default: 'bottom',
+    onChange: () => xdz.apps.combatCarousel?.render(),
+  });
+  // Destroy-die rolls (rollDamage) auto-kill that many points of xeno threat
+  // on the canvas, per the weapon's Kill Mode — closest to the attacker
+  // (normal), around the target (explosive), or in a beeline through the
+  // target (piercing) — see auto-kill.mjs. Table can turn this off and go
+  // back to manual token bookkeeping.
+  game.settings.register('xdz', 'autoKillOnDamage', {
+    name: 'XDZ.Settings.AutoKillOnDamage.Name',
+    hint: 'XDZ.Settings.AutoKillOnDamage.Hint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
   });
   game.settings.register('xdz', 'hudVisible', {
     scope: 'client',
@@ -179,6 +231,7 @@ Hooks.once('init', function () {
     'systems/xdz/templates/chat/table-card.hbs',
     'systems/xdz/templates/chat/assets-card.hbs',
     'systems/xdz/templates/apps/map-generator.hbs',
+    'systems/xdz/templates/apps/combat-carousel.hbs',
     'systems/xdz/templates/journal/mission-objectives-page.hbs',
     'systems/xdz/templates/journal/escalation-page.hbs',
     'systems/xdz/templates/journal/assets-page.hbs',
@@ -214,6 +267,22 @@ Hooks.once('ready', function () {
     xdz.apps.tnTracker.render(true);
     syncTimers();
   }
+
+  xdz.apps.combatCarousel = new CombatCarousel();
+  xdz.apps.combatCarousel.syncVisibility();
+});
+
+// Acid-green xeno blood: Splatter's per-creature-type "bloodsheet" keys off
+// actor.type when the system isn't one of its known game-system dataPaths
+// (xdz isn't), so a single "xeno" entry is enough here — commando/character/
+// npc/vehicle all fall through to Splatter's default red. GM-only, one-time:
+// skipped once the key exists so a table can recolor it in Splatter's world
+// settings without this stomping the change on next load.
+Hooks.once('ready', function () {
+  if (!game.user.isGM || !game.modules.get('splatter')?.active) return;
+  const sheet = game.settings.get('splatter', 'BloodSheetData');
+  if (sheet.xeno) return;
+  game.settings.set('splatter', 'BloodSheetData', { ...sheet, xeno: '#39ff14d8' });
 });
 
 // TN/timer state lives in world settings (Setting documents), which already
@@ -222,6 +291,45 @@ Hooks.once('ready', function () {
 Hooks.on('updateSetting', (setting) => {
   if (setting.key === 'xdz.tnValue' || setting.key === 'xdz.tnModifier') xdz.apps.tnTracker?.render();
   if (setting.key === 'xdz.timers') syncTimers();
+});
+
+// Combat Carousel: open/close tracks whether a combat exists, re-render on
+// anything that could change turn order, group membership, or headcount.
+// A newly-created Marine/Other Combatant is appended to the end of its
+// group's manual drag order (see combat-groups.mjs) so it has a defined
+// position without requiring a roll.
+Hooks.on('createCombat', (combat) => {
+  if (game.user.isGM && !game.settings.get('xdz', 'playWithGM')) {
+    combat.update({ ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER } });
+  }
+  xdz.apps.combatCarousel?.syncVisibility();
+});
+Hooks.on('deleteCombat', () => xdz.apps.combatCarousel?.syncVisibility());
+Hooks.on('updateCombat', () => xdz.apps.combatCarousel?.render());
+Hooks.on('createCombatant', (combatant) => {
+  // Every connected client sees this hook fire — only the GM writes the
+  // append, avoiding duplicate/conflicting order values from a race.
+  if (game.user.isGM) appendToOrder(combatant);
+  xdz.apps.combatCarousel?.render();
+});
+Hooks.on('updateCombatant', () => xdz.apps.combatCarousel?.render());
+Hooks.on('deleteCombatant', () => xdz.apps.combatCarousel?.render());
+// Destroy-die rolls stash their kill payload on the chat message (see
+// rollDamage() in documents/item.mjs) instead of a bespoke socket — every
+// connected client sees this hook fire, only the GM acts on it, same
+// pattern as the createCombatant append above.
+Hooks.on('createChatMessage', (message) => {
+  if (!game.user.isGM) return;
+  const data = message.getFlag('xdz', 'autoKill');
+  if (data) autoKillXenos(data);
+});
+// The carousel's injury pips/ECG read a Marine's system.injuries straight
+// off the Actor — taking damage on the sheet doesn't touch the Combatant
+// document at all, so without this the pips would only catch up next time
+// something else (turn change, reorder) happened to trigger a render.
+Hooks.on('updateActor', (actor) => {
+  if (!game.combat?.combatants.some((c) => c.actor?.id === actor.id)) return;
+  xdz.apps.combatCarousel?.render();
 });
 
 // Scene-control toggle to show/hide all HUD badges (per-client). Toggle
@@ -302,8 +410,14 @@ Hooks.on('renderChatMessageHTML', async (message, html) => {
       const item = fromUuidSync(row?.dataset.itemUuid);
       if (!item) return;
       const dieMode = button.dataset.dieMode;
+      let targetIds = [];
+      try {
+        targetIds = JSON.parse(row.dataset.targetIds ?? '[]');
+      } catch {
+        targetIds = [];
+      }
       button.disabled = true;
-      await item.rollDamage(dieMode);
+      await item.rollDamage(dieMode, targetIds);
       if (dieMode === 'ammo') button.disabled = item.system.ammo.value <= 0;
     });
   });

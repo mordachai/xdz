@@ -60,6 +60,19 @@ XDZ.xenoBriefing = {
 
 XDZ.destroyDieSteps = ['1d4', '1d6', '1d8', '1d10', '1d12'];
 
+/**
+ * How a destroy-die roll's auto-kill (see helpers/auto-kill.mjs) spends its
+ * total against xenos on the canvas: `normal` spends closest-first around
+ * the attacker, `explosive` closest-first around the target (blast radius),
+ * `piercing` closest-first along the beeline from attacker through target
+ * and out the other side (line pierces through everyone in the way).
+ */
+XDZ.weaponKillModes = {
+  normal: 'XDZ.Weapon.KillModeNormal',
+  explosive: 'XDZ.Weapon.KillModeExplosive',
+  piercing: 'XDZ.Weapon.KillModePiercing',
+};
+
 // Placeholder art from Foundry's core icon set — swap for custom XDZ art later.
 XDZ.actorTypeImages = {
   commando: 'icons/svg/mystery-man.svg',

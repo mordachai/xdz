@@ -5,6 +5,25 @@ const BREEDER_UUID = 'Compendium.xdz.npcs.Actor.jR4cSGznMxeiLvfz'; // Queen
 const ROGUE_COMMAND_UUID = 'Compendium.xdz.npcs.Actor.3Vkief3qvIJShqBK'; // Rogue Command
 const WICKED_UUID = 'Compendium.xdz.npcs.Actor.nJilHxm4gmAhgoxS'; // Wicked
 
+/**
+ * Resolve a compendium actor UUID to a world Actor, importing (and
+ * caching, keyed by `_stats.compendiumSource`) on first use. An unlinked
+ * token's `actor` getter only resolves through `game.actors.get(actorId)`
+ * (see TokenDocument#baseActor) — a token built straight off a compendium
+ * actor via `getTokenDocument()` ends up with an `actorId` the world
+ * collection can't find, so `combatant.actor` (and anything reading it,
+ * e.g. Combat Carousel grouping) comes back null. Core's canvas drag-drop
+ * handler imports the actor first for the same reason; spawns must too.
+ */
+async function worldActor(uuid) {
+  const existing = game.actors.find((a) => a._stats?.compendiumSource === uuid);
+  if (existing) return existing;
+  const packActor = await fromUuid(uuid);
+  if (!packActor) return null;
+  const data = game.actors.fromCompendium(packActor);
+  return Actor.implementation.create(data, { fromCompendium: true });
+}
+
 /** Half the grid-space footprint of a spawned token, for centering on a spawn point. */
 function tokenOffset(tokenDoc) {
   const size = canvas.grid.size;
@@ -87,7 +106,7 @@ export async function spawnXenos() {
   const remainder = total % groupCount;
   const counts = Array.from({ length: groupCount }, (_, i) => base + (i < remainder ? 1 : 0)).filter((c) => c > 0);
 
-  const actor = await fromUuid(XENO_UUID);
+  const actor = await worldActor(XENO_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: XENO_UUID }));
 
   const commandoTokens = canvas.scene.tokens.filter((t) => ['commando', 'character'].includes(t.actor?.type));
@@ -157,7 +176,7 @@ export async function spawnBreeder() {
   const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
-  const actor = await fromUuid(BREEDER_UUID);
+  const actor = await worldActor(BREEDER_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: BREEDER_UUID }));
 
   const tokenData = await buildTokenGroup(actor, 1, point, { forceSeek: true });
@@ -195,7 +214,7 @@ export async function spawnRogueCommandos() {
   const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
-  const actor = await fromUuid(ROGUE_COMMAND_UUID);
+  const actor = await worldActor(ROGUE_COMMAND_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: ROGUE_COMMAND_UUID }));
 
   const tokenData = await buildTokenGroup(actor, countRoll.total, point, { forceSeek: true });
@@ -233,7 +252,7 @@ export async function spawnWicked() {
   const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
-  const actor = await fromUuid(WICKED_UUID);
+  const actor = await worldActor(WICKED_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: WICKED_UUID }));
 
   const tokenData = await buildTokenGroup(actor, 1, point, { forceSeek: true });
@@ -271,7 +290,7 @@ export async function spawnSwarm() {
   if (!point) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoCommandoTokens'));
 
   const countRoll = await new Roll('1d12').evaluate();
-  const actor = await fromUuid(XENO_UUID);
+  const actor = await worldActor(XENO_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: XENO_UUID }));
 
   const tokenData = await buildTokenGroup(actor, countRoll.total, point, { forceSeek: true });

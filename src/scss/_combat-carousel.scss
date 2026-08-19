@@ -1,0 +1,354 @@
+// Optional combat-order bar (xdz.combatCarouselEnabled) — Marines act first
+// and drag-reorder freely, Others (unique NPC/non-drone XENO threats) get
+// their own card, Xenos collapses the anonymous Drone swarm into one
+// symbolic card with a live headcount. Same CRT-terminal language as the
+// HUD badges, but fixed to the bottom of the viewport instead of draggable.
+
+// Anchor edge is set via `data-position` (JS-driven, see combat-carousel.mjs
+// _onRender) from the client-scoped `carouselPosition` setting. top/bottom
+// stay a horizontal bar; left/right flip everything into a vertical column.
+.xdz.combat-carousel {
+  position: fixed !important;
+  z-index: 30;
+  pointer-events: none;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+
+  // Sheet Theme setting (xdz.sheetTheme, same green/blue/orange/white choice
+  // as the actor sheets/journals/chat cards) drives one accent pair for the
+  // whole bar — every color in this file reads from these two custom
+  // properties except the injury pips' traffic-light coloring and the
+  // owner-color edge ring, which stay theme-independent on purpose.
+  --xdz-accent: #{$xdz-crt-green};
+  --xdz-accent-dim: #{$xdz-crt-green-dim};
+
+  &[data-theme="blue"] { --xdz-accent: #{$xdz-crt-blue}; --xdz-accent-dim: #{$xdz-crt-blue-dim}; }
+  &[data-theme="orange"] { --xdz-accent: #{$xdz-crt-orange}; --xdz-accent-dim: #{$xdz-crt-orange-dim}; }
+  &[data-theme="white"] { --xdz-accent: #{$xdz-crt-white}; --xdz-accent-dim: #{$xdz-crt-white-dim}; }
+
+  * { pointer-events: auto; }
+
+  &[data-position="top"] { left: 50%; bottom: auto; top: 12px; transform: translateX(-50%); }
+  &[data-position="left"] { left: 12px; top: 50%; bottom: auto; transform: translateY(-50%); }
+  // Right anchors past the sidebar's own width (`--xdz-sidebar-offset`, kept
+  // live by a ResizeObserver in combat-carousel.mjs) so it doesn't sit under
+  // it whether the sidebar is expanded or collapsed.
+  &[data-position="right"] { left: auto; right: var(--xdz-sidebar-offset, 12px); top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+
+// Same faint radial-gradient panel look as .xdz-chatcard/.xdz-xeno-sheet —
+// a soft accent glow fading from the top center into the plain CRT housing
+// color, instead of a flat tinted box.
+.xdz-carousel-bar {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-accent) 15%, #{$xdz-crt-bg}) 0%, #{$xdz-crt-bg} 70%);
+  border: 1px solid var(--xdz-accent-dim);
+  border-radius: $xdz-radius;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--xdz-accent) 25%, transparent), inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.xdz-carousel-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.xdz-carousel-divider {
+  writing-mode: sideways-lr;
+  text-orientation: mixed;
+  font-family: $xdz-font-mono;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: color-mix(in srgb, var(--xdz-accent) 75%, transparent);
+  text-shadow: 0 0 4px color-mix(in srgb, var(--xdz-accent) 55%, transparent);
+  padding-bottom: 0.15rem;
+}
+
+.xdz-carousel-row {
+  display: flex;
+  gap: 0.3rem;
+}
+
+// Marines/Others are pre-chunked into rows of at most the view cap (see
+// `_chunk` in combat-carousel.mjs) — each `.xdz-carousel-row` above is one
+// chunk, sized to only the cards it actually holds. This wrapper stacks
+// chunks as new lines once a group exceeds the cap, instead of reserving
+// fixed track space for cards that aren't there.
+.xdz-carousel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+// Vertical-column layout: the bar, each group, and each card row all stack
+// top-to-bottom instead of side-by-side; divider labels read normally
+// instead of sideways since there's no shortage of horizontal space.
+.xdz.combat-carousel[data-position="left"],
+.xdz.combat-carousel[data-position="right"] {
+  .xdz-carousel-bar { flex-direction: column; align-items: center; }
+  .xdz-carousel-group { flex-direction: column; align-items: center; gap: 0.2rem; }
+  .xdz-carousel-row { flex-direction: column; }
+  // Extra chunks break out as new columns beside the first instead of below.
+  .xdz-carousel-lines { flex-direction: row; align-items: flex-start; }
+  .xdz-carousel-divider { writing-mode: horizontal-tb; padding-bottom: 0; }
+  .xdz-carousel-nav { align-self: center; }
+}
+
+.xdz-carousel-card {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 3px;
+  border: 1px solid var(--xdz-accent-dim);
+  background: $xdz-crt-bg;
+  // No `overflow: hidden` here — the hover name label is positioned outside
+  // the card's own box (`bottom: 100%`) and would get clipped by it.
+  cursor: default;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+    // Images are natively draggable in Chromium; without this the browser
+    // starts an image drag instead of bubbling to the card's own
+    // dragstart handler, so reordering silently does nothing.
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.active {
+    border-color: var(--xdz-accent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--xdz-accent) 80%, transparent), inset 0 0 6px color-mix(in srgb, var(--xdz-accent) 40%, transparent);
+  }
+
+  // Owning player's color as a gradient inset ring on the current-turn card
+  // only — the edge is the whole indicator, no separate always-on dot.
+  &.has-owner.active::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from 0deg, var(--owner-color), transparent 40%, var(--owner-color) 80%, var(--owner-color));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  &[draggable="true"] { cursor: grab; }
+  &[draggable="true"]:active { cursor: grabbing; }
+}
+
+.xdz-carousel-card.xeno {
+  cursor: pointer;
+
+  &.active { animation: xdz-carousel-xeno-pulse 1s ease-in-out infinite; }
+}
+
+@keyframes xdz-carousel-xeno-pulse {
+  0%, 100% { box-shadow: 0 0 10px color-mix(in srgb, var(--xdz-accent) 90%, transparent), inset 0 0 6px color-mix(in srgb, var(--xdz-accent) 50%, transparent); }
+  50% { box-shadow: 0 0 18px var(--xdz-accent), inset 0 0 10px color-mix(in srgb, var(--xdz-accent) 70%, transparent); }
+}
+
+// Marine vitals — mini ECG strip + 6-box injury track, mirroring the actor
+// sheet's ECG panel (see _commando.scss) at carousel scale. Card + vitals
+// share one slot so drag/drop still targets the bare .xdz-carousel-card.
+.xdz-carousel-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+// ECG sits full-bleed behind the pip row instead of stacking above it —
+// pips float over the waveform so the whole vitals readout stays a fixed
+// 18px regardless of how many rows it visually layers.
+.xdz-carousel-vitals {
+  position: relative;
+  height: 18px;
+  width: 52px;
+}
+
+.xdz-carousel-ecg-row {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid var(--xdz-accent-dim);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--xdz-accent) 10%, #{$xdz-crt-bg});
+  -webkit-mask-image: linear-gradient(
+    90deg, transparent 0%, transparent 8%,
+    rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+  );
+  mask-image: linear-gradient(
+    90deg, transparent 0%, transparent 8%,
+    rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 38% 100%;
+  mask-size: 38% 100%;
+  animation: xdz-ecg-reveal var(--xdz-ecg-speed, 6s) linear infinite;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1%;
+    width: 2%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($xdz-crt-green, 0.95), transparent);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: xdz-ecg-cursor var(--xdz-ecg-speed, 6s) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+
+    &::after { display: none; }
+  }
+}
+
+// Waveform trace itself stays the fixed medical green (only green beat SVGs
+// exist, and it reads as a real ECG trace regardless of the accent theme).
+.xdz-carousel-ecg-wave {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: repeat-x left bottom / auto 100%;
+}
+
+@for $i from 1 through 6 {
+  .xdz-carousel-ecg-row.xdz-ecg-level-#{$i} .xdz-carousel-ecg-wave {
+    background-image: url("../assets/ui/ecg-beat-#{$i}-green.svg");
+  }
+}
+
+.xdz-carousel-ecg-row.xdz-ecg-dead .xdz-carousel-ecg-wave {
+  background-image: url("../assets/ui/ecg-beat-6-green.svg");
+}
+
+.xdz-carousel-pip-row {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 2px;
+}
+
+// Health pips keep their own fixed traffic-light coloring regardless of the
+// accent theme — only a filled pip's position tells the story (1-3 green,
+// 4th amber, last two red). Opacity (not just color) carries the on/off
+// state so they stay legible sitting over the ECG waveform behind them.
+.xdz-carousel-injury-pip {
+  flex: 1;
+  height: 2px;
+  border: 1px solid $xdz-crt-green-dim;
+  border-radius: 1px;
+  background: transparent;
+  opacity: 0.4;
+
+  &.xdz-pip-filled {
+    background: $xdz-crt-green;
+    border-color: $xdz-crt-green;
+    box-shadow: 0 0 3px rgba($xdz-crt-green, 0.7);
+    opacity: 0.8;
+  }
+
+  &[data-index="3"].xdz-pip-filled {
+    background: $xdz-crt-amber;
+    border-color: $xdz-crt-amber;
+    box-shadow: 0 0 3px rgba($xdz-crt-amber, 0.8);
+  }
+
+  &[data-index="4"].xdz-pip-filled,
+  &[data-index="5"].xdz-pip-filled {
+    background: $xdz-crt-red;
+    border-color: $xdz-crt-red;
+    box-shadow: 0 0 4px rgba($xdz-crt-red, 0.85);
+  }
+}
+
+// Name label — hover only, never always-on.
+.xdz-carousel-name {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  font-family: $xdz-font-mono;
+  font-size: 0.6rem;
+  color: var(--xdz-accent);
+  background: color-mix(in srgb, var(--xdz-accent) 12%, #{$xdz-crt-bg});
+  border: 1px solid var(--xdz-accent-dim);
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease;
+}
+
+.xdz-carousel-card:hover .xdz-carousel-name { opacity: 1; }
+
+// Outside the card, like the marine ECG strip — its own readout box below
+// the card instead of a corner overlay.
+.xdz-carousel-count {
+  width: 52px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 3px;
+  border: 1px solid var(--xdz-accent-dim);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--xdz-accent) 12%, #{$xdz-crt-bg});
+}
+
+.xdz-carousel-count-digits {
+  position: relative;
+  font-family: $xdz-font-digital;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--xdz-accent);
+  text-shadow: 0 0 5px color-mix(in srgb, var(--xdz-accent) 95%, transparent), 0 0 1px color-mix(in srgb, var(--xdz-accent) 90%, transparent);
+
+  // Dim "unlit" 7-segment ghost behind the live digits — same trick real
+  // digital clocks use, so the readout looks like a display, not a font.
+  &::before {
+    content: attr(data-ghost);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    color: color-mix(in srgb, var(--xdz-accent) 16%, transparent);
+  }
+}
+
+.xdz-carousel-nav {
+  align-self: center;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+  background: color-mix(in srgb, var(--xdz-accent) 10%, #{$xdz-crt-bg-panel});
+  color: var(--xdz-accent);
+  border: 1px solid var(--xdz-accent-dim);
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: color-mix(in srgb, var(--xdz-accent) 15%, transparent); border-color: var(--xdz-accent); }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+}

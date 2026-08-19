@@ -21,3 +21,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+// 7-segment digital-clock face — DSEG7 Classic (SIL OFL), see assets/fonts/DSEG-LICENSE.txt.
+@font-face {
+  font-family: 'XDZ DSEG7';
+  src: url('../assets/fonts/DSEG7Classic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
