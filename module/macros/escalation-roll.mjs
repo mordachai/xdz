@@ -12,7 +12,7 @@ const SPAWN_HANDLERS = {
 /**
  * Rolls 1D20 on XDZ.escalations (KB "mission ESCALATIONS", rolled once per
  * XENO turn) and posts a CRT-styled chat card. Exposed as `xdz.macros.
- * rollEscalation()` for a GM hotbar macro. Any LOCATION-roll placeholder in
+ * rollEscalation()` for a hotbar macro. Any LOCATION-roll placeholder in
  * the result resolves against the last mission type rolled by
  * MissionGenerator (world setting xdz.currentMissionType), defaulting to
  * 'colony' if no mission has been rolled yet this world.
@@ -24,8 +24,6 @@ const SPAWN_HANDLERS = {
  * XENO turn and shouldn't interrupt play.
  */
 export async function rollEscalation() {
-  if (!game.user.isGM) return;
-
   const roll = await new Roll('1d20').evaluate();
   const entry = CONFIG.XDZ.escalations.find((e) => e.num === roll.total);
   const type = game.settings.get('xdz', 'currentMissionType');

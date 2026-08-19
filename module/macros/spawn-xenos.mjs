@@ -91,10 +91,9 @@ async function buildTokenGroup(actor, count, point, { forceSeek = false } = {}) 
  * LOCATIONS (each placed by a full LOCATION ROLL). A xeno that spawns CLOSE
  * to a commando is an AMBUSH (KB: DEATH roll instead of the normal FEAR
  * reveal) and starts in SEEK, not HIDE. Exposed as `xdz.macros.spawnXenos()`
- * for a GM hotbar macro, called once per XENO turn alongside `rollEscalation`.
+ * for a hotbar macro, called once per XENO turn alongside `rollEscalation`.
  */
 export async function spawnXenos() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const totalRoll = await new Roll('1d20').evaluate();
@@ -164,7 +163,6 @@ export async function spawnXenos() {
  * *second* giant Breeder XENO already on the scene; otherwise it's the first.
  */
 export async function spawnBreeder() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const confirmed = await foundry.applications.api.DialogV2.confirm({
@@ -207,7 +205,6 @@ export async function spawnBreeder() {
  * LOCATION ROLL, SEEKING, using XENO BEHAVIOR to move and attack.
  */
 export async function spawnRogueCommandos() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const countRoll = await new Roll('1d12').evaluate();
@@ -246,7 +243,6 @@ export async function spawnRogueCommandos() {
  * once, so it starts SEEKING like an ambush.
  */
 export async function spawnWicked() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
@@ -283,7 +279,6 @@ export async function spawnWicked() {
  * LOCATION — no LOCATION ROLL (KB: `locationRolls: 0`), forced SEEK/ambush.
  */
 export async function spawnSwarm() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const point = commandoPoint();

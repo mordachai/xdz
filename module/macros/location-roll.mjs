@@ -45,10 +45,9 @@ export async function rollLocationPoint() {
  * Bare LOCATION ROLL (KB §5) with no spawn attached: posts the same
  * AREA/LOCATION/QUADRANT chat card as a XENO SPAWN group, whose location
  * name pans the GM's view when clicked. Exposed as `xdz.macros.rollLocation()`
- * for a GM hotbar macro.
+ * for a hotbar macro.
  */
 export async function rollLocation() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const { roll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();

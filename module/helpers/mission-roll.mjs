@@ -11,12 +11,9 @@ const TYPE_LABEL_KEYS = { ship: 'XDZ.MissionGenerator.Starship', colony: 'XDZ.Mi
  * to the "Mission Objectives" journal, styled as an old green-screen
  * terminal readout. Wired to the Colony/Ship Objectives buttons in the
  * Journal directory header, and exposed as `xdz.macros.rollMission(type)`
- * for a hotbar macro. GM-only, matching the rest of the system's GM-facing
- * generators (MapGenerator, TN adjustments).
+ * for a hotbar macro. Callable by players too, for gmless play.
  */
 export async function rollMission(type) {
-  if (!game.user.isGM) return;
-
   const objectives = shuffleArray(CONFIG.XDZ.objectives)
     .slice(0, 3)
     .sort((a, b) => a.num - b.num)

@@ -23,8 +23,6 @@ const ASSETS_TABLE_UUID = 'Compendium.xdz.tables.RollTable.izGbcWp05MyNI4dc';
  * players even under Play with a GM.
  */
 export async function rollAssets() {
-  if (!game.user.isGM) return;
-
   const table = await fromUuid(ASSETS_TABLE_UUID);
   if (!table) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadTable', { uuid: ASSETS_TABLE_UUID }));
 

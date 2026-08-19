@@ -38,13 +38,13 @@ export function clearAreaLegends() {
 Hooks.on('canvasReady', clearAreaLegends);
 
 /**
- * Draws a GM-only overlay on the current scene: one outlined rectangle per
- * AREA (1-4, each its own fixed color) labeled "Area N", plus every
- * LOCATION tile's name in its bottom-right corner, colored to match its
- * AREA. Re-running replaces any overlay already drawn.
+ * Draws a per-client overlay on the current scene (purely visual, never
+ * saved to any Document — see the canvasReady hook below): one outlined
+ * rectangle per AREA (1-4, each its own fixed color) labeled "Area N", plus
+ * every LOCATION tile's name in its bottom-right corner, colored to match
+ * its AREA. Re-running replaces any overlay already drawn.
  */
 export async function drawAreaLegends() {
-  if (!game.user.isGM) return;
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const tiles = canvas.scene.tiles.filter((t) => t.getFlag('xdz', 'area') && t.getFlag('xdz', 'quadrants'));
