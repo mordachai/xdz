@@ -1,8 +1,13 @@
 {{#if hasCombat}}
 <div class="xdz-carousel-bar">
-  <button type="button" class="xdz-carousel-nav" data-action="prev" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Prev'}}">
-    <i class="fa-solid fa-chevron-left"></i>
-  </button>
+  <div class="xdz-carousel-nav-group">
+    <button type="button" class="xdz-carousel-nav" data-action="prev" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Prev'}}">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button type="button" class="xdz-carousel-nav" data-action="next" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Next'}}">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
 
   {{#if marineRows.length}}
   <div class="xdz-carousel-group">
@@ -12,19 +17,19 @@
       <div class="xdz-carousel-row">
         {{#each row as |c|}}
         <div class="xdz-carousel-slot">
-          <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
+          <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.acted}}acted{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
             <img src="{{c.img}}" alt="{{c.name}}">
             <span class="xdz-carousel-name">{{c.name}}</span>
           </div>
           {{#if c.injury}}
           <div class="xdz-carousel-vitals">
-            <div class="xdz-carousel-ecg-row xdz-ecg-level-{{c.injury.level}}{{#if c.injury.dead}} xdz-ecg-dead{{/if}}" style="--xdz-ecg-speed: {{c.injury.ecgSpeed}}">
-              <span class="xdz-carousel-ecg-wave"></span>
-            </div>
             <div class="xdz-carousel-pip-row">
               {{#each c.injury.pips}}
               <span class="xdz-carousel-injury-pip {{#if filled}}xdz-pip-filled{{/if}}" data-index="{{index}}"></span>
               {{/each}}
+            </div>
+            <div class="xdz-carousel-ecg-row xdz-ecg-level-{{c.injury.level}}{{#if c.injury.dead}} xdz-ecg-dead{{/if}}" style="--xdz-ecg-speed: {{c.injury.ecgSpeed}}">
+              <span class="xdz-carousel-ecg-wave"></span>
             </div>
           </div>
           {{/if}}
@@ -43,7 +48,7 @@
       {{#each otherRows as |row|}}
       <div class="xdz-carousel-row">
         {{#each row as |c|}}
-        <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
+        <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.acted}}acted{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
           <img src="{{c.img}}" alt="{{c.name}}">
           <span class="xdz-carousel-name">{{c.name}}</span>
         </div>
@@ -57,30 +62,40 @@
   {{#if hasXenosGroup}}
   <div class="xdz-carousel-group">
     <div class="xdz-carousel-divider">{{localize 'XDZ.Combat.Xenos'}}</div>
-    <div class="xdz-carousel-row">
-      {{#each xenosUnique as |c|}}
-      <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
-        <img src="{{c.img}}" alt="{{c.name}}">
-        <span class="xdz-carousel-name">{{c.name}}</span>
+    <div class="xdz-carousel-lines">
+      {{#each xenosRows as |row|}}
+      <div class="xdz-carousel-row">
+        {{#each row as |c|}}
+        {{#if c.isDrone}}
+        <div class="xdz-carousel-slot">
+          <div class="xdz-carousel-card xeno {{#if c.active}}active{{/if}} {{#if c.acted}}acted{{/if}}" data-action="next" title="{{localize 'XDZ.Combat.XenosTooltip'}}">
+            <img src="{{c.img}}" alt="{{localize 'XDZ.Combat.Xenos'}}">
+            <span class="xdz-carousel-name">{{localize 'XDZ.Combat.Xenos'}}</span>
+          </div>
+          <div class="xdz-carousel-count">
+            <span class="xdz-carousel-count-digits" data-ghost="888">{{c.count}}</span>
+          </div>
+        </div>
+        {{else}}
+        <div class="xdz-carousel-card {{#if c.active}}active{{/if}} {{#if c.acted}}acted{{/if}} {{#if c.ownerColor}}has-owner{{/if}}" data-combatant-id="{{c.id}}" draggable="{{c.canDrag}}" {{#if c.ownerColor}}style="--owner-color: {{c.ownerColor}};"{{/if}}>
+          <img src="{{c.img}}" alt="{{c.name}}">
+          <span class="xdz-carousel-name">{{c.name}}</span>
+        </div>
+        {{/if}}
+        {{/each}}
       </div>
       {{/each}}
-      {{#if xenosDrone}}
-      <div class="xdz-carousel-slot">
-        <div class="xdz-carousel-card xeno {{#if xenosDrone.active}}active{{/if}}" data-action="next" title="{{localize 'XDZ.Combat.XenosTooltip'}}">
-          <img src="{{xenosDrone.img}}" alt="{{localize 'XDZ.Combat.Xenos'}}">
-          <span class="xdz-carousel-name">{{localize 'XDZ.Combat.Xenos'}}</span>
-        </div>
-        <div class="xdz-carousel-count">
-          <span class="xdz-carousel-count-digits" data-ghost="888">{{xenosDrone.count}}</span>
-        </div>
-      </div>
-      {{/if}}
     </div>
   </div>
   {{/if}}
 
-  <button type="button" class="xdz-carousel-nav" data-action="next" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Next'}}">
-    <i class="fa-solid fa-chevron-right"></i>
-  </button>
+  <div class="xdz-carousel-nav-group">
+    <button type="button" class="xdz-carousel-nav" data-action="prev" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Prev'}}">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <button type="button" class="xdz-carousel-nav" data-action="next" {{#unless canAdvance}}disabled{{/unless}} title="{{localize 'XDZ.Combat.Next'}}">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
 </div>
 {{/if}}

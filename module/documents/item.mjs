@@ -53,10 +53,15 @@ export default class XDZItem extends Item {
     // Snapshot targets once, at the attack roll, not per damage-button click.
     // Multiple damage rolls (Roll Damage, then Spray and Pray) can follow the
     // same successful attack, and the first one may kill/delete the target —
-    // which clears it from game.user.targets — before the second is clicked.
-    // Reusing this snapshot keeps every damage roll off this attack aimed at
-    // what was actually targeted when the shot was declared.
+    // which clears it from game.user.targets AND from the scene — before the
+    // second is clicked. Reusing this snapshot keeps every damage roll off
+    // this attack aimed at what was actually targeted when the shot was
+    // declared. targetPoints (canvas-space centers, same index order as
+    // targetIds) is the fallback aim for auto-kill once a targeted token has
+    // already been deleted by an earlier roll on this same attack — see
+    // auto-kill.mjs.
     const targetIds = [...game.user.targets].map((t) => t.id);
+    const targetPoints = [...game.user.targets].map((t) => ({ x: t.center.x, y: t.center.y }));
 
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/attack-card.hbs', {
       weapon: this,
@@ -71,6 +76,7 @@ export default class XDZItem extends Item {
       buttons,
       itemUuid: this.uuid,
       targetIds: JSON.stringify(targetIds),
+      targetPoints: JSON.stringify(targetPoints),
       spend: mode === 'grenade',
     });
 
@@ -89,8 +95,11 @@ export default class XDZItem extends Item {
    * @param {"normal"|"ammo"|"grenade"} dieMode
    * @param {string[]} [targetIds] Target snapshot from rollAttack() — see the
    *   comment there for why this isn't re-read from game.user.targets here.
+   * @param {{x: number, y: number}[]} [targetPoints] Position snapshot from
+   *   rollAttack(), same index order as targetIds — fallback aim for
+   *   auto-kill.mjs once a targeted token has already been deleted.
    */
-  async rollDamage(dieMode, targetIds = []) {
+  async rollDamage(dieMode, targetIds = [], targetPoints = []) {
     if (this.type !== 'weapon') return;
 
     let formula;
@@ -145,7 +154,7 @@ export default class XDZItem extends Item {
           // dieMode here is the auto-kill targeting mode (normal/explosive/
           // piercing), a separate axis from rollDamage()'s own dieMode arg
           // above (which resource/formula was rolled).
-          autoKill: { total: roll.total, sceneId: canvas.scene?.id ?? null, actorTokenId, dieMode: killMode, targetIds },
+          autoKill: { total: roll.total, sceneId: canvas.scene?.id ?? null, actorTokenId, dieMode: killMode, targetIds, targetPoints },
         },
       },
     });

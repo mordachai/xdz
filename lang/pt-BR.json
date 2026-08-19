@@ -495,11 +495,12 @@
       },
       "CarouselPosition": {
         "Name": "Posição do Carrossel de Combate",
-        "Hint": "Em qual borda da tela o Carrossel de Combate fica fixado. Esquerda/Direita transformam em uma coluna vertical.",
+        "Hint": "Em qual borda da tela o Carrossel de Combate fica fixado. Esquerda/Direita transformam em uma coluna vertical. Barra Lateral embute o carrossel dentro da barra lateral direita em vez de flutuar.",
         "Top": "Topo",
         "Bottom": "Base",
         "Left": "Esquerda",
-        "Right": "Direita"
+        "Right": "Direita",
+        "Sidebar": "Barra Lateral"
       }
     },
 

@@ -41,11 +41,19 @@ export default class CombatCarousel extends HandlebarsApplicationMixin(Applicati
 
     const turns = combat.turns;
     const currentId = combat.combatant?.id;
+    // `turns` is already clustered Marines -> Others -> named Xenos -> Drone
+    // in manual-order (see XDZCombat#_sortCombatants), matching the carousel's
+    // own group order 1:1 — so each combatant's index here doubles as its
+    // position for "has this turn already happened this round" (index < the
+    // active combatant's index).
+    const currentTurn = combat.turn ?? 0;
+    const turnIndexOf = new Map(turns.map((c, i) => [c.id, i]));
     const mapCard = (canDragFn) => (c) => ({
       id: c.id,
       name: c.name,
       img: c.img ?? c.actor?.img ?? 'icons/svg/mystery-man.svg',
       active: c.id === currentId,
+      acted: turnIndexOf.get(c.id) < currentTurn,
       canDrag: canDragFn(c),
       ownerColor: ownerColorOf(c),
     });
@@ -60,10 +68,11 @@ export default class CombatCarousel extends HandlebarsApplicationMixin(Applicati
 
     const gmOnly = game.settings.get('xdz', 'playWithGM');
     const position = game.settings.get('xdz', 'carouselPosition');
-    const vertical = position === 'left' || position === 'right';
+    const vertical = position === 'left' || position === 'right' || position === 'sidebar';
     const limit = vertical ? 10 : 15;
-    // Vertical: always split into at most 2 columns (however tall) so the
-    // strip stays narrow instead of sprawling into 3+ thin columns.
+    // Vertical: every group (Marines, Others, Xenos) always splits into at
+    // most 2 columns (however tall) so the strip stays narrow instead of
+    // sprawling into 3+ thin columns, or one group towering over the rest.
     // Horizontal: Others + Xenos never wrap, so whatever's left of the
     // total cap is what Marines gets before it breaks a new row — that's
     // what makes the cap apply to the whole bar, not per group.
@@ -71,20 +80,28 @@ export default class CombatCarousel extends HandlebarsApplicationMixin(Applicati
     const marineLimit = vertical
       ? Math.max(1, Math.ceil(marines.length / 2))
       : Math.max(1, limit - others.length - xenosReserved);
+    const otherLimit = vertical ? Math.max(1, Math.ceil(others.length / 2)) : others.length || 1;
+
+    const xenosCards = [...xenosUnique];
+    if (droneCombatants.length) {
+      xenosCards.push({
+        isDrone: true,
+        active: droneCombatants.some((c) => c.id === currentId),
+        // Block acts as one atomic turn (see _advance) — "acted" tracks off
+        // its first member's index, same as everything else acting as a unit.
+        acted: turnIndexOf.get(droneCombatants[0].id) < currentTurn,
+        count: String(droneCount(combat)).padStart(3, '0'),
+        img: droneCombatants[0]?.img ?? 'icons/svg/skull.svg',
+      });
+    }
+    const xenosLimit = vertical ? Math.max(1, Math.ceil(xenosCards.length / 2)) : xenosCards.length || 1;
 
     return {
       hasCombat: true,
       marineRows: CombatCarousel._chunk(marines, marineLimit),
-      otherRows: others.length ? [others] : [],
-      xenosUnique,
-      xenosDrone: droneCombatants.length
-        ? {
-            active: droneCombatants.some((c) => c.id === currentId),
-            count: String(droneCount(combat)).padStart(3, '0'),
-            img: droneCombatants[0]?.img ?? 'icons/svg/skull.svg',
-          }
-        : null,
-      hasXenosGroup: xenosUnique.length > 0 || droneCombatants.length > 0,
+      otherRows: CombatCarousel._chunk(others, otherLimit),
+      xenosRows: CombatCarousel._chunk(xenosCards, xenosLimit),
+      hasXenosGroup: xenosCards.length > 0,
       canAdvance: game.user.isGM || !gmOnly,
       position,
       theme: game.settings.get('xdz', 'sheetTheme'),
@@ -98,13 +115,24 @@ export default class CombatCarousel extends HandlebarsApplicationMixin(Applicati
     return out;
   }
 
+  /** Embed inside `#sidebar` when the position setting is `sidebar` instead of floating at the body level (default AppV2 behavior); moves back to `body` if the setting changes away from it. */
+  async _insertElement(element, options) {
+    const position = game.settings.get('xdz', 'carouselPosition');
+    const target = (position === 'sidebar' && document.getElementById('sidebar')) || document.body;
+    const existing = document.getElementById(element.id);
+    if (existing && existing !== element) existing.replaceWith(element);
+    if (element.parentElement !== target) target.append(element);
+  }
+
   /** @override */
   _onRender(context, options) {
     super._onRender(context, options);
     this.element.dataset.position = context.position ?? 'bottom';
     this.element.dataset.theme = context.theme ?? 'green';
-    this._syncSidebarOffset();
-    this._observeSidebar();
+    if (context.position === 'right') {
+      this._syncSidebarOffset();
+      this._observeSidebar();
+    }
     this.element.querySelectorAll('.xdz-carousel-card[draggable="true"]').forEach((card) => {
       card.addEventListener('dragstart', CombatCarousel._onDragStart);
       card.addEventListener('dragover', CombatCarousel._onDragOver);
@@ -154,7 +182,7 @@ export default class CombatCarousel extends HandlebarsApplicationMixin(Applicati
     const draggedId = event.dataTransfer.getData('text/plain');
     if (!draggedId || draggedId === card.dataset.combatantId) return;
     const position = card.closest('.xdz.combat-carousel')?.dataset.position ?? 'bottom';
-    const vertical = position === 'left' || position === 'right';
+    const vertical = position === 'left' || position === 'right' || position === 'sidebar';
     const rect = card.getBoundingClientRect();
     const placeAfter = vertical
       ? event.clientY - rect.top > rect.height / 2

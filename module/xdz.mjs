@@ -143,8 +143,9 @@ Hooks.once('init', function () {
       bottom: 'XDZ.Settings.CarouselPosition.Bottom',
       left: 'XDZ.Settings.CarouselPosition.Left',
       right: 'XDZ.Settings.CarouselPosition.Right',
+      sidebar: 'XDZ.Settings.CarouselPosition.Sidebar',
     },
-    default: 'bottom',
+    default: 'sidebar',
     onChange: () => xdz.apps.combatCarousel?.render(),
   });
   // Destroy-die rolls (rollDamage) auto-kill that many points of xeno threat
@@ -416,8 +417,14 @@ Hooks.on('renderChatMessageHTML', async (message, html) => {
       } catch {
         targetIds = [];
       }
+      let targetPoints = [];
+      try {
+        targetPoints = JSON.parse(row.dataset.targetPoints ?? '[]');
+      } catch {
+        targetPoints = [];
+      }
       button.disabled = true;
-      await item.rollDamage(dieMode, targetIds);
+      await item.rollDamage(dieMode, targetIds, targetPoints);
       if (dieMode === 'ammo') button.disabled = item.system.ammo.value <= 0;
     });
   });

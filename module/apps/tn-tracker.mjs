@@ -54,6 +54,8 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
 
     if (!this.position.left && !this.position.top) this._applyDefaultPosition();
     attachHudDrag(this, this.element.querySelector('.xdz-hud-root'), TnTracker.POSITION_KEY);
+    this._observeSidebar();
+    this._avoidSidebar();
 
     if (game.user.isGM) {
       this._contextMenu ??= new foundry.applications.ux.ContextMenu(
@@ -77,6 +79,42 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
     const width = this.position.width ?? 96;
     const left = (sidebar?.getBoundingClientRect().left ?? window.innerWidth) - 20 - width;
     this.setPosition({ left, top: 46 });
+  }
+
+  /** Watch the sidebar's own width so the badge tracks its collapsed/expanded state (and collapse animation) live, same pattern as CombatCarousel's `right`-position anchoring. */
+  _observeSidebar() {
+    if (this._sidebarObserver) return;
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    this._sidebarObserver = new ResizeObserver(() => this._avoidSidebar());
+    this._sidebarObserver.observe(sidebar);
+  }
+
+  /**
+   * Keep the badge clear of the sidebar's left edge. "Home" is wherever it'd
+   * sit without the sidebar in play — the saved drag position if the user
+   * has moved it, otherwise the same formula _applyDefaultPosition() uses.
+   * Only nudged left when home would actually overlap the sidebar's current
+   * (expanded) width; snaps back to home on its own once the sidebar
+   * collapses again, since the clamp is recomputed from the live sidebar
+   * rect every time, not stored as a one-off offset.
+   */
+  _avoidSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const width = this.position.width ?? 96;
+    const sidebarLeft = sidebar.getBoundingClientRect().left;
+    const saved = getHudPosition(TnTracker.POSITION_KEY);
+    const homeLeft = saved ? saved.left : sidebarLeft - 20 - width;
+    const clampedLeft = Math.min(homeLeft, sidebarLeft - 20 - width);
+    if (Math.round(clampedLeft) !== Math.round(this.position.left)) this.setPosition({ left: clampedLeft });
+  }
+
+  /** @override */
+  async close(options) {
+    this._sidebarObserver?.disconnect();
+    this._sidebarObserver = null;
+    return super.close(options);
   }
 
   static async _onDirectSet(event) {

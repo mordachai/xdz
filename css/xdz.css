@@ -3913,6 +3913,45 @@
   bottom: auto;
   transform: translateY(-50%);
 }
+.xdz.combat-carousel[data-position=sidebar] {
+  position: static !important;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  transform: none;
+  order: 1;
+  flex: none;
+  align-self: stretch;
+  margin: 8px 0 8px 6px;
+  display: none;
+}
+#sidebar:has(> #sidebar-content.expanded) .xdz.combat-carousel[data-position=sidebar] {
+  display: block;
+}
+.xdz.combat-carousel[data-position=sidebar] {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-bar {
+  height: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--xdz-accent-dim) transparent;
+}
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-bar::-webkit-scrollbar {
+  width: 6px;
+}
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-bar::-webkit-scrollbar-thumb {
+  background: var(--xdz-accent-dim);
+  border-radius: 3px;
+}
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
 
 .xdz-carousel-bar {
   position: relative;
@@ -3956,33 +3995,40 @@
 }
 
 .xdz.combat-carousel[data-position=left] .xdz-carousel-bar,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-bar {
+.xdz.combat-carousel[data-position=right] .xdz-carousel-bar,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-bar {
   flex-direction: column;
   align-items: center;
 }
 .xdz.combat-carousel[data-position=left] .xdz-carousel-group,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-group {
+.xdz.combat-carousel[data-position=right] .xdz-carousel-group,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-group {
   flex-direction: column;
   align-items: center;
   gap: 0.2rem;
 }
 .xdz.combat-carousel[data-position=left] .xdz-carousel-row,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-row {
+.xdz.combat-carousel[data-position=right] .xdz-carousel-row,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-row {
   flex-direction: column;
 }
 .xdz.combat-carousel[data-position=left] .xdz-carousel-lines,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-lines {
+.xdz.combat-carousel[data-position=right] .xdz-carousel-lines,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-lines {
   flex-direction: row;
   align-items: flex-start;
 }
 .xdz.combat-carousel[data-position=left] .xdz-carousel-divider,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-divider {
+.xdz.combat-carousel[data-position=right] .xdz-carousel-divider,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-divider {
   writing-mode: horizontal-tb;
   padding-bottom: 0;
 }
-.xdz.combat-carousel[data-position=left] .xdz-carousel-nav,
-.xdz.combat-carousel[data-position=right] .xdz-carousel-nav {
+.xdz.combat-carousel[data-position=left] .xdz-carousel-nav-group,
+.xdz.combat-carousel[data-position=right] .xdz-carousel-nav-group,
+.xdz.combat-carousel[data-position=sidebar] .xdz-carousel-nav-group {
   align-self: center;
+  flex-direction: row;
 }
 
 .xdz-carousel-card {
@@ -4007,6 +4053,10 @@
 .xdz-carousel-card.active {
   border-color: var(--xdz-accent);
   box-shadow: 0 0 8px color-mix(in srgb, var(--xdz-accent) 80%, transparent), inset 0 0 6px color-mix(in srgb, var(--xdz-accent) 40%, transparent);
+}
+.xdz-carousel-card.acted {
+  filter: saturate(0.25);
+  opacity: 0.5;
 }
 .xdz-carousel-card.has-owner.active::before {
   content: "";
@@ -4050,14 +4100,15 @@
 }
 
 .xdz-carousel-vitals {
-  position: relative;
-  height: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   width: 52px;
 }
 
 .xdz-carousel-ecg-row {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  height: 14px;
   overflow: hidden;
   border: 1px solid var(--xdz-accent-dim);
   border-radius: 2px;
@@ -4129,13 +4180,10 @@
 }
 
 .xdz-carousel-pip-row {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
   display: flex;
   align-items: flex-end;
   gap: 1px;
-  padding: 2px;
+  height: 4px;
 }
 
 .xdz-carousel-injury-pip {
@@ -4214,6 +4262,12 @@
   color: color-mix(in srgb, var(--xdz-accent) 16%, transparent);
 }
 
+.xdz-carousel-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .xdz-carousel-nav {
   align-self: center;
   font-size: 0.9rem;
@@ -4232,5 +4286,3 @@
   opacity: 0.35;
   cursor: not-allowed;
 }
-
-/*# sourceMappingURL=xdz.css.map */

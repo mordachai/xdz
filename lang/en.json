@@ -497,11 +497,12 @@
       },
       "CarouselPosition": {
         "Name": "Combat Carousel Position",
-        "Hint": "Which edge of your screen the Combat Carousel is pinned to. Left/Right switch it to a vertical column.",
+        "Hint": "Which edge of your screen the Combat Carousel is pinned to. Left/Right switch it to a vertical column. Sidebar embeds it inside the right sidebar instead of floating.",
         "Top": "Top",
         "Bottom": "Bottom",
         "Left": "Left",
-        "Right": "Right"
+        "Right": "Right",
+        "Sidebar": "Sidebar"
       }
     },
 

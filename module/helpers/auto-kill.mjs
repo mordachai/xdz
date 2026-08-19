@@ -122,8 +122,13 @@ function rankByBeam(candidates, scene, origin, aim) {
  *   - explosive: closest to the target(s) (blast radius centered on target).
  *   - piercing:  closest along the beeline from attacker through target and
  *                out the other side (hits whoever's standing behind it too).
+ * `targetPoints` (rollAttack()-time position snapshot, same index order as
+ * `targetIds`) is the aim fallback once a targeted token has already been
+ * killed and deleted by an earlier roll on the same attack (Roll Damage,
+ * then Spray and Pray) — keeps the follow-up shot aimed the same direction
+ * instead of losing it once the token it was id-linked to is gone.
  */
-export async function autoKillXenos({ total, sceneId, actorTokenId, dieMode, targetIds }) {
+export async function autoKillXenos({ total, sceneId, actorTokenId, dieMode, targetIds, targetPoints }) {
   if (!game.settings.get('xdz', 'autoKillOnDamage')) return;
   if (!(total > 0)) return;
 
@@ -136,19 +141,31 @@ export async function autoKillXenos({ total, sceneId, actorTokenId, dieMode, tar
   const attacker = actorTokenId ? scene.tokens.get(actorTokenId) : null;
   const attackerCenter = attacker ? tokenCenter(scene, attacker) : null;
   const targetTokens = (targetIds ?? []).map((id) => scene.tokens.get(id)).filter(Boolean);
+  // Aim points, preferring each target's live position but falling back to
+  // its rollAttack()-time snapshot (targetPoints, same index order as
+  // targetIds) once a follow-up roll (e.g. Spray and Pray after Roll Damage)
+  // finds the token already dead and deleted by an earlier roll on this same
+  // attack — otherwise the shot loses its direction entirely instead of
+  // still landing where it was aimed.
+  const aimPoints = (targetIds ?? [])
+    .map((id, i) => {
+      const token = scene.tokens.get(id);
+      if (token) return tokenCenter(scene, token);
+      return targetPoints?.[i] ?? null;
+    })
+    .filter(Boolean);
 
   let ranked;
   if (dieMode === 'explosive') {
-    const origin = centroid(targetTokens.map((t) => tokenCenter(scene, t)));
+    const origin = centroid(aimPoints);
     if (!origin) return;
     ranked = rankByRadius(candidates, scene, origin);
   } else if (dieMode === 'piercing') {
-    if (!attackerCenter || !targetTokens.length) return;
-    const aim = tokenCenter(scene, targetTokens[0]);
-    ranked = rankByBeam(candidates, scene, attackerCenter, aim);
+    if (!attackerCenter || !aimPoints.length) return;
+    ranked = rankByBeam(candidates, scene, attackerCenter, aimPoints[0]);
   } else {
     if (!attackerCenter) return;
-    const aim = targetTokens.length ? tokenCenter(scene, targetTokens[0]) : null;
+    const aim = aimPoints.length ? aimPoints[0] : null;
     ranked = rankByRadiusForward(candidates, scene, attackerCenter, aim);
   }
   if (!ranked.length) return;
