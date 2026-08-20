@@ -117,7 +117,7 @@ export default class CommandoSheet extends XDZActorSheet {
         damaged: { value: Math.clamp(existing.system.damaged.value, 0, spec.system.damaged.max) },
       }, { inplace: false });
 
-      if (existing.img !== spec.img || !foundry.utils.objectsEqual(existing.system.toObject(), system)) {
+      if (existing.img !== spec.img || !foundry.utils.equals(existing.system.toObject(), system)) {
         toUpdate.push({ _id: existing.id, img: spec.img, system });
       }
     }

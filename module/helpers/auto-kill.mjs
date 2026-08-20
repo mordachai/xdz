@@ -5,7 +5,7 @@ const BEAM_WIDTH_FACTOR = 0.75;
 
 // Give death-reactive VFX modules (Splatter, Monk's Blood Splatter, etc.) a
 // beat to react to the "dead" status before the token vanishes from canvas.
-const DEATH_VFX_DELAY_MS = 700;
+const DEATH_VFX_DELAY_MS = 4500;
 
 /**
  * Center of a token in scene coordinates, using the Scene document's own
@@ -18,16 +18,24 @@ function tokenCenter(scene, token) {
 }
 
 /**
- * Flag a token's actor as defeated (skull overlay + "dead" status effect)
- * via the standard Foundry v11+ API, so third-party death VFX modules
- * (Splatter, Monk's Blood Splatter) that hook the defeated status pick up
- * the kill instead of the token just silently vanishing.
+ * Flag a token's actor as defeated (no overlay icon, no small status-icon
+ * badge — see below) via the standard Foundry v11+ API, so third-party
+ * death VFX modules (Splatter, Monk's Blood Splatter) that hook the
+ * defeated status pick up the kill instead of the token just silently
+ * vanishing.
  */
 async function markDead(token) {
   const actor = token.actor;
   const statusId = CONFIG.specialStatusEffects.DEFEATED;
   if (!actor || actor.statuses?.has(statusId)) return;
-  await actor.toggleStatusEffect(statusId, { active: true, overlay: true });
+  await actor.toggleStatusEffect(statusId, { active: true, overlay: false });
+  // toggleStatusEffect still leaves the small "dead" status-icon badge under
+  // the token (TokenDocument#effects draws one for any active effect with a
+  // truthy img, overlay or not) — blank it out. actor.statuses (what
+  // Splatter/etc. key off below) comes from the effect's `statuses` field,
+  // not its icon, so this is purely cosmetic.
+  const effect = actor.effects.find((e) => e.statuses?.has(statusId));
+  if (effect) await effect.update({ img: '' });
   // Splatter doesn't hook the defeated status itself, only hp-based
   // updateActor diffs — xdz has no hp field, so trigger it directly here.
   // Socket-broadcast, so every connected client sees the splat.

@@ -1,4 +1,4 @@
-import { applyGmSecrecy } from './location-roll.mjs';
+import { applyGmSecrecy, show3d, createRolledMessage } from './location-roll.mjs';
 import { getMissionJournal, appendJournalPage } from '../helpers/journal-log.mjs';
 import { locTag } from '../helpers/mission-rolls.mjs';
 import { shuffleArray } from '../apps/map-generator.mjs';
@@ -27,6 +27,7 @@ export async function rollAssets() {
   if (!table) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadTable', { uuid: ASSETS_TABLE_UUID }));
 
   const countRoll = await new Roll('1d8').evaluate();
+  await show3d(countRoll);
   const type = game.settings.get('xdz', 'currentMissionType');
   const pool = shuffleArray(CONFIG.XDZ.locations[type]);
 
@@ -35,6 +36,7 @@ export async function rollAssets() {
   const assets = [];
   for (let i = 0; i < countRoll.total; i++) {
     const { roll, results } = await table.roll();
+    await show3d(roll);
     assetRolls.push(roll);
     const result = results[0];
     const loc = pool[i % pool.length];
@@ -56,7 +58,7 @@ export async function rollAssets() {
     total: countRoll.total,
     assets,
   });
-  await ChatMessage.create(applyGmSecrecy({
+  await createRolledMessage(applyGmSecrecy({
     speaker: ChatMessage.getSpeaker(),
     content: chatContent,
     rolls: [countRoll, ...assetRolls],

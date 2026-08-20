@@ -19,6 +19,40 @@ export function applyGmSecrecy(data) {
 }
 
 /**
+ * Play Dice So Nice's animation for `roll` and wait for it to finish before
+ * the caller renders a chat card. `Roll#evaluate` resolves the total
+ * instantly — without this, the card's total (baked straight into template
+ * HTML, not a native roll-formula element DsN can blur) shows well before
+ * or during the animation instead of after it.
+ */
+export async function show3d(roll) {
+  if (!game.dice3d) return;
+  const whisper = game.settings.get('xdz', 'playWithGM') ? ChatMessage.getWhisperRecipients('GM').map((u) => u.id) : null;
+  await game.dice3d.showForRoll(roll, game.user, true, whisper, false);
+}
+
+/**
+ * Create `data` as a chat message without letting Dice So Nice animate the
+ * rolls it carries a second time — every caller here has already played
+ * each roll's animation once via `show3d()`, but DsN's own `createChatMessage`
+ * hook doesn't know that and would otherwise fire a second, automatic 3D
+ * roll for the same dice the moment the message posts.
+ */
+export async function createRolledMessage(data) {
+  const dsn = game.dice3d;
+  if (dsn) dsn.messageHookDisabled = true;
+  try {
+    // ChatMessage#_preCreate auto-assigns CONFIG.sounds.dice whenever `rolls`
+    // is non-empty and `data` has no `sound` key; DsN's own hook (skipped
+    // above) normally strips that before playing its own roll sound, so
+    // without this it plays on top of show3d()'s sound.
+    return await ChatMessage.create({ sound: null, ...data });
+  } finally {
+    if (dsn) dsn.messageHookDisabled = false;
+  }
+}
+
+/**
  * A LOCATION ROLL is 3D4 read in sequence: AREA, LOCATION, QUADRANT (see
  * CONFIG.XDZ comments), resolved against the tile flags baked on by
  * MapGenerator. Returns `point: null` (after warning) if no tile matches.
@@ -27,6 +61,7 @@ export function applyGmSecrecy(data) {
  */
 export async function rollLocationPoint() {
   const roll = await new Roll('3d4').evaluate();
+  await show3d(roll);
   const [area, location, quadrantDie] = roll.dice[0].results.map((r) => r.result);
   const quadrant = QUADRANTS[quadrantDie - 1];
 
@@ -64,5 +99,5 @@ export async function rollLocation() {
     locationId,
   });
 
-  await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [roll] }));
+  await createRolledMessage(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [roll] }));
 }

@@ -85,7 +85,7 @@ export default class XDZItem extends Item {
       spend: mode === 'grenade',
     });
 
-    await ChatMessage.create({
+    const attackMessage = await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       content,
       rolls: [roll],
@@ -93,6 +93,10 @@ export default class XDZItem extends Item {
     });
 
     if (success && autoRollDamage) {
+      // Let the to-hit die finish its Dice So Nice animation before the
+      // damage roll (and its own card/animation, and any auto-kill off the
+      // back of it) fires — otherwise they'd all land on top of each other.
+      await game.dice3d?.waitFor3DAnimationByMessageID(attackMessage.id);
       await this.rollDamage(mode === 'grenade' ? 'grenade' : 'normal', targetIds, targetPoints);
     }
     return roll;
@@ -140,12 +144,13 @@ export default class XDZItem extends Item {
 
     const roll = await new Roll(formula).evaluate();
 
-    // Spray and Pray chains onto every "normal"-track damage card (the
-    // initial destroy-die roll and each subsequent ammo roll) so it stays
-    // reachable however that first roll got here — manual button click or
-    // Roll Damage Automatically. Never offered off a grenade roll.
+    // Spray and Pray is a one-shot follow-up on the primary "normal" damage
+    // roll for this attack — offered here so it's reachable under Roll
+    // Damage Automatically too (no attack-card button row in that mode).
+    // Never offered off a grenade roll, and never off its own "ammo" damage
+    // card either: you can't chain a Spray and Pray onto a Spray and Pray.
     const buttons = [];
-    if (dieMode !== 'grenade' && this.system.ammo.max > 0) {
+    if (dieMode === 'normal' && this.system.ammo.max > 0) {
       buttons.push({
         dieMode: 'ammo',
         label: game.i18n.localize('XDZ.Weapon.SprayAndPray'),
@@ -157,6 +162,7 @@ export default class XDZItem extends Item {
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/damage-card.hbs', {
       weapon: this,
       theme: game.settings.get('xdz', 'sheetTheme'),
+      dieMode,
       total: roll.total,
       tag,
       description,

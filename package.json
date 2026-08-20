@@ -31,6 +31,7 @@
   "private": true,
   "devDependencies": {
     "@foundryvtt/foundryvtt-cli": "^3.0.4",
+    "playwright": "^1.62.1",
     "sass": "^1.77.0"
   }
 }

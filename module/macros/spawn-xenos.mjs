@@ -1,4 +1,4 @@
-import { rollLocationPoint, applyGmSecrecy } from './location-roll.mjs';
+import { rollLocationPoint, applyGmSecrecy, show3d, createRolledMessage } from './location-roll.mjs';
 
 const XENO_UUID = 'Compendium.xdz.npcs.Actor.oKmxj2SQr4elMOb6'; // Xeno (drone)
 const BREEDER_UUID = 'Compendium.xdz.npcs.Actor.jR4cSGznMxeiLvfz'; // Queen
@@ -97,7 +97,9 @@ export async function spawnXenos() {
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const totalRoll = await new Roll('1d20').evaluate();
+  await show3d(totalRoll);
   const groupsRoll = await new Roll('1d4').evaluate();
+  await show3d(groupsRoll);
   const total = totalRoll.total;
   const groupCount = groupsRoll.total;
 
@@ -149,7 +151,7 @@ export async function spawnXenos() {
     groups: cardGroups,
   });
 
-  await ChatMessage.create(applyGmSecrecy({
+  await createRolledMessage(applyGmSecrecy({
     speaker: ChatMessage.getSpeaker(),
     content,
     rolls: [totalRoll, groupsRoll, ...locationRolls],
@@ -197,7 +199,7 @@ export async function spawnBreeder() {
       },
     ],
   });
-  await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [locRoll] }));
+  await createRolledMessage(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [locRoll] }));
 }
 
 /**
@@ -208,6 +210,7 @@ export async function spawnRogueCommandos() {
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const countRoll = await new Roll('1d12').evaluate();
+  await show3d(countRoll);
   const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
   if (!point) return;
 
@@ -234,7 +237,7 @@ export async function spawnRogueCommandos() {
       },
     ],
   });
-  await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [countRoll, locRoll] }));
+  await createRolledMessage(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [countRoll, locRoll] }));
 }
 
 /**
@@ -271,7 +274,7 @@ export async function spawnWicked() {
       },
     ],
   });
-  await ChatMessage.create(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [locRoll] }));
+  await createRolledMessage(applyGmSecrecy({ speaker: ChatMessage.getSpeaker(), content, rolls: [locRoll] }));
 }
 
 /**
@@ -285,12 +288,13 @@ export async function spawnSwarm() {
   if (!point) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoCommandoTokens'));
 
   const countRoll = await new Roll('1d12').evaluate();
+  await show3d(countRoll);
   const actor = await worldActor(XENO_UUID);
   if (!actor) return ui.notifications.error(game.i18n.format('XDZ.Notifications.CouldNotLoadActor', { uuid: XENO_UUID }));
 
   const tokenData = await buildTokenGroup(actor, countRoll.total, point, { forceSeek: true });
   await canvas.scene.createEmbeddedDocuments('Token', tokenData);
-  await ChatMessage.create(applyGmSecrecy({
+  await createRolledMessage(applyGmSecrecy({
     speaker: ChatMessage.getSpeaker(),
     content: `<p>${game.i18n.format('XDZ.Escalation.SwarmErupts', { count: countRoll.total })}</p>`,
     rolls: [countRoll],

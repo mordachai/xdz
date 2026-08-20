@@ -1,6 +1,7 @@
 import { resolveEntry } from '../helpers/mission-rolls.mjs';
 import { getMissionJournal, appendJournalPage } from '../helpers/journal-log.mjs';
 import { spawnBreeder, spawnRogueCommandos, spawnSwarm } from './spawn-xenos.mjs';
+import { show3d, createRolledMessage } from './location-roll.mjs';
 
 // Escalations that spawn actors on the scene, keyed by CONFIG.XDZ.escalations entry id.
 const SPAWN_HANDLERS = {
@@ -25,6 +26,7 @@ const SPAWN_HANDLERS = {
  */
 export async function rollEscalation() {
   const roll = await new Roll('1d20').evaluate();
+  await show3d(roll);
   const entry = CONFIG.XDZ.escalations.find((e) => e.num === roll.total);
   const type = game.settings.get('xdz', 'currentMissionType');
   const resolved = resolveEntry(entry, type);
@@ -35,7 +37,7 @@ export async function rollEscalation() {
     label: resolved.label,
     desc: resolved.desc,
   });
-  await ChatMessage.create({
+  await createRolledMessage({
     speaker: ChatMessage.getSpeaker(),
     content: chatContent,
     rolls: [roll],
