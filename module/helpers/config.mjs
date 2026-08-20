@@ -92,50 +92,79 @@ XDZ.itemTypeImages = {
  * as a color or B&W tile. `color`/`bw` are filenames only (no dir) since
  * some assets drifted from the KB naming across the two styles.
  *
- * `sides` (optional): compass sides (N/E/S/W, in the art's unrotated
- * orientation) where the location's art actually draws a door/opening —
- * e.g. an Airlock or Escape Pod is an exterior piece, only breachable from
- * specific sides, not all 4. Omitted = interior piece, connects freely on
- * any side. MapGenerator seats these on layout cells whose actual
- * neighbor directions fit within `sides` after some 90/180/270 rotation,
- * and rotates the placed Tile to match.
+ * `sides`: { side: fraction } — compass sides (N/E/S/W, in the art's
+ * unrotated orientation) where the location's art actually draws a
+ * door/opening, each mapped to where along that edge (0-1, corner-to-corner
+ * going clockwise from N — N/S run W-corner->E-corner, E/W run
+ * N-corner->S-corner) the door is actually drawn. A side missing from this
+ * object has no door there at all — e.g. an Airlock or Escape Pod is an
+ * exterior piece, only breachable from specific sides, not all 4. All 4
+ * sides present = an interior piece that connects freely on any side.
+ * MapGenerator seats side-restricted locations (fewer than 4 keys) on
+ * layout cells whose actual neighbor directions fit within `sides` after
+ * some 90/180/270 rotation, and rotates the placed Tile to match. Every
+ * fraction below was measured off the color art (door-adjacent hazard
+ * striping / silhouette break); most aren't 0.5 — a future door-Wall
+ * placement can use these to land on the exact point each piece's art
+ * draws its door instead of spanning the whole shared edge, so two
+ * touching pieces' doors line up flush.
+ *
+ * `exterior` (optional): compass sides (same unrotated orientation) whose
+ * art faces outside the structure (open space / planet surface) rather
+ * than another LOCATION, e.g. the Escape Pod's hull on every side but its
+ * one door. MapGenerator can use this to prefer seating the piece on the
+ * outer boundary of the grown layout on that side, so it ends up on the
+ * periphery of the map instead of walled in by neighbors. Omitted = no
+ * side of this piece is exterior.
+ *
+ * `bwSides`/`bwExterior` (optional): the B&W tile's own `sides`/`exterior`,
+ * when its art actually differs from the color tile's (measured
+ * separately) — e.g. Colony Command's B&W art has no N door where the
+ * color art does, so it's side-restricted in B&W but freely-connecting in
+ * color. Falls back to `sides`/`exterior` when omitted (the two styles'
+ * door layout matched closely enough to share one reading). MapGenerator
+ * must pick `bwSides`/`bwExterior` over `sides`/`exterior` whenever it's
+ * building the `bw` style, since the two can disagree on which sides even
+ * have a door.
  */
+XDZ.defaultDoorAt = 0.5;
+
 XDZ.locations = {
   ship: [
-    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', sides: ['E'] },
-    { id: 'bridge', label: 'XDZ.Locations.Ship.Bridge', color: 'ship command deck.webp', bw: 'ship bridge.webp' },
-    { id: 'engineRoom', label: 'XDZ.Locations.Ship.EngineRoom', color: 'ship engine room.webp', bw: 'ship engine room.webp' },
-    { id: 'airlock', label: 'XDZ.Locations.Ship.Airlock', color: 'ship airlock.webp', bw: 'ship airlock.webp', sides: ['W', 'S', 'E'] },
-    { id: 'medBay', label: 'XDZ.Locations.Ship.MedBay', color: 'ship med bay.webp', bw: 'ship med bay.webp' },
-    { id: 'quarters', label: 'XDZ.Locations.Ship.Quarters', color: 'ship quarters.webp', bw: 'ship quarters.webp' },
-    { id: 'galley', label: 'XDZ.Locations.Ship.Galley', color: 'ship galley.webp', bw: 'ship galley.webp' },
-    { id: 'refinery', label: 'XDZ.Locations.Ship.Refinery', color: 'ship refinery.webp', bw: 'ship refinery.webp' },
-    { id: 'hydroponics', label: 'XDZ.Locations.Ship.Hydroponics', color: 'ship hydroponics.webp', bw: 'ship hydroponics.webp' },
-    { id: 'garage', label: 'XDZ.Locations.Ship.Garage', color: 'ship garage.webp', bw: 'ship garage.webp' },
-    { id: 'loadingBay', label: 'XDZ.Locations.Ship.LoadingBay', color: 'ship loading bay.webp', bw: 'ship loading bay.webp', sides: ['E'] },
-    { id: 'corridor', label: 'XDZ.Locations.Ship.Corridor', color: 'ship corridor.webp', bw: 'ship m corridor.webp', sides: ['W', 'E'] },
-    { id: 'crawlspace', label: 'XDZ.Locations.Ship.Crawlspace', color: 'ship crawlspace.webp', bw: 'ship crawlspace.webp' },
-    { id: 'sump', label: 'XDZ.Locations.Ship.Sump', color: 'ship sump.webp', bw: 'ship sump.webp' },
-    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', sides: ['W', 'S', 'E'] },
-    { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp' },
+    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', sides: { E: 0.5, N: 0.5, S: 0.5 }, exterior: ['W'], bwSides: { E: 0.5, S: 0.5, N: 0.55 }, bwExterior: ['W'] },
+    { id: 'bridge', label: 'XDZ.Locations.Ship.Bridge', color: 'ship command deck.webp', bw: 'ship bridge.webp', sides: { S: 0.51, E: 0.5, W: 0.5 }, bwSides: { S: 0.51, E: 0.55, W: 0.57 } },
+    { id: 'engineRoom', label: 'XDZ.Locations.Ship.EngineRoom', color: 'ship engine room.webp', bw: 'ship engine room.webp', sides: { N: 0.5, E: 0.52, W: 0.53, S: 0.5 }, bwSides: { N: 0.53, E: 0.52, W: 0.53, S: 0.49 } },
+    { id: 'airlock', label: 'XDZ.Locations.Ship.Airlock', color: 'ship airlock.webp', bw: 'ship airlock.webp', sides: { S: 0.5, E: 0.54, W: 0.58 }, exterior: ['N'] },
+    { id: 'medBay', label: 'XDZ.Locations.Ship.MedBay', color: 'ship med bay.webp', bw: 'ship med bay.webp', sides: { W: 0.5, E: 0.68, S: 0.57, N: 0.51 }, bwSides: { W: 0.47, E: 0.68, S: 0.57, N: 0.53 } },
+    { id: 'quarters', label: 'XDZ.Locations.Ship.Quarters', color: 'ship quarters.webp', bw: 'ship quarters.webp', sides: { W: 0.48, E: 0.49, S: 0.49, N: 0.55 } },
+    { id: 'galley', label: 'XDZ.Locations.Ship.Galley', color: 'ship galley.webp', bw: 'ship galley.webp', sides: { E: 0.5, W: 0.7, N: 0.48, S: 0.49 }, bwSides: { E: 0.5, W: 0.74, N: 0.48, S: 0.49 } },
+    { id: 'refinery', label: 'XDZ.Locations.Ship.Refinery', color: 'ship refinery.webp', bw: 'ship refinery.webp', sides: { N: 0.51, E: 0.48, S: 0.39, W: 0.42 }, bwSides: { N: 0.51, E: 0.48, S: 0.39, W: 0.43 } },
+    { id: 'hydroponics', label: 'XDZ.Locations.Ship.Hydroponics', color: 'ship hydroponics.webp', bw: 'ship hydroponics.webp', sides: { W: 0.5, S: 0.51, E: 0.56, N: 0.49 }, bwSides: { W: 0.5, S: 0.51, E: 0.56, N: 0.48 } },
+    { id: 'garage', label: 'XDZ.Locations.Ship.Garage', color: 'ship garage.webp', bw: 'ship garage.webp', sides: { W: 0.33, N: 0.33, E: 0.35, S: 0.79 }, bwSides: { W: 0.47, N: 0.52, E: 0.49, S: 0.51 } },
+    { id: 'loadingBay', label: 'XDZ.Locations.Ship.LoadingBay', color: 'ship loading bay.webp', bw: 'ship loading bay.webp', sides: { E: 0.5 }, exterior: ['W'] },
+    { id: 'corridor', label: 'XDZ.Locations.Ship.Corridor', color: 'ship corridor.webp', bw: 'ship m corridor.webp', sides: { W: 0.28, E: 0.72 }, bwSides: { W: 0.29, E: 0.74 } },
+    { id: 'crawlspace', label: 'XDZ.Locations.Ship.Crawlspace', color: 'ship crawlspace.webp', bw: 'ship crawlspace.webp', sides: { N: 0.54, E: 0.5, S: 0.48, W: 0.4 }, bwSides: { N: 0.53, E: 0.51, S: 0.47, W: 0.4 } },
+    { id: 'sump', label: 'XDZ.Locations.Ship.Sump', color: 'ship sump.webp', bw: 'ship sump.webp', sides: { N: 0.53, E: 0.54, S: 0.48, W: 0.48 }, bwSides: { N: 0.53, E: 0.54, S: 0.48, W: 0.45 } },
+    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', sides: { S: 0.5, W: 0.71, E: 0.7 }, exterior: ['N'], bwSides: { S: 0.5, W: 0.76, E: 0.74 } },
+    { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp', sides: { W: 0.5, N: 0.5, S: 0.5, E: 0.51 } },
   ],
   colony: [
-    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp' },
-    { id: 'radioDish', label: 'XDZ.Locations.Colony.RadioDish', color: 'colony uplink dish.webp', bw: 'colony radio dish.webp' },
-    { id: 'command', label: 'XDZ.Locations.Colony.Command', color: 'colony command.webp', bw: 'colony command.webp' },
-    { id: 'medBay', label: 'XDZ.Locations.Colony.MedBay', color: 'colony med bay.webp', bw: 'colony med bay.webp' },
-    { id: 'armory', label: 'XDZ.Locations.Colony.Armory', color: 'colony armory.webp', bw: 'colony armory.webp' },
-    { id: 'refinery', label: 'XDZ.Locations.Colony.Refinery', color: 'colony refinery.webp', bw: 'colony refinery.webp' },
-    { id: 'reactor', label: 'XDZ.Locations.Colony.Reactor', color: 'colony reactor.webp', bw: 'colony reactor.webp' },
-    { id: 'cafeteria', label: 'XDZ.Locations.Colony.Cafeteria', color: 'colony cafeteria.webp', bw: 'colony cafeteria.webp' },
-    { id: 'causeway', label: 'XDZ.Locations.Colony.Causeway', color: 'colony causeway.webp', bw: 'colony causeway.webp', sides: ['W', 'E'] },
-    { id: 'surface', label: 'XDZ.Locations.Colony.Surface', color: 'colony surface.webp', bw: 'colony surface.webp' },
-    { id: 'residential', label: 'XDZ.Locations.Colony.Residential', color: 'colony residential.webp', bw: 'colony residential.webp' },
-    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp' },
-    { id: 'substructure', label: 'XDZ.Locations.Colony.Substructure', color: 'colony substructure.webp', bw: 'colony substructure.webp' },
-    { id: 'motorPool', label: 'XDZ.Locations.Colony.MotorPool', color: 'colony motor pool.webp', bw: 'colony motor pool.webp' },
-    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp' },
-    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp' },
+    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp', sides: { W: 0.47, S: 0.59, N: 0.53 }, exterior: ['E'], bwSides: { W: 0.47, S: 0.59, E: 0.54 }, bwExterior: ['N'] },
+    { id: 'radioDish', label: 'XDZ.Locations.Colony.RadioDish', color: 'colony uplink dish.webp', bw: 'colony radio dish.webp', sides: { N: 0.31, W: 0.34, S: 0.55, E: 0.6 }, bwSides: { N: 0.32, S: 0.23, W: 0.35, E: 0.61 } },
+    { id: 'command', label: 'XDZ.Locations.Colony.Command', color: 'colony command.webp', bw: 'colony command.webp', sides: { W: 0.49, S: 0.48, E: 0.5, N: 0.52 }, bwSides: { S: 0.5, E: 0.56, W: 0.57 } },
+    { id: 'medBay', label: 'XDZ.Locations.Colony.MedBay', color: 'colony med bay.webp', bw: 'colony med bay.webp', sides: { N: 0.59, W: 0.47, E: 0.67, S: 0.61 }, bwSides: { N: 0.57, E: 0.67, W: 0.48, S: 0.56 } },
+    { id: 'armory', label: 'XDZ.Locations.Colony.Armory', color: 'colony armory.webp', bw: 'colony armory.webp', sides: { N: 0.6, E: 0.52, S: 0.6, W: 0.38 }, bwSides: { N: 0.44, W: 0.59, S: 0.59, E: 0.53 } },
+    { id: 'refinery', label: 'XDZ.Locations.Colony.Refinery', color: 'colony refinery.webp', bw: 'colony refinery.webp', sides: { W: 0.54, E: 0.58, N: 0.61, S: 0.5 }, bwSides: { W: 0.56, S: 0.59, E: 0.35, N: 0.48 } },
+    { id: 'reactor', label: 'XDZ.Locations.Colony.Reactor', color: 'colony reactor.webp', bw: 'colony reactor.webp', sides: { W: 0.5, E: 0.5, S: 0.5, N: 0.29 }, bwSides: { W: 0.5, E: 0.5, S: 0.5, N: 0.28 } },
+    { id: 'cafeteria', label: 'XDZ.Locations.Colony.Cafeteria', color: 'colony cafeteria.webp', bw: 'colony cafeteria.webp', sides: { W: 0.5, E: 0.5, S: 0.51, N: 0.51 } },
+    { id: 'causeway', label: 'XDZ.Locations.Colony.Causeway', color: 'colony causeway.webp', bw: 'colony causeway.webp', sides: { W: 0.5, E: 0.5 }, bwSides: { W: 0.5, E: 0.5, S: 0.49, N: 0.5 } },
+    { id: 'surface', label: 'XDZ.Locations.Colony.Surface', color: 'colony surface.webp', bw: 'colony surface.webp', sides: { W: 0.61, E: 0.6, S: 0.5, N: 0.56 }, bwSides: { N: 0.56, W: 0.62, E: 0.63, S: 0.49 } },
+    { id: 'residential', label: 'XDZ.Locations.Colony.Residential', color: 'colony residential.webp', bw: 'colony residential.webp', sides: { W: 0.38, N: 0.31, E: 0.61, S: 0.39 } },
+    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp', sides: { E: 0.61, S: 0.48, W: 0.47, N: 0.53 }, bwSides: { E: 0.61, W: 0.47, N: 0.53, S: 0.46 } },
+    { id: 'substructure', label: 'XDZ.Locations.Colony.Substructure', color: 'colony substructure.webp', bw: 'colony substructure.webp', sides: { W: 0.7, N: 0.41, E: 0.4, S: 0.54 }, bwSides: { N: 0.41, E: 0.4, S: 0.54, W: 0.69 } },
+    { id: 'motorPool', label: 'XDZ.Locations.Colony.MotorPool', color: 'colony motor pool.webp', bw: 'colony motor pool.webp', sides: { W: 0.43, N: 0.52, E: 0.46, S: 0.5 }, bwSides: { S: 0.48, E: 0.5, N: 0.51, W: 0.49 } },
+    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp', sides: { N: 0.48, S: 0.49, E: 0.46, W: 0.44 }, bwSides: { S: 0.49, W: 0.47, N: 0.5, E: 0.5 } },
+    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp', sides: { E: 0.51, W: 0.48, N: 0.74, S: 0.4 }, bwSides: { E: 0.51, S: 0.39, W: 0.46, N: 0.74 } },
   ],
 };
 

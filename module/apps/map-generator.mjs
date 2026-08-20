@@ -26,13 +26,90 @@ const DIRECTIONS = [
 const HUB_LOCATIONS = { ship: 'crawlspace', colony: 'substructure' };
 
 // Compass order matching DIRECTIONS' index (N,E,S,W) — used to rotate a
-// location's `sides` list by 90/180/270 (see fitsRotation below).
+// location's `sides` keys by 90/180/270 (see fitsRotation below).
 const CYCLE = ['N', 'E', 'S', 'W'];
 
-/** Does `sides`, rotated `k` quarter-turns clockwise, cover every direction in `cellDirs`? */
+/** Does `sides` (a { side: doorFraction } map), rotated `k` quarter-turns clockwise, cover every direction in `cellDirs`? */
 function fitsRotation(cellDirs, sides, k) {
-  const rotated = new Set(sides.map((s) => CYCLE[(CYCLE.indexOf(s) + k) % 4]));
+  const rotated = new Set(Object.keys(sides).map((s) => CYCLE[(CYCLE.indexOf(s) + k) % 4]));
   return cellDirs.every((d) => rotated.has(d));
+}
+
+/** A location's `sides`/`bwSides` map for `style` — bw falls back to `sides` when it has no override. */
+function sidesFor(loc, style) {
+  return (style === 'bw' ? loc.bwSides : null) ?? loc.sides;
+}
+
+/** Pre-rotation local side whose fraction feeds absolute compass `dir` after `k` quarter-turns clockwise. */
+function localSideFor(dir, k) {
+  return CYCLE[(CYCLE.indexOf(dir) - k + 4) % 4];
+}
+
+/** Rotate a `(side, fraction)` door mark by `k` quarter-turns clockwise; returns the fraction along the resulting absolute edge (same W→E / N→S convention `sides` uses). */
+function rotateDoorFraction(side, f, k) {
+  let x, y;
+  if (side === 'N') [x, y] = [f, 0];
+  else if (side === 'S') [x, y] = [f, 1];
+  else if (side === 'E') [x, y] = [1, f];
+  else [x, y] = [0, f]; // W
+  for (let i = 0; i < k; i++) [x, y] = [1 - y, x];
+  return y === 0 || y === 1 ? x : y;
+}
+
+/** Door position (0-1) along the absolute-compass `dir` edge of a cell rotated `k` quarter-turns, from its style-appropriate `sides` map. Falls back to center if the (forced-seat) rotation left that local side without a mark. */
+function doorFraction(loc, style, dir, k) {
+  const side = localSideFor(dir, k);
+  const f = sidesFor(loc, style)[side];
+  return f === undefined ? 0.5 : rotateDoorFraction(side, f, k);
+}
+
+// Door opening width, in scene pixels, cut into the generated wall at the
+// real door position — the rest of the shared edge stays a solid wall.
+const DOOR_WIDTH = 120;
+
+// Door leaf swapped in for the slide animation, and the static frame Tile
+// laid over the gap — both sized to a DOOR_WIDTH-wide horizontal opening
+// (see tools/door-mapper); the frame Tile is rotated 90° for E/W edges.
+const DOOR_TEXTURE = 'systems/xdz/assets/images/sliding_door_double.webp';
+const DOOR_FRAME_TEXTURE = 'systems/xdz/assets/images/sliding_door_frame.webp';
+const DOOR_FRAME_HEIGHT = 17;
+
+/** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. */
+function buildEdgeDoor(dir, col, row, loc, rotation, style) {
+  const k = ((rotation / 90) % 4 + 4) % 4;
+  const f = doorFraction(loc, style, dir, k);
+  const [x1, y1, x2, y2] = EDGE[dir].wall(col, row);
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  const half = Math.min(DOOR_WIDTH / 2, len / 2) / len;
+  const dStart = Math.max(f - half, 0);
+  const dEnd = Math.min(f + half, 1);
+  const lerp = (t) => [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t];
+  const [sx, sy] = lerp(dStart);
+  const [ex, ey] = lerp(dEnd);
+  const walls = [];
+  if (dStart > 0) walls.push({ c: [x1, y1, sx, sy] });
+  walls.push(doorWall([sx, sy, ex, ey]));
+  if (dEnd < 1) walls.push({ c: [ex, ey, x2, y2] });
+  const tile = doorFrameTile((sx + ex) / 2, (sy + ey) / 2, dir);
+  return { walls, tile };
+}
+
+/** Static frame Tile centered on a door gap. Frame art is drawn for a horizontal (N/S-edge) opening by default; E/W edges (vertical walls) get it rotated 90°. Sits above the location art (`sort: 1` vs the art's default 0). */
+function doorFrameTile(x, y, dir) {
+  return {
+    x,
+    y,
+    width: DOOR_WIDTH,
+    height: DOOR_FRAME_HEIGHT,
+    rotation: dir === 'E' || dir === 'W' ? 90 : 0,
+    sort: 1,
+    texture: { src: DOOR_FRAME_TEXTURE },
+  };
+}
+
+/** Solid (doorless) wall along a cell's `dir` edge — used to close off the outer hull where there's no neighboring cell to connect to. */
+function perimeterWall(dir, col, row) {
+  return { c: EDGE[dir].wall(col, row) };
 }
 
 /**
@@ -67,7 +144,13 @@ const EDGE = {
 
 /** A closed door Wall from a `c` coordinate array (see EDGE[dir].wall). */
 function doorWall(c) {
-  return { c, door: CONST.WALL_DOOR_TYPES.DOOR, ds: CONST.WALL_DOOR_STATES.CLOSED, doorSound: 'futuristicHydraulic', animation: { type: '' } };
+  return {
+    c,
+    door: CONST.WALL_DOOR_TYPES.DOOR,
+    ds: CONST.WALL_DOOR_STATES.CLOSED,
+    doorSound: 'futuristicHydraulic',
+    animation: { type: 'slide', texture: DOOR_TEXTURE, double: true, direction: 1, duration: 750, strength: 1, flip: false },
+  };
 }
 
 export function shuffleArray(array) {
@@ -186,21 +269,22 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
   /**
    * Grow an organic 16-cell layout (see growLayout) and assign each of
    * `type`'s 16 canonical locations to a cell: the hub location goes on
-   * the highest-degree cell, side-restricted locations (config `sides`)
-   * only on cells whose actual neighbor directions fit within `sides`
-   * after some 90/180/270 rotation, everything else fills the remainder
-   * at random. Returns null (retried by build()) if the layout dead-ended
-   * or a side-restricted location couldn't find a fitting cell — unless
-   * `forced`, which seats leftover restricted locations anywhere as a
-   * last resort so build() never loops forever.
+   * the highest-degree cell, side-restricted locations (config `sides`
+   * with fewer than 4 keys, i.e. a door on less than every side) only on
+   * cells whose actual neighbor directions fit within `sides` after some
+   * 90/180/270 rotation, everything else (all 4 sides open) fills the
+   * remainder at random. Returns null (retried by build()) if the layout
+   * dead-ended or a side-restricted location couldn't find a fitting cell
+   * — unless `forced`, which seats leftover restricted locations anywhere
+   * as a last resort so build() never loops forever.
    */
-  static #attemptLayout(type, forced) {
+  static #attemptLayout(type, style, forced) {
     const locations = CONFIG.XDZ.locations[type];
     const hubId = HUB_LOCATIONS[type];
     const hubLoc = locations.find((l) => l.id === hubId);
     const rest = locations.filter((l) => l.id !== hubId);
-    const restricted = shuffleArray(rest.filter((l) => l.sides));
-    const open = shuffleArray(rest.filter((l) => !l.sides));
+    const restricted = shuffleArray(rest.filter((l) => Object.keys(sidesFor(l, style)).length < 4));
+    const open = shuffleArray(rest.filter((l) => Object.keys(sidesFor(l, style)).length === 4));
 
     const layout = growLayout();
     if (!layout) return null;
@@ -238,7 +322,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
       const candidates = [];
       for (const idx of pool) {
         for (let k = 0; k < 4; k++) {
-          if (fitsRotation(neighborDirs[idx], loc.sides, k)) candidates.push({ idx, k });
+          if (fitsRotation(neighborDirs[idx], sidesFor(loc, style), k)) candidates.push({ idx, k });
         }
       }
       if (!candidates.length) {
@@ -352,34 +436,45 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
    * just outside it, tagged with a shared `edgeId` so build() can link the
    * two Regions' teleportToken behaviors to each other afterward.
    */
-  static #buildAreaDoors(cells, areas) {
+  static #buildAreaDoors(cells, areas, style) {
     const cellByKey = new Map(cells.map((c) => [`${c.col},${c.row}`, c]));
     const areaWalls = { 1: [], 2: [], 3: [], 4: [] };
+    const areaTiles = { 1: [], 2: [], 3: [], 4: [] };
     const areaRegions = { 1: [], 2: [], 3: [], 4: [] };
 
     for (const cell of cells) {
-      for (const dir of ['E', 'S']) {
+      const originA = areas[cell.area];
+      for (const dir of CYCLE) {
         const { dc, dr } = DIRECTIONS[CYCLE.indexOf(dir)];
         const neighbor = cellByKey.get(`${cell.col + dc},${cell.row + dr}`);
-        if (!neighbor) continue;
+        if (!neighbor) {
+          areaWalls[cell.area].push(perimeterWall(dir, cell.col - originA.originCol, cell.row - originA.originRow));
+          continue;
+        }
+        if (dir !== 'E' && dir !== 'S') continue; // dedup: the N/W half of each pair is handled from the neighbor's own E/S pass
 
-        const originA = areas[cell.area];
         if (cell.area === neighbor.area) {
-          areaWalls[cell.area].push(doorWall(EDGE[dir].wall(cell.col - originA.originCol, cell.row - originA.originRow)));
+          const { walls, tile } = buildEdgeDoor(dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
+          areaWalls[cell.area].push(...walls);
+          areaTiles[cell.area].push(tile);
           continue;
         }
 
         const originB = areas[neighbor.area];
         const oppDir = EDGE[dir].opposite;
-        areaWalls[cell.area].push(doorWall(EDGE[dir].wall(cell.col - originA.originCol, cell.row - originA.originRow)));
-        areaWalls[neighbor.area].push(doorWall(EDGE[oppDir].wall(neighbor.col - originB.originCol, neighbor.row - originB.originRow)));
+        const a = buildEdgeDoor(dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
+        const b = buildEdgeDoor(oppDir, neighbor.col - originB.originCol, neighbor.row - originB.originRow, neighbor.loc, neighbor.rotation, style);
+        areaWalls[cell.area].push(...a.walls);
+        areaTiles[cell.area].push(a.tile);
+        areaWalls[neighbor.area].push(...b.walls);
+        areaTiles[neighbor.area].push(b.tile);
 
         const edgeId = `${cell.col},${cell.row}:${dir}`;
         areaRegions[cell.area].push({ edgeId, ...EDGE[dir].region(cell.col - originA.originCol, cell.row - originA.originRow) });
         areaRegions[neighbor.area].push({ edgeId, ...EDGE[oppDir].region(neighbor.col - originB.originCol, neighbor.row - originB.originRow) });
       }
     }
-    return { areaWalls, areaRegions };
+    return { areaWalls, areaTiles, areaRegions };
   }
 
   /**
@@ -399,8 +494,8 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
    */
   static async build({ type, style, name, splitAreas }) {
     let result = null;
-    for (let attempt = 0; attempt < 40 && !result; attempt++) result = MapGenerator.#attemptLayout(type, false);
-    if (!result) result = MapGenerator.#attemptLayout(type, true);
+    for (let attempt = 0; attempt < 40 && !result; attempt++) result = MapGenerator.#attemptLayout(type, style, false);
+    if (!result) result = MapGenerator.#attemptLayout(type, style, true);
     if (!result) throw new Error('XDZ | MapGenerator: failed to build a 16-cell layout.');
 
     const { cells, occupied, minCol, minRow, maxCol, maxRow } = result;
@@ -420,16 +515,26 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     // "accidental" adjacency from the walk looping near itself, per KB's
     // "any two touching locations are connected by a DOOR."
     const mainWalls = [];
+    const mainDoorTiles = [];
     for (const cell of cells) {
-      if (occupied.has(`${cell.col + 1},${cell.row}`)) mainWalls.push(doorWall(EDGE.E.wall(cell.col, cell.row)));
-      if (occupied.has(`${cell.col},${cell.row + 1}`)) mainWalls.push(doorWall(EDGE.S.wall(cell.col, cell.row)));
+      for (const dir of CYCLE) {
+        const { dc, dr } = DIRECTIONS[CYCLE.indexOf(dir)];
+        if (!occupied.has(`${cell.col + dc},${cell.row + dr}`)) {
+          mainWalls.push(perimeterWall(dir, cell.col, cell.row));
+        } else if (dir === 'E' || dir === 'S') {
+          const { walls, tile } = buildEdgeDoor(dir, cell.col, cell.row, cell.loc, cell.rotation, style);
+          mainWalls.push(...walls);
+          mainDoorTiles.push(tile);
+        }
+      }
     }
     await mainScene.createEmbeddedDocuments('Wall', mainWalls);
+    if (mainDoorTiles.length) await mainScene.createEmbeddedDocuments('Tile', mainDoorTiles);
 
     if (!splitAreas) return mainScene;
 
     const areas = MapGenerator.#buildAreaGeometry(cells);
-    const { areaWalls, areaRegions } = MapGenerator.#buildAreaDoors(cells, areas);
+    const { areaWalls, areaTiles, areaRegions } = MapGenerator.#buildAreaDoors(cells, areas, style);
 
     // areaNum -> [{ edgeId, doc: Region }], for the cross-linking pass below.
     const regionsByArea = {};
@@ -448,6 +553,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
       });
 
       await scene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(origin.cells, origin, style));
+      if (areaTiles[areaNum].length) await scene.createEmbeddedDocuments('Tile', areaTiles[areaNum]);
       if (areaWalls[areaNum].length) await scene.createEmbeddedDocuments('Wall', areaWalls[areaNum]);
 
       regionsByArea[areaNum] = [];

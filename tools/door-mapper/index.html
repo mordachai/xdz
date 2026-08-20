@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>XDZ Door Mapper</title>
+<style>
+  :root {
+    --bg: #1b1d21;
+    --panel: #24272c;
+    --panel2: #2c3036;
+    --border: #3a3f47;
+    --text: #e7e9ec;
+    --dim: #9aa1ab;
+    --accent: #4fa3ff;
+    --accent2: #ff9f43;
+    --door: #ffd54a;
+    --exterior: #ff5a5a;
+    --crop: #b06bff;
+    --good: #4caf7d;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.4 -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  #app { display: flex; height: 100%; }
+
+  /* ---------- sidebar ---------- */
+  #sidebar {
+    width: 260px;
+    flex: none;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  #sidebarHead { padding: 10px; border-bottom: 1px solid var(--border); }
+  #pickFolder {
+    width: 100%; padding: 8px; cursor: pointer;
+    background: var(--accent); color: #0a1622; border: none; border-radius: 4px;
+    font-weight: 600;
+  }
+  #pickFolder:hover { filter: brightness(1.08); }
+  #folderLabel { color: var(--dim); font-size: 11px; margin-top: 6px; word-break: break-all; }
+  #thumbs { flex: 1; overflow-y: auto; padding: 6px; }
+  .thumb {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px; margin-bottom: 4px; border-radius: 4px; cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .thumb:hover { background: var(--panel2); }
+  .thumb.active { background: var(--panel2); border-color: var(--accent); }
+  .thumb img { width: 44px; height: 32px; object-fit: cover; border-radius: 2px; background: #111; }
+  .thumb .name { flex: 1; font-size: 11px; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .thumb.done .name { color: var(--good); }
+  .thumb .badge {
+    font-size: 9px; color: #0a1622; background: var(--good); border-radius: 8px;
+    padding: 1px 5px; flex: none; display: none;
+  }
+  .thumb.done .badge { display: inline-block; }
+
+  /* ---------- main ---------- */
+  #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #toolbar {
+    display: flex; align-items: center; gap: 6px; padding: 8px 10px;
+    background: var(--panel); border-bottom: 1px solid var(--border); flex: none;
+    flex-wrap: wrap;
+  }
+  button.tool {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 10px; cursor: pointer; font-size: 12px;
+  }
+  button.tool:hover { border-color: var(--accent); }
+  button.tool.active { background: var(--accent); color: #0a1622; border-color: var(--accent); font-weight: 600; }
+  button.tool.exteriorActive { background: var(--exterior); color: #240a0a; border-color: var(--exterior); font-weight: 600; }
+  button.tool.cropActive { background: var(--crop); color: #1a0a24; border-color: var(--crop); font-weight: 600; }
+  #toolbar .sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+  #curName { font-weight: 600; margin-right: auto; }
+  #idInput {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 4px; padding: 6px 8px; font-size: 12px; width: 140px;
+  }
+  #hint { color: var(--dim); font-size: 11px; padding: 4px 10px; flex: none; }
+
+  #viewerOuter { flex: 1; overflow: auto; display: flex; align-items: flex-start; justify-content: center; padding: 20px; }
+  #viewerWrap { position: relative; cursor: crosshair; line-height: 0; flex: none; }
+  #bigImg { display: block; max-width: 88vw; max-height: 74vh; user-select: none; -webkit-user-drag: none; background: #111; }
+  #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  #cropBox {
+    position: absolute; border: 2px dashed var(--crop); box-sizing: border-box;
+    pointer-events: none; background: rgba(176, 107, 255, 0.04);
+  }
+  #cropBox.interactive { pointer-events: auto; cursor: move; }
+  .chandle {
+    position: absolute; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px;
+    background: var(--crop); border: 2px solid #fff; border-radius: 2px;
+    pointer-events: none; box-shadow: 0 0 3px rgba(0,0,0,.6);
+  }
+  #cropBox.interactive .chandle { pointer-events: auto; }
+  .chandle[data-h="nw"], .chandle[data-h="se"] { cursor: nwse-resize; }
+  .chandle[data-h="ne"], .chandle[data-h="sw"] { cursor: nesw-resize; }
+  .chandle[data-h="n"], .chandle[data-h="s"] { cursor: ns-resize; }
+  .chandle[data-h="e"], .chandle[data-h="w"] { cursor: ew-resize; }
+
+  #empty { margin: auto; color: var(--dim); text-align: center; }
+  #empty b { color: var(--text); }
+
+  #bottom { flex: none; border-top: 1px solid var(--border); background: var(--panel); padding: 8px 10px; display: flex; gap: 16px; }
+  #doorList, #extList { flex: 1; }
+  #bottom h4 { margin: 0 0 6px; font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .04em; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; }
+  .row .side { color: var(--door); font-weight: 700; width: 16px; }
+  .row.ext .side { color: var(--exterior); }
+  .row .val { color: var(--dim); flex: 1; }
+  .row button {
+    background: none; border: 1px solid var(--border); color: var(--dim); border-radius: 3px;
+    cursor: pointer; padding: 1px 6px; font-size: 11px;
+  }
+  .row button:hover { border-color: var(--exterior); color: var(--exterior); }
+
+  #toast {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: var(--good); color: #0a1622; padding: 8px 14px; border-radius: 4px;
+    font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  #toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div id="sidebarHead">
+      <button id="pickFolder">Load folder…</button>
+      <div id="folderLabel">No folder loaded</div>
+    </div>
+    <div id="thumbs"></div>
+  </aside>
+
+  <main id="main">
+    <div id="toolbar">
+      <button class="tool active" id="modeDoor">🚪 Door</button>
+      <button class="tool" id="modeExterior">🌌 Exterior</button>
+      <button class="tool" id="modeCrop">✂️ Crop</button>
+      <div class="sep"></div>
+      <button class="tool" id="undoBtn">Undo</button>
+      <button class="tool" id="clearBtn">Clear image</button>
+      <button class="tool" id="resetCropBtn">Reset crop</button>
+      <div class="sep"></div>
+      <span id="curName">No image selected</span>
+      <input id="idInput" placeholder="location id (optional)" />
+      <button class="tool" id="copyBtn">Copy sides snippet</button>
+      <button class="tool" id="exportBtn">Export all JSON</button>
+    </div>
+    <div id="hint">Door: click near an edge to drop a point (fraction is along the crop box's border, matching XDZ config.mjs). Exterior: toggles a whole side as hull-facing. Crop: drag the purple handles to set where the real wall/cell boundary sits, drag inside the box to move it — doors then measure against that box, not the raw image edge.</div>
+
+    <div id="viewerOuter">
+      <div id="empty">Load a folder of location images (<b>webkitdirectory</b> picker) to start.<br/>Pick the <code>assets/locations/color</code> folder, for example.</div>
+      <div id="viewerWrap" style="display:none">
+        <img id="bigImg" />
+        <svg id="overlay"></svg>
+        <div id="cropBox">
+          <div class="chandle" data-h="nw"></div>
+          <div class="chandle" data-h="n"></div>
+          <div class="chandle" data-h="ne"></div>
+          <div class="chandle" data-h="e"></div>
+          <div class="chandle" data-h="se"></div>
+          <div class="chandle" data-h="s"></div>
+          <div class="chandle" data-h="sw"></div>
+          <div class="chandle" data-h="w"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottom">
+      <div id="doorList"><h4>Doors</h4><div id="doorRows"></div></div>
+      <div id="extList"><h4>Exterior sides</h4><div id="extRows"></div></div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<input type="file" id="folderInput" webkitdirectory multiple style="display:none" />
+
+<script>
+const IMG_EXT = /\.(webp|png|jpe?g|gif)$/i;
+const SIDES = ['N', 'E', 'S', 'W'];
+
+/** @type {{name:string, url:string}[]} */
+let files = [];
+let currentName = null;
+/** name -> { doors: [{side, at}], exterior: string[], crop: {x0,y0,x1,y1} } */
+let state = {};
+
+const $ = (sel) => document.querySelector(sel);
+const folderInput = $('#folderInput');
+const pickFolderBtn = $('#pickFolder');
+const folderLabel = $('#folderLabel');
+const thumbsEl = $('#thumbs');
+const viewerWrap = $('#viewerWrap');
+const emptyEl = $('#empty');
+const bigImg = $('#bigImg');
+const overlay = $('#overlay');
+const cropBox = $('#cropBox');
+const chandles = Array.from(document.querySelectorAll('.chandle'));
+const curName = $('#curName');
+const idInput = $('#idInput');
+const doorRows = $('#doorRows');
+const extRows = $('#extRows');
+const modeDoorBtn = $('#modeDoor');
+const modeExteriorBtn = $('#modeExterior');
+const modeCropBtn = $('#modeCrop');
+const toast = $('#toast');
+
+let mode = 'door';
+const CROP_MIN = 0.04;
+
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const defaultCrop = () => ({ x0: 0, y0: 0, x1: 1, y1: 1 });
+
+// ---------- persistence ----------
+function loadStore() {
+  try { state = JSON.parse(localStorage.getItem('xdz-door-mapper') || '{}'); } catch { state = {}; }
+}
+function saveStore() {
+  localStorage.setItem('xdz-door-mapper', JSON.stringify(state));
+}
+function ensureEntry(name) {
+  if (!state[name]) state[name] = { doors: [], exterior: [], crop: defaultCrop() };
+  if (!state[name].crop) state[name].crop = defaultCrop();
+  return state[name];
+}
+loadStore();
+
+// ---------- folder loading ----------
+pickFolderBtn.addEventListener('click', () => folderInput.click());
+folderInput.addEventListener('change', () => {
+  const list = Array.from(folderInput.files).filter((f) => IMG_EXT.test(f.name));
+  list.sort((a, b) => a.webkitRelativePath.localeCompare(b.webkitRelativePath));
+  files = list.map((f) => ({ name: f.name, url: URL.createObjectURL(f) }));
+  const dir = list[0]?.webkitRelativePath.split('/').slice(0, -1).join('/') || '';
+  folderLabel.textContent = `${dir || '(root)'} — ${files.length} image(s)`;
+  renderThumbs();
+});
+
+function renderThumbs() {
+  thumbsEl.innerHTML = '';
+  for (const f of files) {
+    const row = document.createElement('div');
+    row.className = 'thumb' + (f.name === currentName ? ' active' : '') + (hasData(f.name) ? ' done' : '');
+    row.dataset.name = f.name;
+    row.innerHTML = `<img src="${f.url}" loading="lazy"/><span class="name">${f.name}</span><span class="badge">✓</span>`;
+    row.addEventListener('click', () => selectImage(f.name));
+    thumbsEl.appendChild(row);
+  }
+}
+function hasData(name) {
+  const s = state[name];
+  if (!s) return false;
+  const c = s.crop;
+  const cropChanged = c && (c.x0 !== 0 || c.y0 !== 0 || c.x1 !== 1 || c.y1 !== 1);
+  return !!(s.doors.length || s.exterior.length || cropChanged);
+}
+
+// ---------- image selection ----------
+function selectImage(name) {
+  currentName = name;
+  const f = files.find((x) => x.name === name);
+  if (!f) return;
+  emptyEl.style.display = 'none';
+  viewerWrap.style.display = '';
+  bigImg.src = f.url;
+  curName.textContent = name;
+  idInput.value = guessId(name);
+  bigImg.onload = () => {
+    overlay.setAttribute('viewBox', `0 0 ${bigImg.naturalWidth} ${bigImg.naturalHeight}`);
+    updateCropVisual();
+    redraw();
+  };
+  Array.from(thumbsEl.children).forEach((el) => el.classList.toggle('active', el.dataset.name === name));
+}
+function guessId(name) {
+  return name.replace(IMG_EXT, '').replace(/^(ship|colony)\s+/i, '').replace(/\s+(\w)/g, (_, c) => c.toUpperCase()).replace(/\s+/g, '');
+}
+
+// ---------- mode ----------
+modeDoorBtn.addEventListener('click', () => setMode('door'));
+modeExteriorBtn.addEventListener('click', () => setMode('exterior'));
+modeCropBtn.addEventListener('click', () => setMode('crop'));
+function setMode(m) {
+  mode = m;
+  modeDoorBtn.classList.toggle('active', m === 'door');
+  modeExteriorBtn.classList.toggle('active', m === 'exterior');
+  modeExteriorBtn.classList.toggle('exteriorActive', m === 'exterior');
+  modeCropBtn.classList.toggle('active', m === 'crop');
+  modeCropBtn.classList.toggle('cropActive', m === 'crop');
+  cropBox.classList.toggle('interactive', m === 'crop');
+  viewerWrap.style.cursor = m === 'crop' ? 'default' : 'crosshair';
+}
+
+// ---------- crop box dragging ----------
+function updateCropVisual() {
+  if (!currentName) return;
+  const c = ensureEntry(currentName).crop;
+  cropBox.style.left = (c.x0 * 100) + '%';
+  cropBox.style.top = (c.y0 * 100) + '%';
+  cropBox.style.width = ((c.x1 - c.x0) * 100) + '%';
+  cropBox.style.height = ((c.y1 - c.y0) * 100) + '%';
+  const pos = {
+    nw: [c.x0, c.y0], n: [(c.x0 + c.x1) / 2, c.y0], ne: [c.x1, c.y0], e: [c.x1, (c.y0 + c.y1) / 2],
+    se: [c.x1, c.y1], s: [(c.x0 + c.x1) / 2, c.y1], sw: [c.x0, c.y1], w: [c.x0, (c.y0 + c.y1) / 2],
+  };
+  for (const h of chandles) {
+    const [fx, fy] = pos[h.dataset.h];
+    // position relative to cropBox itself (0-100% of its own box), not the wrapper
+    const local = { x: (fx - c.x0) / (c.x1 - c.x0), y: (fy - c.y0) / (c.y1 - c.y0) };
+    h.style.left = (local.x * 100) + '%';
+    h.style.top = (local.y * 100) + '%';
+  }
+}
+
+function cropPointerDown(ev, kind) {
+  if (mode !== 'crop' || !currentName) return;
+  ev.preventDefault();
+  ev.stopPropagation();
+  const target = ev.currentTarget;
+  target.setPointerCapture(ev.pointerId);
+  const rect = bigImg.getBoundingClientRect();
+  const startX = ev.clientX, startY = ev.clientY;
+  const entry = ensureEntry(currentName);
+  const start = { ...entry.crop };
+
+  function onMove(mv) {
+    const dx = (mv.clientX - startX) / rect.width;
+    const dy = (mv.clientY - startY) / rect.height;
+    const c = entry.crop;
+    const { x0, y0, x1, y1 } = start;
+    if (kind === 'body') {
+      const ddx = clamp(dx, -x0, 1 - x1);
+      const ddy = clamp(dy, -y0, 1 - y1);
+      c.x0 = x0 + ddx; c.x1 = x1 + ddx; c.y0 = y0 + ddy; c.y1 = y1 + ddy;
+    } else {
+      if (kind.includes('w')) c.x0 = clamp(x0 + dx, 0, x1 - CROP_MIN);
+      if (kind.includes('e')) c.x1 = clamp(x1 + dx, x0 + CROP_MIN, 1);
+      if (kind.includes('n')) c.y0 = clamp(y0 + dy, 0, y1 - CROP_MIN);
+      if (kind.includes('s')) c.y1 = clamp(y1 + dy, y0 + CROP_MIN, 1);
+    }
+    updateCropVisual();
+    redraw();
+  }
+  function onUp(up) {
+    target.releasePointerCapture(up.pointerId);
+    target.removeEventListener('pointermove', onMove);
+    target.removeEventListener('pointerup', onUp);
+    saveStore();
+  }
+  target.addEventListener('pointermove', onMove);
+  target.addEventListener('pointerup', onUp);
+}
+for (const h of chandles) h.addEventListener('pointerdown', (ev) => cropPointerDown(ev, h.dataset.h));
+cropBox.addEventListener('pointerdown', (ev) => { if (ev.target === cropBox) cropPointerDown(ev, 'body'); });
+
+$('#resetCropBtn').addEventListener('click', () => {
+  if (!currentName) return;
+  ensureEntry(currentName).crop = defaultCrop();
+  saveStore(); updateCropVisual(); redraw();
+});
+
+// ---------- click handling (door / exterior) ----------
+viewerWrap.addEventListener('click', (ev) => {
+  if (!currentName || mode === 'crop') return;
+  const entry = ensureEntry(currentName);
+  const crop = entry.crop;
+  const rect = bigImg.getBoundingClientRect();
+  let x = (ev.clientX - rect.left) / rect.width;
+  let y = (ev.clientY - rect.top) / rect.height;
+  x = clamp(x, crop.x0, crop.x1);
+  y = clamp(y, crop.y0, crop.y1);
+  // normalize into the crop box's own 0-1 space — this is what "at" means
+  const nx = (x - crop.x0) / (crop.x1 - crop.x0);
+  const ny = (y - crop.y0) / (crop.y1 - crop.y0);
+
+  const distN = ny, distS = 1 - ny, distW = nx, distE = 1 - nx;
+  const min = Math.min(distN, distS, distW, distE);
+  let side;
+  if (min === distN) side = 'N';
+  else if (min === distS) side = 'S';
+  else if (min === distW) side = 'W';
+  else side = 'E';
+  const at = (side === 'N' || side === 'S') ? nx : ny;
+
+  if (mode === 'door') {
+    entry.doors = entry.doors.filter((d) => d.side !== side);
+    entry.doors.push({ side, at: Math.round(at * 100) / 100 });
+  } else {
+    const i = entry.exterior.indexOf(side);
+    if (i >= 0) entry.exterior.splice(i, 1);
+    else entry.exterior.push(side);
+  }
+  saveStore();
+  redraw();
+  renderThumbs();
+  Array.from(thumbsEl.children).forEach((el) => el.classList.toggle('active', el.dataset.name === currentName));
+});
+
+$('#undoBtn').addEventListener('click', () => {
+  if (!currentName) return;
+  const entry = ensureEntry(currentName);
+  if (mode === 'door' && entry.doors.length) entry.doors.pop();
+  if (mode === 'exterior' && entry.exterior.length) entry.exterior.pop();
+  saveStore(); redraw(); renderThumbs();
+});
+$('#clearBtn').addEventListener('click', () => {
+  if (!currentName) return;
+  if (!confirm(`Clear doors/exterior marks for ${currentName}? (crop box is kept)`)) return;
+  const crop = ensureEntry(currentName).crop;
+  state[currentName] = { doors: [], exterior: [], crop };
+  saveStore(); redraw(); renderThumbs();
+});
+
+// ---------- drawing ----------
+function redraw() {
+  overlay.innerHTML = '';
+  if (!currentName) return;
+  const W = bigImg.naturalWidth, H = bigImg.naturalHeight;
+  if (!W || !H) return;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const g = (tag, attrs) => {
+    const el = document.createElementNS(ns, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  };
+
+  const entry = ensureEntry(currentName);
+  const c = entry.crop;
+  const cx0 = c.x0 * W, cy0 = c.y0 * H, cx1 = c.x1 * W, cy1 = c.y1 * H;
+  const cw = cx1 - cx0, ch = cy1 - cy0;
+  const unit = Math.min(cw, ch);
+
+  // 10% ruler ticks, along the crop box's own borders (not the raw image edge)
+  for (let p = 0; p <= 100; p += 10) {
+    const x = cx0 + (p / 100) * cw, y = cy0 + (p / 100) * ch;
+    overlay.appendChild(g('line', { x1: x, y1: cy0, x2: x, y2: cy0 + ch * 0.02, stroke: '#ff6b6b', 'stroke-width': Math.max(1, unit * 0.002) }));
+    overlay.appendChild(g('line', { x1: x, y1: cy1, x2: x, y2: cy1 - ch * 0.02, stroke: '#ff6b6b', 'stroke-width': Math.max(1, unit * 0.002) }));
+    overlay.appendChild(g('line', { x1: cx0, y1: y, x2: cx0 + cw * 0.02, y2: y, stroke: '#5ab0ff', 'stroke-width': Math.max(1, unit * 0.002) }));
+    overlay.appendChild(g('line', { x1: cx1, y1: y, x2: cx1 - cw * 0.02, y2: y, stroke: '#5ab0ff', 'stroke-width': Math.max(1, unit * 0.002) }));
+  }
+
+  const fs = Math.max(12, unit * 0.045);
+
+  // exterior sides: thick red band along that edge of the crop box
+  for (const side of entry.exterior) {
+    const t = unit * 0.03;
+    let rect;
+    if (side === 'N') rect = { x: cx0, y: cy0, width: cw, height: t };
+    if (side === 'S') rect = { x: cx0, y: cy1 - t, width: cw, height: t };
+    if (side === 'W') rect = { x: cx0, y: cy0, width: t, height: ch };
+    if (side === 'E') rect = { x: cx1 - t, y: cy0, width: t, height: ch };
+    overlay.appendChild(g('rect', { ...rect, fill: '#ff5a5a', opacity: 0.55 }));
+  }
+
+  // door points: crosshair + label, plus a tick on the crop box's border
+  for (const d of entry.doors) {
+    let px, py, bx, by;
+    if (d.side === 'N') { px = cx0 + d.at * cw; py = cy0; bx = px; by = cy0 + ch * 0.08; }
+    if (d.side === 'S') { px = cx0 + d.at * cw; py = cy1; bx = px; by = cy1 - ch * 0.08; }
+    if (d.side === 'W') { px = cx0; py = cy0 + d.at * ch; bx = cx0 + cw * 0.08; by = py; }
+    if (d.side === 'E') { px = cx1; py = cy0 + d.at * ch; bx = cx1 - cw * 0.08; by = py; }
+
+    const r = Math.max(6, unit * 0.018);
+    overlay.appendChild(g('circle', { cx: px, cy: py, r, fill: 'none', stroke: '#ffd54a', 'stroke-width': r * 0.35 }));
+    overlay.appendChild(g('line', { x1: px - r * 1.8, y1: py, x2: px + r * 1.8, y2: py, stroke: '#ffd54a', 'stroke-width': r * 0.25 }));
+    overlay.appendChild(g('line', { x1: px, y1: py - r * 1.8, x2: px, y2: py + r * 1.8, stroke: '#ffd54a', 'stroke-width': r * 0.25 }));
+    overlay.appendChild(g('line', { x1: px, y1: py, x2: bx, y2: by, stroke: '#ffd54a', 'stroke-width': r * 0.2, 'stroke-dasharray': '4,4' }));
+
+    const label = g('text', { x: bx, y: by, fill: '#ffd54a', 'font-size': fs, 'font-weight': 700, 'text-anchor': 'middle', 'dominant-baseline': 'middle' });
+    label.textContent = `${d.side} ${d.at.toFixed(2)}`;
+    const bg = g('rect', { x: bx - fs * 1.6, y: by - fs * 0.7, width: fs * 3.2, height: fs * 1.4, fill: '#000', opacity: 0.55, rx: 3 });
+    overlay.appendChild(bg);
+    overlay.appendChild(label);
+  }
+
+  renderLists(entry);
+}
+
+function renderLists(entry) {
+  doorRows.innerHTML = '';
+  for (const side of SIDES) {
+    const d = entry.doors.find((x) => x.side === side);
+    if (!d) continue;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="side">${d.side}</span><span class="val">at ${d.at.toFixed(2)}</span><button data-side="${d.side}">✕</button>`;
+    row.querySelector('button').addEventListener('click', () => {
+      entry.doors = entry.doors.filter((x) => x.side !== side);
+      saveStore(); redraw(); renderThumbs();
+    });
+    doorRows.appendChild(row);
+  }
+  if (!entry.doors.length) doorRows.innerHTML = '<div class="row"><span class="val">none yet</span></div>';
+
+  extRows.innerHTML = '';
+  for (const side of entry.exterior) {
+    const row = document.createElement('div');
+    row.className = 'row ext';
+    row.innerHTML = `<span class="side">${side}</span><span class="val">hull-facing</span><button>✕</button>`;
+    row.querySelector('button').addEventListener('click', () => {
+      entry.exterior = entry.exterior.filter((x) => x !== side);
+      saveStore(); redraw(); renderThumbs();
+    });
+    extRows.appendChild(row);
+  }
+  if (!entry.exterior.length) extRows.innerHTML = '<div class="row"><span class="val">none yet</span></div>';
+}
+
+// ---------- export ----------
+$('#copyBtn').addEventListener('click', () => {
+  if (!currentName) return;
+  const entry = ensureEntry(currentName);
+  const id = idInput.value.trim() || guessId(currentName);
+  const sidesStr = SIDES.filter((s) => entry.doors.some((d) => d.side === s))
+    .map((s) => `${s}: ${entry.doors.find((d) => d.side === s).at.toFixed(2)}`)
+    .join(', ');
+  let line = `sides: { ${sidesStr} }`;
+  if (entry.exterior.length) line += `, exterior: [${entry.exterior.map((s) => `'${s}'`).join(', ')}]`;
+  navigator.clipboard.writeText(line).then(() => showToast('Copied: ' + line));
+});
+
+$('#exportBtn').addEventListener('click', () => {
+  const out = {};
+  for (const name in state) {
+    const s = state[name];
+    if (!hasData(name)) continue;
+    const sides = {};
+    for (const d of s.doors) sides[d.side] = d.at;
+    out[name] = { sides, exterior: s.exterior, crop: s.crop };
+  }
+  const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'xdz-door-map.json';
+  a.click();
+  showToast(`Exported ${Object.keys(out).length} image(s)`);
+});
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+window.addEventListener('keydown', (ev) => {
+  if (ev.key === '1') setMode('door');
+  if (ev.key === '2') setMode('exterior');
+  if (ev.key === '3') setMode('crop');
+  if (ev.key === 'z' && (ev.ctrlKey || ev.metaKey)) $('#undoBtn').click();
+});
+</script>
+</body>
+</html>
