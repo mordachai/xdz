@@ -2,13 +2,14 @@ import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
 import XDZCombat from './documents/combat.mjs';
 import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
-import { TnTracker, RoundTimer, MapGenerator, CombatCarousel } from './apps/_module.mjs';
+import { TnTracker, RoundTimer, MapGenerator, CombatCarousel, onUpdateWallDoorState } from './apps/_module.mjs';
 import { appendToOrder } from './helpers/combat-groups.mjs';
 import { autoKillXenos } from './helpers/auto-kill.mjs';
 import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
+import XdzDoorControl from './canvas/door-control.mjs';
 
 globalThis.xdz = {
   documents: { XDZActor, XDZItem },
@@ -50,6 +51,10 @@ Hooks.once('init', function () {
   CONFIG.Actor.typeImages = XDZ.actorTypeImages;
 
   CONFIG.Combat.documentClass = XDZCombat;
+
+  // Swaps in the door open/close icon's resting alpha for the
+  // doorIconOpacity setting below — see canvas/door-control.mjs.
+  CONFIG.Canvas.doorControlClass = XdzDoorControl;
 
   CONFIG.Item.documentClass = XDZItem;
   CONFIG.Item.dataModels = {
@@ -160,6 +165,19 @@ Hooks.once('init', function () {
     config: true,
     type: Boolean,
     default: true,
+  });
+  // Resting alpha for the door open/close canvas icon — core hardcodes 0.6
+  // with no knob for it. Redraws every door control already on the canvas
+  // so the change is visible immediately, not just on next scene load.
+  game.settings.register('xdz', 'doorIconOpacity', {
+    name: 'XDZ.Settings.DoorIconOpacity.Name',
+    hint: 'XDZ.Settings.DoorIconOpacity.Hint',
+    scope: 'client',
+    config: true,
+    type: Number,
+    range: { min: 0.1, max: 1, step: 0.05 },
+    default: 0.6,
+    onChange: (value) => canvas.controls?.doors.children.forEach((d) => (d.icon.alpha = value)),
   });
   game.settings.register('xdz', 'hudVisible', {
     scope: 'client',
@@ -357,6 +375,11 @@ Hooks.on('getSceneControlButtons', (controls) => {
     },
   };
 });
+
+// Generated doors re-texture their leaf + frame Tile to match locked/closed/
+// open — see onUpdateWallDoorState. Fires for every Wall update world-wide;
+// the function itself no-ops on anything without a MapGenerator `doorId` flag.
+Hooks.on('updateWall', onUpdateWallDoorState);
 
 // Map Generator entry point lives in the Scenes sidebar, not a scene-control
 // tool: SceneControls' tool click handler bails out on `!canvas.ready`, which

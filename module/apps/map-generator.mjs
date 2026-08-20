@@ -129,13 +129,28 @@ function buildPitch(cellsList, widthCells, heightCells, style) {
 const DOOR_WIDTH = 120;
 
 // Door leaf swapped in for the slide animation, and the static frame Tile
-// laid over the gap — both sized to a DOOR_WIDTH-wide horizontal opening
-// (see tools/door-mapper); the frame Tile is rotated 90° for E/W edges.
-const DOOR_TEXTURE = 'systems/xdz/assets/images/sliding_door_double.webp';
-const DOOR_FRAME_TEXTURE = 'systems/xdz/assets/images/sliding_door_frame.webp';
+// laid over the gap (see tools/door-mapper); the frame Tile is rotated 90°
+// for E/W edges. Both re-texture per the Wall's own `ds` (door state) —
+// see DOOR_LEAF_TEXTURES/DOOR_FRAME_TEXTURES and onUpdateWallDoorState.
+const DOOR_LEAF_TEXTURES = {
+  [CONST.WALL_DOOR_STATES.CLOSED]: 'systems/xdz/assets/images/sliding_door_double-closed.webp',
+  [CONST.WALL_DOOR_STATES.LOCKED]: 'systems/xdz/assets/images/sliding_door_double_locked.webp',
+  [CONST.WALL_DOOR_STATES.OPEN]: 'systems/xdz/assets/images/sliding_door_double_open.webp',
+};
+const DOOR_FRAME_TEXTURES = {
+  [CONST.WALL_DOOR_STATES.CLOSED]: 'systems/xdz/assets/images/sliding_door_frame-closed.webp',
+  [CONST.WALL_DOOR_STATES.LOCKED]: 'systems/xdz/assets/images/sliding_door_frame-locked.webp',
+  [CONST.WALL_DOOR_STATES.OPEN]: 'systems/xdz/assets/images/sliding_door_frame-open.webp',
+};
+// Frame Tile height is fixed; width is derived from the asset's own native
+// pixel size (836x55) so it renders at its real aspect ratio instead of
+// being squeezed/stretched to fit the DOOR_WIDTH gap — the frame can
+// legitimately run wider than the gap itself (a door casing overlapping
+// the wall on either side is normal).
 const DOOR_FRAME_HEIGHT = 17;
+const DOOR_FRAME_WIDTH = DOOR_FRAME_HEIGHT * (836 / 55);
 
-/** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. `edge` is the scene's own pitch-built EDGE (see buildPitch/makeEdge). */
+/** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. `edge` is the scene's own pitch-built EDGE (see buildPitch/makeEdge). The wall and its frame Tile share a `flags.xdz.doorId` (random, this pair's only) so onUpdateWallDoorState can find the Tile back from the Wall once both exist as real embedded documents with their own (unrelated) ids. */
 function buildEdgeDoor(edge, dir, col, row, loc, rotation, style) {
   const k = ((rotation / 90) % 4 + 4) % 4;
   const f = doorFraction(loc, style, dir, k);
@@ -147,24 +162,26 @@ function buildEdgeDoor(edge, dir, col, row, loc, rotation, style) {
   const lerp = (t) => [x1 + (x2 - x1) * t, y1 + (y2 - y1) * t];
   const [sx, sy] = lerp(dStart);
   const [ex, ey] = lerp(dEnd);
+  const doorId = foundry.utils.randomID();
   const walls = [];
   if (dStart > 0) walls.push({ c: [x1, y1, sx, sy] });
-  walls.push(doorWall([sx, sy, ex, ey]));
+  walls.push(doorWall([sx, sy, ex, ey], doorId));
   if (dEnd < 1) walls.push({ c: [ex, ey, x2, y2] });
-  const tile = doorFrameTile((sx + ex) / 2, (sy + ey) / 2, dir);
+  const tile = doorFrameTile((sx + ex) / 2, (sy + ey) / 2, dir, doorId);
   return { walls, tile };
 }
 
-/** Static frame Tile centered on a door gap. Frame art is drawn for a horizontal (N/S-edge) opening by default; E/W edges (vertical walls) get it rotated 90°. Sits above the location art (`sort: 1` vs the art's default 0). */
-function doorFrameTile(x, y, dir) {
+/** Static frame Tile centered on a door gap. Frame art is drawn for a horizontal (N/S-edge) opening by default; E/W edges (vertical walls) get it rotated 90°. Sits above the location art (`sort: 1` vs the art's default 0). Starts on the CLOSED frame texture, matching doorWall's default `ds`; onUpdateWallDoorState re-textures it when the paired Wall's `ds` later changes. */
+function doorFrameTile(x, y, dir, doorId) {
   return {
     x,
     y,
-    width: DOOR_WIDTH,
+    width: DOOR_FRAME_WIDTH,
     height: DOOR_FRAME_HEIGHT,
     rotation: dir === 'E' || dir === 'W' ? 90 : 0,
     sort: 1,
-    texture: { src: DOOR_FRAME_TEXTURE },
+    texture: { src: DOOR_FRAME_TEXTURES[CONST.WALL_DOOR_STATES.CLOSED] },
+    flags: { xdz: { doorId } },
   };
 }
 
@@ -220,15 +237,36 @@ function makeEdge(colX, rowY) {
   };
 }
 
-/** A closed door Wall from a `c` coordinate array (see makeEdge's `wall` builders). */
-function doorWall(c) {
+/** A closed door Wall from a `c` coordinate array (see makeEdge's `wall` builders), tagged with `doorId` so onUpdateWallDoorState can find its paired frame Tile. */
+function doorWall(c, doorId) {
   return {
     c,
     door: CONST.WALL_DOOR_TYPES.DOOR,
     ds: CONST.WALL_DOOR_STATES.CLOSED,
     doorSound: 'futuristicHydraulic',
-    animation: { type: 'slide', texture: DOOR_TEXTURE, double: true, direction: 1, duration: 750, strength: 1, flip: false },
+    animation: { type: 'slide', texture: DOOR_LEAF_TEXTURES[CONST.WALL_DOOR_STATES.CLOSED], double: true, direction: 1, duration: 750, strength: 1, flip: false },
+    flags: { xdz: { doorId } },
   };
+}
+
+/**
+ * `updateWall` hook body: when a generated door's `ds` (open/closed/locked)
+ * changes, re-texture its leaf (the Wall's own `animation.texture`, shown
+ * while closed/locked and mid-slide) and its static frame Tile to match —
+ * see DOOR_LEAF_TEXTURES/DOOR_FRAME_TEXTURES. No-ops for any wall this
+ * generator didn't build (no `doorId` flag) and re-entrantly for the
+ * leaf-texture update this itself issues (that update's `changes` never
+ * contains `ds`).
+ */
+export function onUpdateWallDoorState(wall, changes) {
+  if (!('ds' in changes)) return;
+  const doorId = wall.getFlag('xdz', 'doorId');
+  if (!doorId) return;
+  const leafSrc = DOOR_LEAF_TEXTURES[wall.ds];
+  if (leafSrc && leafSrc !== wall.animation?.texture) wall.update({ 'animation.texture': leafSrc });
+  const frameSrc = DOOR_FRAME_TEXTURES[wall.ds];
+  const tile = wall.parent?.tiles.find((t) => t.getFlag('xdz', 'doorId') === doorId);
+  if (frameSrc && tile && frameSrc !== tile.texture.src) tile.update({ 'texture.src': frameSrc });
 }
 
 export function shuffleArray(array) {

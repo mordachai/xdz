@@ -503,6 +503,10 @@
         "Left": "Left",
         "Right": "Right",
         "Sidebar": "Sidebar"
+      },
+      "DoorIconOpacity": {
+        "Name": "Door Icon Opacity",
+        "Hint": "Resting opacity of the door open/close icon on the canvas. Lower it for a more discreet icon; it still snaps to full opacity on hover."
       }
     },
 
