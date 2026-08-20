@@ -138,12 +138,21 @@ XDZ.itemTypeImages = {
  * pieces' real edges land closer together instead of leaving a void gap
  * behind a correctly-placed door. `bwCrop` overrides for the B&W asset,
  * same fallback rule as `bwSides`.
+ *
+ * `sizeCells` (optional): nominal room footprint width, in 75px grid
+ * squares — defaults to 12 ("a 12x9 grid is an ok size for the average
+ * room") when omitted; height is derived from the source art's own aspect
+ * ratio, so this is a single knob, not a separate w/h pair. Smaller pieces
+ * (Obs Deck, Escape Pod) override it down. MapGenerator never stretches a
+ * location to fit a bigger box — a piece bigger than its neighbors just
+ * grows its column/row for real; a smaller one renders at its own true
+ * size, centered (see map-generator.mjs's #buildTiles).
  */
 XDZ.defaultDoorAt = 0.5;
 
 XDZ.locations = {
   ship: [
-    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', sides: { E: 0.5, N: 0.5, S: 0.5 }, exterior: ['W'], bwSides: { E: 0.5, S: 0.5, N: 0.55 }, bwExterior: ['W'] },
+    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', sides: { E: 0.5, N: 0.5, S: 0.5 }, exterior: ['W'], bwSides: { E: 0.5, S: 0.5, N: 0.55 }, bwExterior: ['W'], sizeCells: 9 },
     { id: 'bridge', label: 'XDZ.Locations.Ship.Bridge', color: 'ship command deck.webp', bw: 'ship bridge.webp', sides: { S: 0.51, E: 0.5, W: 0.5 }, bwSides: { S: 0.51, E: 0.55, W: 0.57 } },
     { id: 'engineRoom', label: 'XDZ.Locations.Ship.EngineRoom', color: 'ship engine room.webp', bw: 'ship engine room.webp', sides: { N: 0.5, E: 0.52, W: 0.53, S: 0.5 }, bwSides: { N: 0.53, E: 0.52, W: 0.53, S: 0.49 } },
     { id: 'airlock', label: 'XDZ.Locations.Ship.Airlock', color: 'ship airlock.webp', bw: 'ship airlock.webp', sides: { S: 0.5, E: 0.54, W: 0.58 }, exterior: ['N'] },
@@ -157,7 +166,7 @@ XDZ.locations = {
     { id: 'corridor', label: 'XDZ.Locations.Ship.Corridor', color: 'ship corridor.webp', bw: 'ship m corridor.webp', sides: { W: 0.28, E: 0.72 }, bwSides: { W: 0.29, E: 0.74 } },
     { id: 'crawlspace', label: 'XDZ.Locations.Ship.Crawlspace', color: 'ship crawlspace.webp', bw: 'ship crawlspace.webp', sides: { N: 0.54, E: 0.5, S: 0.48, W: 0.4 }, bwSides: { N: 0.53, E: 0.51, S: 0.47, W: 0.4 } },
     { id: 'sump', label: 'XDZ.Locations.Ship.Sump', color: 'ship sump.webp', bw: 'ship sump.webp', sides: { N: 0.53, E: 0.54, S: 0.48, W: 0.48 }, bwSides: { N: 0.53, E: 0.54, S: 0.48, W: 0.45 } },
-    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', sides: { S: 0.5, W: 0.71, E: 0.7 }, exterior: ['N'], bwSides: { S: 0.5, W: 0.76, E: 0.74 } },
+    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', sides: { S: 0.5, W: 0.71, E: 0.7 }, exterior: ['N'], bwSides: { S: 0.5, W: 0.76, E: 0.74 }, sizeCells: 9 },
     { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp', sides: { W: 0.5, N: 0.5, S: 0.5, E: 0.51 } },
   ],
   colony: [

@@ -13,5 +13,13 @@
     </div>
 
     {{#if description}}<div class="xdz-chatcard-desc">{{{description}}}</div>{{/if}}
+
+    {{#if buttons}}
+    <div class="xdz-damage-row" data-item-uuid="{{itemUuid}}" data-target-ids='{{targetIds}}' data-target-points='{{targetPoints}}'>
+      {{#each buttons}}
+      <button type="button" class="xdz-btn xdz-damage-btn {{this.variant}}" data-action="xdzRollDamage" data-die-mode="{{this.dieMode}}"{{#if this.disabled}} disabled{{/if}}>{{this.label}}</button>
+      {{/each}}
+    </div>
+    {{/if}}
   </div>
 </div>

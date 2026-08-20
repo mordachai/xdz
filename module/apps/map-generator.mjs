@@ -1,10 +1,30 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ApplicationV2 } = foundry.applications.api;
 
-// Native tile art is 2230x1611 (ratio ~1.3845) — cell height derived from
-// this so tiles never letterbox/crop.
-const CELL_WIDTH = 800;
-const CELL_HEIGHT = Math.round((CELL_WIDTH * 1611) / 2230);
+const GRID_SIZE = 75; // must match the Scene's own grid size, see #createSceneDoc
+
+// Native tile art is 2230x1611 (ratio ~1.3845) — every nominal box below
+// derives its height from this ratio so a full-box render is never
+// non-uniformly scaled (see #buildTiles' contain-fit for the rest of the
+// story: a cell whose box ends up bigger than its own nominal size, e.g.
+// sharing a column with a bigger neighbor, just renders bigger too, still
+// at this same ratio — never squished to fill a mismatched box).
+const NATIVE_ASPECT = 1611 / 2230;
+
+// Default nominal room footprint, in grid squares — "a 12x9 grid is an ok
+// size for the average room" per design call. A location can override via
+// its own `sizeCells` (e.g. Obs Deck / Escape Pod are intentionally
+// smaller) — see nominalSize().
+const DEFAULT_SIZE_CELLS = 12;
+
+/** Nominal pre-crop pixel box for a location: width from its own (or the default) `sizeCells`, height derived to match the source art's aspect ratio. */
+function nominalSize(loc) {
+  const w = (loc.sizeCells ?? DEFAULT_SIZE_CELLS) * GRID_SIZE;
+  return { w, h: Math.round(w * NATIVE_ASPECT) };
+}
+
+const DEFAULT_CELL_W = DEFAULT_SIZE_CELLS * GRID_SIZE;
+const DEFAULT_CELL_H = Math.round(DEFAULT_CELL_W * NATIVE_ASPECT);
 
 const LOCATION_COUNT = 16;
 
@@ -80,16 +100,18 @@ function cropInset(loc, style, dir, k) {
 
 /**
  * A cell's real on-screen footprint after crop-trimming: the pixel
- * width/height it actually needs (nominal CELL_WIDTH/CELL_HEIGHT minus both
- * edges' crop inset) once rotated `rotation` degrees. A 90/270 rotation
- * swaps which of CELL_WIDTH/CELL_HEIGHT is the width-basis vs height-basis
- * — the same swap Foundry's own Tile `rotation` performs on the rendered
- * art, mirrored here so the column/row this cell sits in gets sized to
- * match what actually ends up on screen, not the pre-rotation box.
+ * width/height it actually needs (this location's own `nominalSize` minus
+ * both edges' crop inset) once rotated `rotation` degrees. A 90/270
+ * rotation swaps which of the nominal box's width/height is the
+ * width-basis vs height-basis — the same swap Foundry's own Tile
+ * `rotation` performs on the rendered art, mirrored here so the
+ * column/row this cell sits in gets sized to match what actually ends up
+ * on screen, not the pre-rotation box.
  */
 function cellFootprint(loc, style, rotation) {
   const k = ((rotation / 90) % 4 + 4) % 4;
-  const [baseW, baseH] = k % 2 === 0 ? [CELL_WIDTH, CELL_HEIGHT] : [CELL_HEIGHT, CELL_WIDTH];
+  const nominal = nominalSize(loc);
+  const [baseW, baseH] = k % 2 === 0 ? [nominal.w, nominal.h] : [nominal.h, nominal.w];
   return {
     width: baseW * (1 - cropInset(loc, style, 'E', k) - cropInset(loc, style, 'W', k)),
     height: baseH * (1 - cropInset(loc, style, 'N', k) - cropInset(loc, style, 'S', k)),
@@ -99,12 +121,14 @@ function cellFootprint(loc, style, rotation) {
 /**
  * Per-column width / per-row height (px) for `cellsList` (already in a
  * scene's own local, 0-based col/row space): each column/row is sized to
- * the largest `cellFootprint` among the cells occupying it, so a column
- * only actually shrinks when every cell sharing it agrees there's less
- * real content — anything smaller than that just renders a bit smaller
- * inside the same box (see #buildTiles), never clipped. Columns/rows
- * nothing occupies (e.g. an AREA scene's 1-cell margin) default to
- * CELL_WIDTH/CELL_HEIGHT. Returns prefix-sum boundary lookups
+ * the largest `cellFootprint` among the cells occupying it, so a bigger
+ * piece (bigger `sizeCells`, or just less crop-trimmed) genuinely grows
+ * its column/row instead of being squished to match smaller neighbors —
+ * anything smaller than that just renders at its own true size, centered
+ * inside the same box (see #buildTiles' contain-fit), never stretched or
+ * clipped. Columns/rows nothing occupies (e.g. an AREA scene's 1-cell
+ * margin) default to DEFAULT_CELL_W/DEFAULT_CELL_H. Returns prefix-sum
+ * boundary lookups
  * `colX`/`rowY` (length `widthCells+1`/`heightCells+1`, so `colX[c]` is
  * the pixel x of column `c`'s left edge) and a scene-local `edge` (see
  * makeEdge) built on them.
@@ -118,9 +142,9 @@ function buildPitch(cellsList, widthCells, heightCells, style) {
     rowHeight[cell.row] = Math.max(rowHeight[cell.row] ?? 0, fp.height);
   }
   const colX = [0];
-  for (let c = 0; c < widthCells; c++) colX.push(colX[c] + (colWidth[c] ?? CELL_WIDTH));
+  for (let c = 0; c < widthCells; c++) colX.push(colX[c] + (colWidth[c] ?? DEFAULT_CELL_W));
   const rowY = [0];
-  for (let r = 0; r < heightCells; r++) rowY.push(rowY[r] + (rowHeight[r] ?? CELL_HEIGHT));
+  for (let r = 0; r < heightCells; r++) rowY.push(rowY[r] + (rowHeight[r] ?? DEFAULT_CELL_H));
   return { colX, rowY, edge: makeEdge(colX, rowY) };
 }
 
@@ -197,8 +221,8 @@ function perimeterWall(edge, dir, col, row) {
  * edge, and a half-cell Region rectangle just outside that edge (used only
  * for AREA scenes, to teleport a token that walks through a door leading
  * to a LOCATION that isn't in this scene). Reduces to the old fixed-grid
- * formulas exactly when colX[c] === c * CELL_WIDTH (i.e. every column/row
- * is the default size).
+ * formulas exactly when colX[c] === c * DEFAULT_CELL_W (i.e. every
+ * column/row is the default size).
  */
 function makeEdge(colX, rowY) {
   return {
@@ -472,13 +496,22 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
   /**
    * Tile-creation data for `cellsList` (already local, 0-based col/row —
    * see build()/buildPitch), positioned on the scene's own `colX`/`rowY`
-   * pitch. `width`/`height` is the PRE-rotation box — Foundry rotates it in
+   * pitch. The box a cell's column/row give it (`finalW`/`finalH`) can be
+   * bigger than what this particular location actually needs — e.g. it
+   * shares a column with a bigger neighbor, or its own `sizeCells` is
+   * smaller (Obs Deck, Escape Pod) — so we never stretch the Tile to fill
+   * that box outright. Instead the piece's own `cellFootprint` is scaled
+   * up uniformly (`scale`, preserving its real aspect ratio) until it
+   * touches the box on its tighter axis, then centered: a bigger piece
+   * ends up genuinely bigger, a smaller one just sits centered with a bit
+   * of margin, and nothing is ever squished non-uniformly to fit.
+   * `width`/`height` below is the PRE-rotation box — Foundry rotates it in
    * place around `x`/`y`, so a 90/270-rotated cell needs the final
-   * (post-rotation) column/row box's axes swapped back to get the box that
+   * (post-rotation) display box's axes swapped back to get the box that
    * rotates *into* it. `anchorX`/`anchorY` sit on the location's own crop
    * box center (not the raw canvas center, default 0.5/0.5 when uncropped)
    * so a trimmed location's real content — not empty canvas padding — ends
-   * up centered on, and scaled to fill, the cell box.
+   * up centered on the cell.
    */
   static #buildTiles(cellsList, colX, rowY, style) {
     return cellsList.map((cell) => {
@@ -486,12 +519,16 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
       const [y0, y1] = [rowY[cell.row], rowY[cell.row + 1]];
       const [finalW, finalH] = [x1 - x0, y1 - y0];
       const k = ((cell.rotation / 90) % 4 + 4) % 4;
-      const [localW, localH] = k % 2 === 0 ? [finalW, finalH] : [finalH, finalW];
+      const footprint = cellFootprint(cell.loc, style, cell.rotation);
+      const scale = Math.min(finalW / footprint.width, finalH / footprint.height);
+      const [dispW, dispH] = [footprint.width * scale, footprint.height * scale];
+      const [localW, localH] = k % 2 === 0 ? [dispW, dispH] : [dispH, dispW];
       const crop = cropFor(cell.loc, style);
+      const [dispX0, dispY0] = [(x0 + x1) / 2 - dispW / 2, (y0 + y1) / 2 - dispH / 2];
       const quadrants = Object.fromEntries(
         Object.entries(CONFIG.XDZ.tileQuadrants).map(([compass, frac]) => [
           compass,
-          { x: x0 + frac.x * finalW, y: y0 + frac.y * finalH },
+          { x: dispX0 + frac.x * dispW, y: dispY0 + frac.y * dispH },
         ]),
       );
       return {
@@ -527,7 +564,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
       folder: folderId ?? null,
       width,
       height,
-      grid: { type: CONST.GRID_TYPES.SQUARE, size: 75 },
+      grid: { type: CONST.GRID_TYPES.SQUARE, size: GRID_SIZE },
       levels: [{ name: 'Level', background: { color: '#0f0f0f' } }],
       padding: 0,
       tokenVision: true,
@@ -613,6 +650,42 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
   }
 
   /**
+   * Second pass over `cells` after their rotations were locked in purely
+   * for door alignment (see #attemptLayout): now that every column/row's
+   * real size is knowable (an initial `buildPitch`), revisit each cell's
+   * rotation and, among every rotation that still keeps its doors lined up
+   * with its actual neighbors (`fitsRotation` again), pick whichever one
+   * covers the most of the box that cell's first pass ended up with. A
+   * piece that would otherwise render small and centered in a box shaped
+   * for a differently-oriented neighbor gets to turn instead and actually
+   * fill the space. Mutates `cells[].rotation` in place; the caller must
+   * rebuild the pitch afterward so the final columns/rows reflect the
+   * winning rotations (a cell that turns out better-fitting after turning
+   * can end up sizing its column/row differently than this first pass did).
+   */
+  static #refineRotations(cells, occupied, style, widthCells, heightCells) {
+    const pitch = buildPitch(cells, widthCells, heightCells, style);
+    for (const cell of cells) {
+      const dirs = DIRECTIONS.reduce((acc, { dc, dr }, i) => {
+        if (occupied.has(`${cell.col + dc},${cell.row + dr}`)) acc.push(CYCLE[i]);
+        return acc;
+      }, []);
+      const sides = sidesFor(cell.loc, style);
+      const finalW = pitch.colX[cell.col + 1] - pitch.colX[cell.col];
+      const finalH = pitch.rowY[cell.row + 1] - pitch.rowY[cell.row];
+      let best = { rotation: cell.rotation, coverage: -1 };
+      for (let k = 0; k < 4; k++) {
+        if (!fitsRotation(dirs, sides, k)) continue;
+        const fp = cellFootprint(cell.loc, style, k * 90);
+        const scale = Math.min(finalW / fp.width, finalH / fp.height);
+        const coverage = (fp.width * scale * (fp.height * scale)) / (finalW * finalH);
+        if (coverage > best.coverage) best = { rotation: k * 90, coverage };
+      }
+      cell.rotation = best.rotation;
+    }
+  }
+
+  /**
    * Build a full layout (retrying up to 40 times so side-restricted
    * locations get a fitting cell), then create the full-map Scene, its 16
    * location Tiles (each tagged with AREA/LOCATION/QUADRANT metadata and
@@ -636,6 +709,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     const { cells, occupied, minCol, minRow, maxCol, maxRow } = result;
     const widthCells = maxCol - minCol + 1;
     const heightCells = maxRow - minRow + 1;
+    MapGenerator.#refineRotations(cells, occupied, style, widthCells, heightCells);
     const mainPitch = buildPitch(cells, widthCells, heightCells, style);
 
     const folder = splitAreas ? await Folder.create({ name, type: 'Scene' }) : null;

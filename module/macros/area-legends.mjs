@@ -1,9 +1,9 @@
 // Bounding rectangles per AREA/LOCATION rely on each Tile's `quadrants` flag
 // (see CONFIG.XDZ.tileQuadrants) rather than the Tile document's own x/y —
-// quadrants are baked from the cell's *unrotated* CELL_WIDTH/CELL_HEIGHT
-// footprint (MapGenerator#buildTiles), so reversing the N/E/S/W fractions
-// (0.2 / 0.8) back out the cell's axis-aligned rect regardless of how the
-// location art itself got rotated to fit its cell.
+// quadrants are baked from the cell's *unrotated*, display-scaled footprint
+// (MapGenerator#buildTiles), so reversing the N/E/S/W fractions (0.2 / 0.8)
+// back out the cell's axis-aligned rect regardless of how the location art
+// itself got rotated (or scaled to its real size) to fit its cell.
 function tileRect(quadrants) {
   const width = (quadrants.E.x - quadrants.W.x) / 0.6;
   const height = (quadrants.S.y - quadrants.N.y) / 0.6;

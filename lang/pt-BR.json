@@ -493,6 +493,10 @@
         "Name": "Matar Xenos Automaticamente na Rolagem de Destruição",
         "Hint": "Ao rolar o dado de destruição, remove automaticamente essa quantidade de pontos de ameaça de xenos da cena, conforme o Modo de Destruição da arma — os mais próximos do atacante (Normal), ao redor do alvo (Explosivo), ou em linha reta através do alvo (Perfurante)."
       },
+      "RollDamageAutomatically": {
+        "Name": "Rolar Dano Automaticamente",
+        "Hint": "Rola os dados de dano junto com o teste, se bem-sucedido."
+      },
       "CarouselPosition": {
         "Name": "Posição do Carrossel de Combate",
         "Hint": "Em qual borda da tela o Carrossel de Combate fica fixado. Esquerda/Direita transformam em uma coluna vertical. Barra Lateral embute o carrossel dentro da barra lateral direita em vez de flutuar.",

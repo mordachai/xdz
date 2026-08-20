@@ -6,8 +6,9 @@ import TnTracker from '../apps/tn-tracker.mjs';
 export default class XDZItem extends Item {
   /**
    * Roll a weapon's to-hit check: 1d20 + Weapons Training vs Target. On a
-   * success, posts a damage-row of follow-up buttons instead of rolling
-   * damage (enemies destroyed) automatically — see rollDamage().
+   * success, either posts damage-row follow-up buttons or immediately rolls
+   * damage (enemies destroyed) too, per the "Roll Damage Automatically"
+   * setting — see rollDamage().
    * @param {"normal"|"grenade"} mode
    */
   async rollAttack(mode) {
@@ -34,8 +35,12 @@ export default class XDZItem extends Item {
     const die = roll.dice[0]?.results?.[0]?.result;
     const success = die === 20 || roll.total >= tn;
 
+    // Roll Damage Automatically skips this button (damage rolls itself right
+    // below instead) — see rollDamage()'s own buttons for where Spray and
+    // Pray ends up living in that mode.
+    const autoRollDamage = game.settings.get('xdz', 'rollDamageAutomatically');
     const buttons = [];
-    if (success) {
+    if (success && !autoRollDamage) {
       buttons.push({
         dieMode: mode === 'grenade' ? 'grenade' : 'normal',
         label: game.i18n.localize('XDZ.Weapon.RollDamage'),
@@ -86,6 +91,10 @@ export default class XDZItem extends Item {
       rolls: [roll],
       sound: CONFIG.sounds.dice,
     });
+
+    if (success && autoRollDamage) {
+      await this.rollDamage(mode === 'grenade' ? 'grenade' : 'normal', targetIds, targetPoints);
+    }
     return roll;
   }
 
@@ -131,12 +140,30 @@ export default class XDZItem extends Item {
 
     const roll = await new Roll(formula).evaluate();
 
+    // Spray and Pray chains onto every "normal"-track damage card (the
+    // initial destroy-die roll and each subsequent ammo roll) so it stays
+    // reachable however that first roll got here — manual button click or
+    // Roll Damage Automatically. Never offered off a grenade roll.
+    const buttons = [];
+    if (dieMode !== 'grenade' && this.system.ammo.max > 0) {
+      buttons.push({
+        dieMode: 'ammo',
+        label: game.i18n.localize('XDZ.Weapon.SprayAndPray'),
+        variant: 'xdz-spray-btn',
+        disabled: this.system.ammo.value <= 0,
+      });
+    }
+
     const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/damage-card.hbs', {
       weapon: this,
       theme: game.settings.get('xdz', 'sheetTheme'),
       total: roll.total,
       tag,
       description,
+      buttons,
+      itemUuid: this.uuid,
+      targetIds: JSON.stringify(targetIds),
+      targetPoints: JSON.stringify(targetPoints),
     });
 
     // Snapshot targeting now (roller's client) rather than reading

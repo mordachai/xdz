@@ -495,6 +495,10 @@
         "Name": "Auto-Kill Xenos on Destroy Roll",
         "Hint": "When a destroy die is rolled, automatically remove that many points of xeno threat from the scene, per the weapon's Kill Mode — closest to the attacker (Normal), around the target (Explosive), or along the beeline through the target (Piercing)."
       },
+      "RollDamageAutomatically": {
+        "Name": "Roll Damage Automatically",
+        "Hint": "Rolls the damage dice together with the check roll if successful."
+      },
       "CarouselPosition": {
         "Name": "Combat Carousel Position",
         "Hint": "Which edge of your screen the Combat Carousel is pinned to. Left/Right switch it to a vertical column. Sidebar embeds it inside the right sidebar instead of floating.",

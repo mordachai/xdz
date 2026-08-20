@@ -166,6 +166,19 @@ Hooks.once('init', function () {
     type: Boolean,
     default: true,
   });
+  // Rolls the damage/destroy die immediately after a successful attack roll
+  // instead of waiting on the "Roll Damage" chat button — see
+  // XDZItem#rollAttack. "Spray and Pray" moves onto the resulting damage
+  // card in this mode so it's still reachable; table can turn this off to
+  // go back to the manual button-per-step flow.
+  game.settings.register('xdz', 'rollDamageAutomatically', {
+    name: 'XDZ.Settings.RollDamageAutomatically.Name',
+    hint: 'XDZ.Settings.RollDamageAutomatically.Hint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+  });
   // Resting alpha for the door open/close canvas icon — core hardcodes 0.6
   // with no knob for it. Redraws every door control already on the canvas
   // so the change is visible immediately, not just on next scene load.
@@ -337,10 +350,14 @@ Hooks.on('deleteCombatant', () => xdz.apps.combatCarousel?.render());
 // rollDamage() in documents/item.mjs) instead of a bespoke socket — every
 // connected client sees this hook fire, only the GM acts on it, same
 // pattern as the createCombatant append above.
-Hooks.on('createChatMessage', (message) => {
+Hooks.on('createChatMessage', async (message) => {
   if (!game.user.isGM) return;
   const data = message.getFlag('xdz', 'autoKill');
-  if (data) autoKillXenos(data);
+  if (!data) return;
+  // Wait out Dice So Nice's roll animation (if active) so the kill lands
+  // after the player actually sees the destroy-die result, not before.
+  await game.dice3d?.waitFor3DAnimationByMessageID(message.id);
+  autoKillXenos(data);
 });
 // The carousel's injury pips/ECG read a Marine's system.injuries straight
 // off the Actor — taking damage on the sheet doesn't touch the Combatant
@@ -418,9 +435,11 @@ Hooks.on('renderJournalDirectory', (app, html) => {
   }
 });
 
-// Damage-row buttons on a successful weapon attack chat card ("Roll Damage" /
-// "Spray and Pray") aren't part of any Application, so they're wired here
-// instead of an actions map — one delegated listener per rendered message.
+// Damage-row buttons ("Roll Damage" / "Spray and Pray") aren't part of any
+// Application, so they're wired here instead of an actions map — one
+// delegated listener per rendered message. They can live on either an attack
+// chat card (manual flow) or a damage chat card (Roll Damage Automatically —
+// see XDZItem#rollAttack/#rollDamage), same markup either way.
 // "Roll Damage" is a one-time base damage die and locks itself after use.
 // "Spray and Pray" adds extra damage on top and stays rollable across
 // multiple clicks, limited only by remaining ammo.
