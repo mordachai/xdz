@@ -63,6 +63,67 @@ function doorFraction(loc, style, dir, k) {
   return f === undefined ? 0.5 : rotateDoorFraction(side, f, k);
 }
 
+/** A location's `crop`/`bwCrop` box for `style` (fractions 0-1, art's own unrotated frame) — bw falls back to `crop`, default full canvas (no trim) when neither is set. */
+function cropFor(loc, style) {
+  return (style === 'bw' ? loc.bwCrop : null) ?? loc.crop ?? { x0: 0, y0: 0, x1: 1, y1: 1 };
+}
+
+/** How far (0-1 of that edge's own axis) the location's real content is inset from the cell's absolute-compass `dir` edge after `k` quarter-turns — same local-side lookup as doorFraction, applied to the crop box's own bound on that side instead of a door mark. */
+function cropInset(loc, style, dir, k) {
+  const crop = cropFor(loc, style);
+  const side = localSideFor(dir, k);
+  if (side === 'N') return crop.y0;
+  if (side === 'S') return 1 - crop.y1;
+  if (side === 'E') return 1 - crop.x1;
+  return crop.x0; // W
+}
+
+/**
+ * A cell's real on-screen footprint after crop-trimming: the pixel
+ * width/height it actually needs (nominal CELL_WIDTH/CELL_HEIGHT minus both
+ * edges' crop inset) once rotated `rotation` degrees. A 90/270 rotation
+ * swaps which of CELL_WIDTH/CELL_HEIGHT is the width-basis vs height-basis
+ * — the same swap Foundry's own Tile `rotation` performs on the rendered
+ * art, mirrored here so the column/row this cell sits in gets sized to
+ * match what actually ends up on screen, not the pre-rotation box.
+ */
+function cellFootprint(loc, style, rotation) {
+  const k = ((rotation / 90) % 4 + 4) % 4;
+  const [baseW, baseH] = k % 2 === 0 ? [CELL_WIDTH, CELL_HEIGHT] : [CELL_HEIGHT, CELL_WIDTH];
+  return {
+    width: baseW * (1 - cropInset(loc, style, 'E', k) - cropInset(loc, style, 'W', k)),
+    height: baseH * (1 - cropInset(loc, style, 'N', k) - cropInset(loc, style, 'S', k)),
+  };
+}
+
+/**
+ * Per-column width / per-row height (px) for `cellsList` (already in a
+ * scene's own local, 0-based col/row space): each column/row is sized to
+ * the largest `cellFootprint` among the cells occupying it, so a column
+ * only actually shrinks when every cell sharing it agrees there's less
+ * real content — anything smaller than that just renders a bit smaller
+ * inside the same box (see #buildTiles), never clipped. Columns/rows
+ * nothing occupies (e.g. an AREA scene's 1-cell margin) default to
+ * CELL_WIDTH/CELL_HEIGHT. Returns prefix-sum boundary lookups
+ * `colX`/`rowY` (length `widthCells+1`/`heightCells+1`, so `colX[c]` is
+ * the pixel x of column `c`'s left edge) and a scene-local `edge` (see
+ * makeEdge) built on them.
+ */
+function buildPitch(cellsList, widthCells, heightCells, style) {
+  const colWidth = new Array(widthCells).fill(null);
+  const rowHeight = new Array(heightCells).fill(null);
+  for (const cell of cellsList) {
+    const fp = cellFootprint(cell.loc, style, cell.rotation);
+    colWidth[cell.col] = Math.max(colWidth[cell.col] ?? 0, fp.width);
+    rowHeight[cell.row] = Math.max(rowHeight[cell.row] ?? 0, fp.height);
+  }
+  const colX = [0];
+  for (let c = 0; c < widthCells; c++) colX.push(colX[c] + (colWidth[c] ?? CELL_WIDTH));
+  const rowY = [0];
+  for (let r = 0; r < heightCells; r++) rowY.push(rowY[r] + (rowHeight[r] ?? CELL_HEIGHT));
+  return { colX, rowY, edge: makeEdge(colX, rowY) };
+}
+
 // Door opening width, in scene pixels, cut into the generated wall at the
 // real door position — the rest of the shared edge stays a solid wall.
 const DOOR_WIDTH = 120;
@@ -74,11 +135,11 @@ const DOOR_TEXTURE = 'systems/xdz/assets/images/sliding_door_double.webp';
 const DOOR_FRAME_TEXTURE = 'systems/xdz/assets/images/sliding_door_frame.webp';
 const DOOR_FRAME_HEIGHT = 17;
 
-/** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. */
-function buildEdgeDoor(dir, col, row, loc, rotation, style) {
+/** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. `edge` is the scene's own pitch-built EDGE (see buildPitch/makeEdge). */
+function buildEdgeDoor(edge, dir, col, row, loc, rotation, style) {
   const k = ((rotation / 90) % 4 + 4) % 4;
   const f = doorFraction(loc, style, dir, k);
-  const [x1, y1, x2, y2] = EDGE[dir].wall(col, row);
+  const [x1, y1, x2, y2] = edge[dir].wall(col, row);
   const len = Math.hypot(x2 - x1, y2 - y1);
   const half = Math.min(DOOR_WIDTH / 2, len / 2) / len;
   const dStart = Math.max(f - half, 0);
@@ -108,41 +169,58 @@ function doorFrameTile(x, y, dir) {
 }
 
 /** Solid (doorless) wall along a cell's `dir` edge — used to close off the outer hull where there's no neighboring cell to connect to. */
-function perimeterWall(dir, col, row) {
-  return { c: EDGE[dir].wall(col, row) };
+function perimeterWall(edge, dir, col, row) {
+  return { c: edge[dir].wall(col, row) };
 }
 
 /**
  * Per-compass-direction geometry for a door between `(col, row)` and its
- * neighbor, in a scene's local cell coordinates: the Wall segment on the
- * shared edge, and a half-cell Region rectangle just outside that edge (used
- * only for AREA scenes, to teleport a token that walks through a door
- * leading to a LOCATION that isn't in this scene).
+ * neighbor, in a scene's local cell coordinates, built on that scene's own
+ * `colX`/`rowY` pitch (see buildPitch): the Wall segment on the shared
+ * edge, and a half-cell Region rectangle just outside that edge (used only
+ * for AREA scenes, to teleport a token that walks through a door leading
+ * to a LOCATION that isn't in this scene). Reduces to the old fixed-grid
+ * formulas exactly when colX[c] === c * CELL_WIDTH (i.e. every column/row
+ * is the default size).
  */
-const EDGE = {
-  E: {
-    opposite: 'W',
-    wall: (col, row) => [(col + 1) * CELL_WIDTH, row * CELL_HEIGHT, (col + 1) * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
-    region: (col, row) => ({ x: (col + 1) * CELL_WIDTH, y: row * CELL_HEIGHT, width: CELL_WIDTH / 2, height: CELL_HEIGHT }),
-  },
-  W: {
-    opposite: 'E',
-    wall: (col, row) => [col * CELL_WIDTH, row * CELL_HEIGHT, col * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
-    region: (col, row) => ({ x: col * CELL_WIDTH - CELL_WIDTH / 2, y: row * CELL_HEIGHT, width: CELL_WIDTH / 2, height: CELL_HEIGHT }),
-  },
-  S: {
-    opposite: 'N',
-    wall: (col, row) => [col * CELL_WIDTH, (row + 1) * CELL_HEIGHT, (col + 1) * CELL_WIDTH, (row + 1) * CELL_HEIGHT],
-    region: (col, row) => ({ x: col * CELL_WIDTH, y: (row + 1) * CELL_HEIGHT, width: CELL_WIDTH, height: CELL_HEIGHT / 2 }),
-  },
-  N: {
-    opposite: 'S',
-    wall: (col, row) => [col * CELL_WIDTH, row * CELL_HEIGHT, (col + 1) * CELL_WIDTH, row * CELL_HEIGHT],
-    region: (col, row) => ({ x: col * CELL_WIDTH, y: row * CELL_HEIGHT - CELL_HEIGHT / 2, width: CELL_WIDTH, height: CELL_HEIGHT / 2 }),
-  },
-};
+function makeEdge(colX, rowY) {
+  return {
+    E: {
+      opposite: 'W',
+      wall: (col, row) => [colX[col + 1], rowY[row], colX[col + 1], rowY[row + 1]],
+      region: (col, row) => {
+        const w = colX[col + 2] - colX[col + 1];
+        return { x: colX[col + 1], y: rowY[row], width: w / 2, height: rowY[row + 1] - rowY[row] };
+      },
+    },
+    W: {
+      opposite: 'E',
+      wall: (col, row) => [colX[col], rowY[row], colX[col], rowY[row + 1]],
+      region: (col, row) => {
+        const w = colX[col] - colX[col - 1];
+        return { x: colX[col - 1] + w / 2, y: rowY[row], width: w / 2, height: rowY[row + 1] - rowY[row] };
+      },
+    },
+    S: {
+      opposite: 'N',
+      wall: (col, row) => [colX[col], rowY[row + 1], colX[col + 1], rowY[row + 1]],
+      region: (col, row) => {
+        const h = rowY[row + 2] - rowY[row + 1];
+        return { x: colX[col], y: rowY[row + 1], width: colX[col + 1] - colX[col], height: h / 2 };
+      },
+    },
+    N: {
+      opposite: 'S',
+      wall: (col, row) => [colX[col], rowY[row], colX[col + 1], rowY[row]],
+      region: (col, row) => {
+        const h = rowY[row] - rowY[row - 1];
+        return { x: colX[col], y: rowY[row - 1] + h / 2, width: colX[col + 1] - colX[col], height: h / 2 };
+      },
+    },
+  };
+}
 
-/** A closed door Wall from a `c` coordinate array (see EDGE[dir].wall). */
+/** A closed door Wall from a `c` coordinate array (see makeEdge's `wall` builders). */
 function doorWall(c) {
   return {
     c,
@@ -353,27 +431,44 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     return { cells, occupied, minCol, minRow, maxCol, maxRow };
   }
 
-  /** Tile-creation data for `cellsList`, positioned relative to `origin` (a {originCol, originRow} local offset). */
-  static #buildTiles(cellsList, origin, style) {
+  /**
+   * Tile-creation data for `cellsList` (already local, 0-based col/row —
+   * see build()/buildPitch), positioned on the scene's own `colX`/`rowY`
+   * pitch. `width`/`height` is the PRE-rotation box — Foundry rotates it in
+   * place around `x`/`y`, so a 90/270-rotated cell needs the final
+   * (post-rotation) column/row box's axes swapped back to get the box that
+   * rotates *into* it. `anchorX`/`anchorY` sit on the location's own crop
+   * box center (not the raw canvas center, default 0.5/0.5 when uncropped)
+   * so a trimmed location's real content — not empty canvas padding — ends
+   * up centered on, and scaled to fill, the cell box.
+   */
+  static #buildTiles(cellsList, colX, rowY, style) {
     return cellsList.map((cell) => {
-      const x0 = (cell.col - origin.originCol) * CELL_WIDTH;
-      const y0 = (cell.row - origin.originRow) * CELL_HEIGHT;
+      const [x0, x1] = [colX[cell.col], colX[cell.col + 1]];
+      const [y0, y1] = [rowY[cell.row], rowY[cell.row + 1]];
+      const [finalW, finalH] = [x1 - x0, y1 - y0];
+      const k = ((cell.rotation / 90) % 4 + 4) % 4;
+      const [localW, localH] = k % 2 === 0 ? [finalW, finalH] : [finalH, finalW];
+      const crop = cropFor(cell.loc, style);
       const quadrants = Object.fromEntries(
         Object.entries(CONFIG.XDZ.tileQuadrants).map(([compass, frac]) => [
           compass,
-          { x: x0 + frac.x * CELL_WIDTH, y: y0 + frac.y * CELL_HEIGHT },
+          { x: x0 + frac.x * finalW, y: y0 + frac.y * finalH },
         ]),
       );
       return {
-        // Tile x/y is the texture anchor point (default center, 0.5/0.5),
-        // not the top-left corner — center it on the cell so `rotation`
-        // spins the art in place instead of swinging it off the cell.
-        x: x0 + CELL_WIDTH / 2,
-        y: y0 + CELL_HEIGHT / 2,
-        width: CELL_WIDTH,
-        height: CELL_HEIGHT,
+        // Tile x/y is the texture anchor point, not the top-left corner —
+        // center it on the cell box so `rotation` spins the art in place.
+        x: (x0 + x1) / 2,
+        y: (y0 + y1) / 2,
+        width: localW,
+        height: localH,
         rotation: cell.rotation,
-        texture: { src: `systems/xdz/assets/locations/${style}/${cell.loc[style]}` },
+        texture: {
+          src: `systems/xdz/assets/locations/${style}/${cell.loc[style]}`,
+          anchorX: (crop.x0 + crop.x1) / 2,
+          anchorY: (crop.y0 + crop.y1) / 2,
+        },
         flags: {
           xdz: {
             locationId: cell.loc.id,
@@ -387,17 +482,17 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     });
   }
 
-  /** Create a Scene with the standard XDZ map settings (dark background, no fog/vision). */
-  static async #createSceneDoc({ name, widthCells, heightCells, folderId, flags }) {
+  /** Create a Scene with the standard XDZ map settings (dark background, token vision on, no fog). `width`/`height` are already in pixels (see buildPitch). */
+  static async #createSceneDoc({ name, width, height, folderId, flags }) {
     return Scene.create({
       name,
       folder: folderId ?? null,
-      width: widthCells * CELL_WIDTH,
-      height: heightCells * CELL_HEIGHT,
+      width,
+      height,
       grid: { type: CONST.GRID_TYPES.SQUARE, size: 75 },
       levels: [{ name: 'Level', background: { color: '#0f0f0f' } }],
       padding: 0,
-      tokenVision: false,
+      tokenVision: true,
       fogExploration: false,
       flags: flags ?? {},
     });
@@ -436,7 +531,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
    * just outside it, tagged with a shared `edgeId` so build() can link the
    * two Regions' teleportToken behaviors to each other afterward.
    */
-  static #buildAreaDoors(cells, areas, style) {
+  static #buildAreaDoors(cells, areas, style, pitches) {
     const cellByKey = new Map(cells.map((c) => [`${c.col},${c.row}`, c]));
     const areaWalls = { 1: [], 2: [], 3: [], 4: [] };
     const areaTiles = { 1: [], 2: [], 3: [], 4: [] };
@@ -444,34 +539,36 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
 
     for (const cell of cells) {
       const originA = areas[cell.area];
+      const edgeA = pitches[cell.area].edge;
       for (const dir of CYCLE) {
         const { dc, dr } = DIRECTIONS[CYCLE.indexOf(dir)];
         const neighbor = cellByKey.get(`${cell.col + dc},${cell.row + dr}`);
         if (!neighbor) {
-          areaWalls[cell.area].push(perimeterWall(dir, cell.col - originA.originCol, cell.row - originA.originRow));
+          areaWalls[cell.area].push(perimeterWall(edgeA, dir, cell.col - originA.originCol, cell.row - originA.originRow));
           continue;
         }
         if (dir !== 'E' && dir !== 'S') continue; // dedup: the N/W half of each pair is handled from the neighbor's own E/S pass
 
         if (cell.area === neighbor.area) {
-          const { walls, tile } = buildEdgeDoor(dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
+          const { walls, tile } = buildEdgeDoor(edgeA, dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
           areaWalls[cell.area].push(...walls);
           areaTiles[cell.area].push(tile);
           continue;
         }
 
         const originB = areas[neighbor.area];
-        const oppDir = EDGE[dir].opposite;
-        const a = buildEdgeDoor(dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
-        const b = buildEdgeDoor(oppDir, neighbor.col - originB.originCol, neighbor.row - originB.originRow, neighbor.loc, neighbor.rotation, style);
+        const edgeB = pitches[neighbor.area].edge;
+        const oppDir = edgeA[dir].opposite;
+        const a = buildEdgeDoor(edgeA, dir, cell.col - originA.originCol, cell.row - originA.originRow, cell.loc, cell.rotation, style);
+        const b = buildEdgeDoor(edgeB, oppDir, neighbor.col - originB.originCol, neighbor.row - originB.originRow, neighbor.loc, neighbor.rotation, style);
         areaWalls[cell.area].push(...a.walls);
         areaTiles[cell.area].push(a.tile);
         areaWalls[neighbor.area].push(...b.walls);
         areaTiles[neighbor.area].push(b.tile);
 
         const edgeId = `${cell.col},${cell.row}:${dir}`;
-        areaRegions[cell.area].push({ edgeId, ...EDGE[dir].region(cell.col - originA.originCol, cell.row - originA.originRow) });
-        areaRegions[neighbor.area].push({ edgeId, ...EDGE[oppDir].region(neighbor.col - originB.originCol, neighbor.row - originB.originRow) });
+        areaRegions[cell.area].push({ edgeId, ...edgeA[dir].region(cell.col - originA.originCol, cell.row - originA.originRow) });
+        areaRegions[neighbor.area].push({ edgeId, ...edgeB[oppDir].region(neighbor.col - originB.originCol, neighbor.row - originB.originRow) });
       }
     }
     return { areaWalls, areaTiles, areaRegions };
@@ -499,17 +596,19 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     if (!result) throw new Error('XDZ | MapGenerator: failed to build a 16-cell layout.');
 
     const { cells, occupied, minCol, minRow, maxCol, maxRow } = result;
-    const mainOrigin = { originCol: 0, originRow: 0 };
+    const widthCells = maxCol - minCol + 1;
+    const heightCells = maxRow - minRow + 1;
+    const mainPitch = buildPitch(cells, widthCells, heightCells, style);
 
     const folder = splitAreas ? await Folder.create({ name, type: 'Scene' }) : null;
 
     const mainScene = await MapGenerator.#createSceneDoc({
       name,
-      widthCells: maxCol - minCol + 1,
-      heightCells: maxRow - minRow + 1,
+      width: mainPitch.colX[widthCells],
+      height: mainPitch.rowY[heightCells],
       folderId: folder?.id,
     });
-    await mainScene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(cells, mainOrigin, style));
+    await mainScene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(cells, mainPitch.colX, mainPitch.rowY, style));
 
     // A door wherever two placed cells actually touch — including
     // "accidental" adjacency from the walk looping near itself, per KB's
@@ -520,9 +619,9 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
       for (const dir of CYCLE) {
         const { dc, dr } = DIRECTIONS[CYCLE.indexOf(dir)];
         if (!occupied.has(`${cell.col + dc},${cell.row + dr}`)) {
-          mainWalls.push(perimeterWall(dir, cell.col, cell.row));
+          mainWalls.push(perimeterWall(mainPitch.edge, dir, cell.col, cell.row));
         } else if (dir === 'E' || dir === 'S') {
-          const { walls, tile } = buildEdgeDoor(dir, cell.col, cell.row, cell.loc, cell.rotation, style);
+          const { walls, tile } = buildEdgeDoor(mainPitch.edge, dir, cell.col, cell.row, cell.loc, cell.rotation, style);
           mainWalls.push(...walls);
           mainDoorTiles.push(tile);
         }
@@ -534,17 +633,28 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
     if (!splitAreas) return mainScene;
 
     const areas = MapGenerator.#buildAreaGeometry(cells);
-    const { areaWalls, areaTiles, areaRegions } = MapGenerator.#buildAreaDoors(cells, areas, style);
+    // Each AREA scene gets its own colX/rowY pitch, built from its own
+    // cells in its own local (0-based) col/row space — computed upfront so
+    // #buildAreaDoors (cross-AREA pairs need both sides' pitch at once) and
+    // the per-scene loop below can both use it.
+    const pitches = {};
+    for (let areaNum = 1; areaNum <= 4; areaNum++) {
+      const origin = areas[areaNum];
+      origin.localCells = origin.cells.map((c) => ({ ...c, col: c.col - origin.originCol, row: c.row - origin.originRow }));
+      pitches[areaNum] = buildPitch(origin.localCells, origin.widthCells, origin.heightCells, style);
+    }
+    const { areaWalls, areaTiles, areaRegions } = MapGenerator.#buildAreaDoors(cells, areas, style, pitches);
 
     // areaNum -> [{ edgeId, doc: Region }], for the cross-linking pass below.
     const regionsByArea = {};
 
     for (let areaNum = 1; areaNum <= 4; areaNum++) {
       const origin = areas[areaNum];
+      const pitch = pitches[areaNum];
       const scene = await MapGenerator.#createSceneDoc({
         name: game.i18n.format('XDZ.MapGenerator.AreaSceneName', { name, area: areaNum }),
-        widthCells: origin.widthCells,
-        heightCells: origin.heightCells,
+        width: pitch.colX[origin.widthCells],
+        height: pitch.rowY[origin.heightCells],
         folderId: folder.id,
         // Centroid in the shared build-time grid space (see #buildAreaGeometry),
         // not this scene's own local space — lets xdz.mjs compare two AREA
@@ -552,7 +662,7 @@ export default class MapGenerator extends HandlebarsApplicationMixin(Application
         flags: { xdz: { areaCentroid: { col: (origin.minCol + origin.maxCol) / 2, row: (origin.minRow + origin.maxRow) / 2 } } },
       });
 
-      await scene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(origin.cells, origin, style));
+      await scene.createEmbeddedDocuments('Tile', MapGenerator.#buildTiles(origin.localCells, pitch.colX, pitch.rowY, style));
       if (areaTiles[areaNum].length) await scene.createEmbeddedDocuments('Tile', areaTiles[areaNum]);
       if (areaWalls[areaNum].length) await scene.createEmbeddedDocuments('Wall', areaWalls[areaNum]);
 

@@ -126,6 +126,18 @@ XDZ.itemTypeImages = {
  * must pick `bwSides`/`bwExterior` over `sides`/`exterior` whenever it's
  * building the `bw` style, since the two can disagree on which sides even
  * have a door.
+ *
+ * `crop`/`bwCrop` (optional): { x0, y0, x1, y1 }, fractions (0-1, art's own
+ * unrotated frame) of the raw canvas that's the location's real footprint —
+ * where its painted room actually stops, not the raw image edge. `sides`
+ * fractions are measured against this box, not the raw canvas (see
+ * tools/door-mapper). Most pieces paint edge-to-edge (full canvas = no
+ * crop, the default when omitted); a few have real padding baked into the
+ * asset, measured via tools/door-mapper's crop tool. MapGenerator sizes
+ * each cell's actual on-screen footprint from this box so two touching
+ * pieces' real edges land closer together instead of leaving a void gap
+ * behind a correctly-placed door. `bwCrop` overrides for the B&W asset,
+ * same fallback rule as `bwSides`.
  */
 XDZ.defaultDoorAt = 0.5;
 
@@ -149,7 +161,7 @@ XDZ.locations = {
     { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp', sides: { W: 0.5, N: 0.5, S: 0.5, E: 0.51 } },
   ],
   colony: [
-    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp', sides: { W: 0.47, S: 0.59, N: 0.53 }, exterior: ['E'], bwSides: { W: 0.47, S: 0.59, E: 0.54 }, bwExterior: ['N'] },
+    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp', sides: { W: 0.47, S: 0.59, N: 0.53 }, exterior: ['E'], bwSides: { W: 0.47, S: 0.59, E: 0.54 }, bwExterior: ['N'], crop: { x0: 0.0517, y0: 0.0315, x1: 0.9669, y1: 0.9814 } },
     { id: 'radioDish', label: 'XDZ.Locations.Colony.RadioDish', color: 'colony uplink dish.webp', bw: 'colony radio dish.webp', sides: { N: 0.31, W: 0.34, S: 0.55, E: 0.6 }, bwSides: { N: 0.32, S: 0.23, W: 0.35, E: 0.61 } },
     { id: 'command', label: 'XDZ.Locations.Colony.Command', color: 'colony command.webp', bw: 'colony command.webp', sides: { W: 0.49, S: 0.48, E: 0.5, N: 0.52 }, bwSides: { S: 0.5, E: 0.56, W: 0.57 } },
     { id: 'medBay', label: 'XDZ.Locations.Colony.MedBay', color: 'colony med bay.webp', bw: 'colony med bay.webp', sides: { N: 0.59, W: 0.47, E: 0.67, S: 0.61 }, bwSides: { N: 0.57, E: 0.67, W: 0.48, S: 0.56 } },
@@ -160,11 +172,11 @@ XDZ.locations = {
     { id: 'causeway', label: 'XDZ.Locations.Colony.Causeway', color: 'colony causeway.webp', bw: 'colony causeway.webp', sides: { W: 0.5, E: 0.5 }, bwSides: { W: 0.5, E: 0.5, S: 0.49, N: 0.5 } },
     { id: 'surface', label: 'XDZ.Locations.Colony.Surface', color: 'colony surface.webp', bw: 'colony surface.webp', sides: { W: 0.61, E: 0.6, S: 0.5, N: 0.56 }, bwSides: { N: 0.56, W: 0.62, E: 0.63, S: 0.49 } },
     { id: 'residential', label: 'XDZ.Locations.Colony.Residential', color: 'colony residential.webp', bw: 'colony residential.webp', sides: { W: 0.38, N: 0.31, E: 0.61, S: 0.39 } },
-    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp', sides: { E: 0.61, S: 0.48, W: 0.47, N: 0.53 }, bwSides: { E: 0.61, W: 0.47, N: 0.53, S: 0.46 } },
+    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp', sides: { E: 0.61, S: 0.48, W: 0.47, N: 0.53 }, bwSides: { E: 0.61, W: 0.47, N: 0.53, S: 0.46 }, crop: { x0: 0, y0: 0.0072, x1: 1, y1: 1 } },
     { id: 'substructure', label: 'XDZ.Locations.Colony.Substructure', color: 'colony substructure.webp', bw: 'colony substructure.webp', sides: { W: 0.7, N: 0.41, E: 0.4, S: 0.54 }, bwSides: { N: 0.41, E: 0.4, S: 0.54, W: 0.69 } },
     { id: 'motorPool', label: 'XDZ.Locations.Colony.MotorPool', color: 'colony motor pool.webp', bw: 'colony motor pool.webp', sides: { W: 0.43, N: 0.52, E: 0.46, S: 0.5 }, bwSides: { S: 0.48, E: 0.5, N: 0.51, W: 0.49 } },
-    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp', sides: { N: 0.48, S: 0.49, E: 0.46, W: 0.44 }, bwSides: { S: 0.49, W: 0.47, N: 0.5, E: 0.5 } },
-    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp', sides: { E: 0.51, W: 0.48, N: 0.74, S: 0.4 }, bwSides: { E: 0.51, S: 0.39, W: 0.46, N: 0.74 } },
+    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp', sides: { N: 0.48, S: 0.49, E: 0.46, W: 0.44 }, bwSides: { S: 0.49, W: 0.47, N: 0.5, E: 0.5 }, crop: { x0: 0, y0: 0, x1: 0.9968, y1: 0.9628 } },
+    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp', sides: { E: 0.51, W: 0.48, N: 0.74, S: 0.4 }, bwSides: { E: 0.51, S: 0.39, W: 0.46, N: 0.74 }, crop: { x0: 0.0424, y0: 0.0501, x1: 0.9597, y1: 0.9514 } },
   ],
 };
 
