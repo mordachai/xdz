@@ -59,9 +59,9 @@ export async function createRolledMessage(data) {
  * Shared by spawn-xenos.mjs (placing tokens) and `rollLocation` below (a
  * bare LOCATION ROLL with no spawn attached).
  */
-export async function rollLocationPoint() {
+export async function rollLocationPoint({ animate = true } = {}) {
   const roll = await new Roll('3d4').evaluate();
-  await show3d(roll);
+  if (animate) await show3d(roll);
   const [area, location, quadrantDie] = roll.dice[0].results.map((r) => r.result);
   const quadrant = QUADRANTS[quadrantDie - 1];
 

@@ -132,7 +132,7 @@ Hooks.once('init', function () {
     scope: 'world',
     config: true,
     type: Boolean,
-    default: false,
+    default: true,
     onChange: (enabled) => xdz.apps.combatCarousel?.syncVisibility(enabled),
   });
   // Per-client screen edge for the carousel — left/right switch it to a
@@ -189,7 +189,7 @@ Hooks.once('init', function () {
     config: true,
     type: Number,
     range: { min: 0.1, max: 1, step: 0.05 },
-    default: 0.6,
+    default: 0.1,
     onChange: (value) => canvas.controls?.doors.children.forEach((d) => (d.icon.alpha = value)),
   });
   game.settings.register('xdz', 'hudVisible', {

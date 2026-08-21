@@ -1,4 +1,4 @@
-import { rollLocationPoint, applyGmSecrecy, show3d, createRolledMessage } from './location-roll.mjs';
+import { rollLocationPoint, applyGmSecrecy, createRolledMessage } from './location-roll.mjs';
 
 // Quadrant points sit inset from the room's actual edge, not on it (cross
 // layout, 20%/80% of the tile box — see CONFIG.XDZ.tileQuadrants). Rooms
@@ -52,7 +52,6 @@ export async function lockDoors() {
   if (!canvas.scene) return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.NoActiveScene'));
 
   const countRoll = await new Roll('2d4').evaluate();
-  await show3d(countRoll);
 
   const locationRolls = [];
   const attempts = [];
@@ -60,7 +59,7 @@ export async function lockDoors() {
   const updates = [];
 
   for (let i = 0; i < countRoll.total; i++) {
-    const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint();
+    const { roll: locRoll, point, area, location, quadrantDie, quadrant, label, locationId } = await rollLocationPoint({ animate: false });
     locationRolls.push(locRoll);
 
     const wall = point ? nearestDoorWall(point) : null;

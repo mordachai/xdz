@@ -1,0 +1,150 @@
+async function bulletAnimation(dbBullet, sfxPulse, source, target) {
+  console.log('XDZ | bulletAnimation start', { source, target });
+
+  const seq = new Sequence().effect()
+    .file(dbBullet)
+    .atLocation(source)
+    .repeats(3, 100)
+    .playbackRate(3);
+
+  if (target) seq.stretchTo(target);
+
+  seq.sound().file(sfxPulse);
+  await seq.play();
+  console.log('XDZ | bulletAnimation done');
+}
+
+async function grenadeAnimation(dbThrow, dbFracture, dbExplosion, dbGroundImpact, sfxGrenade, sfxExplosion, source, targets) {
+  console.log('XDZ | grenadeAnimation start', { source, targets });
+
+  for (let target of targets) {
+    console.log('XDZ | grenadeAnimation: firing at target', target.name);
+
+    // Sound fires on its own timeline, untouched by the visual's delay below.
+    new Sequence()
+      .sound()
+        .file(sfxGrenade)
+      .play()
+      .catch((err) => console.error('XDZ | grenade sound seq failed', err));
+
+    new Sequence()
+      .effect()
+        .file(dbThrow)
+        .atLocation(source)
+        .stretchTo(target)
+        .scale(0.7)
+        .delay(900)              // bump this to delay the visual only
+        .waitUntilFinished(-150)
+      .effect()
+        .file(dbFracture)
+        .atLocation(target)
+        .scaleToObject(1.2)
+      .effect()
+        .file(dbExplosion)
+        .atLocation(target)
+        .sound()
+          .file(sfxExplosion)
+      .effect()
+        .file(dbGroundImpact)
+        .atLocation(target)
+        .belowTokens()
+        .scaleToObject(2)
+        .scaleIn(0.1, 100, { ease: "easeOutExpo" })
+        .duration(5000)
+        .fadeOut(3250, { ease: "easeInSine" })
+      .play()
+      .then(() => console.log('XDZ | grenade visual seq finished for', target.name))
+      .catch((err) => console.error('XDZ | grenade visual seq failed', err));
+
+    let delay = Sequencer.Helpers.random_int_between(600, 1000);
+    await Sequencer.Helpers.wait(delay);
+  }
+  console.log('XDZ | grenadeAnimation done');
+}
+
+
+// Automated Animations hands this macro the exact chat message that
+// triggered it as args[0] (Sequencer's .macro() step runs the macro via
+// Macro#execute({ args: [workflow, handler, userData] })) — use that
+// directly instead of guessing from chat history. Scanning backward for
+// "the nearest damage card" races whenever another damage card (a
+// different shot, a Spray and Pray follow-up, another player's roll) lands
+// between this attack's own damage roll and AA actually running the macro
+// — that's what caused the bullet animation to fire on grenade throws.
+const triggerMessage = args?.[0];
+const damageMessage = triggerMessage?.content?.includes('xdz-chatcard-damage')
+  ? triggerMessage
+  : game.messages.contents.slice(-15).findLast((m) => m.content?.includes('xdz-chatcard-damage'));
+const isGrenade = damageMessage?.content?.includes('data-die-mode="grenade"');
+const autoKill = damageMessage?.flags?.xdz?.autoKill;
+
+// Resolve source token with layered fallbacks — the autoKill snapshot goes
+// stale if the token was deleted/replaced after the attack roll:
+//   1) the snapshotted actorTokenId, if that token still exists in its scene
+//   2) the message's speaker token (Foundry sets this fresh on every message)
+//   3) the speaker's actor's current active token on canvas
+//   4) whatever's currently controlled, as a last resort
+const scene = game.scenes.get(autoKill?.sceneId) ?? canvas.scene;
+let sourceToken = scene?.tokens.get(autoKill?.actorTokenId)?.object;
+let sourceFallback = sourceToken ? 'snapshot' : null;
+if (!sourceToken && damageMessage?.speaker?.token) {
+  sourceToken = scene?.tokens.get(damageMessage.speaker.token)?.object;
+  sourceFallback = sourceToken ? 'speaker.token' : null;
+}
+if (!sourceToken && damageMessage?.speaker?.actor) {
+  sourceToken = game.actors.get(damageMessage.speaker.actor)?.getActiveTokens(true)[0];
+  sourceFallback = sourceToken ? 'speaker.actor active token' : null;
+}
+if (!sourceToken && canvas.tokens.controlled[0]) {
+  sourceToken = canvas.tokens.controlled[0];
+  sourceFallback = 'controlled token (last resort)';
+}
+
+// Same idea for targets: prefer the roll's own snapshot, fall back to
+// whatever's currently targeted if the snapshot is empty/stale.
+let targetTokens = (autoKill?.targetIds ?? [])
+  .map((id) => scene?.tokens.get(id)?.object)
+  .filter(Boolean);
+let targetFallback = targetTokens.length ? 'snapshot' : null;
+if (targetTokens.length === 0 && game.user.targets.size > 0) {
+  targetTokens = Array.from(game.user.targets);
+  targetFallback = 'live game.user.targets (fallback)';
+}
+
+console.log('XDZ | macro triggered', {
+  damageMessageId: damageMessage?.id,
+  contentSnippet: damageMessage?.content?.slice(0, 300),
+  isGrenade,
+  autoKill,
+  speaker: damageMessage?.speaker,
+  sourceToken: sourceToken?.name,
+  sourceFallback,
+  targetTokens: targetTokens.map((t) => t.name),
+  targetFallback,
+});
+
+if (!sourceToken) {
+  ui.notifications.warn("Couldn't resolve the attacker's token for the animation — nothing in autoKill, speaker, or canvas selection.");
+} else if (isGrenade) {
+  if (targetTokens.length === 0) {
+    ui.notifications.warn("No target found (snapshot empty, nothing currently targeted) — grenade animation skipped.");
+  } else {
+    await grenadeAnimation(
+      'jb2a.throwable.launch.cannon_ball.01.black.30ft',
+      'jb2a.explosion.shrapnel.bomb.01.black',
+      'jb2a.explosion.01.orange',
+      'jb2a.impact.ground_crack.orange.01',
+      'assets/audio/SoundFX/GrenadeLauncher.ogg',
+      'assets/audio/SoundFX/Explosion.ogg',
+      sourceToken,
+      targetTokens
+    );
+  }
+} else {
+  await bulletAnimation(
+    'modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Bullet_02_Regular_Orange_30ft_1600x400.webm',
+    'assets/audio/SoundFX/PulseRifle.ogg',
+    sourceToken,
+    targetTokens[0]
+  );
+}
