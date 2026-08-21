@@ -70,6 +70,12 @@ jobs:
         if: steps.check_tag.outputs.exists == 'false'
         run: npm install
 
+      # npm install on Linux runners sometimes drops the exec bit on bin
+      # shims — restore it so `fvtt` can run.
+      - name: Fix bin permissions
+        if: steps.check_tag.outputs.exists == 'false'
+        run: chmod +x node_modules/.bin/*
+
       - name: Build packs from source
         if: steps.check_tag.outputs.exists == 'false'
         run: npm run pack
