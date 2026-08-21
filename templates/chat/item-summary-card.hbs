@@ -1,0 +1,25 @@
+<div class="xdz-chatcard xdz-chatcard-item" data-theme="{{theme}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{item.name}}</span>
+    <img class="xdz-chatcard-icon" src="{{item.img}}" alt="{{item.name}}">
+    <span class="xdz-chatcard-tag">{{typeLabel}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    {{#if description}}
+    <div class="xdz-chatcard-desc">{{{description}}}</div>
+    {{/if}}
+    {{#if rules}}
+    <div class="xdz-chatcard-desc">{{{rules}}}</div>
+    {{/if}}
+    {{#if attack}}
+    <p><strong>{{localize 'XDZ.Weapon.Attack'}}:</strong> {{attack.die}}{{#if attack.description}} — {{{attack.description}}}{{/if}}</p>
+    {{/if}}
+    {{#if ammo}}
+    <p><strong>{{ammo.label}}:</strong> {{ammo.die}}{{#if ammo.description}} — {{{ammo.description}}}{{/if}}</p>
+    {{/if}}
+    {{#if secondary}}
+    <p><strong>{{secondary.label}}:</strong> {{#if secondary.die}}{{secondary.die}}{{else}}—{{/if}}{{#if secondary.description}} — {{{secondary.description}}}{{/if}}</p>
+    {{/if}}
+  </div>
+</div>

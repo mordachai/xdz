@@ -2,6 +2,7 @@
   "XDZ": {
     "RollCheck": "Roll Check",
     "Delete": "Delete",
+    "SendToChat": "Send to Chat",
 
     "Training": {
       "Pilot": "Pilot",
@@ -40,7 +41,9 @@
       "Start": "Start",
       "Pause": "Pause",
       "SetDuration": "Set duration (mm:ss)",
-      "ToggleVisibility": "Toggle TN & Timer HUD"
+      "ToggleVisibility": "Toggle TN & Timer HUD",
+      "OpenCompact": "Compact HUD",
+      "BackToSheet": "Normal Sheet"
     },
 
     "Actor": {
@@ -76,6 +79,7 @@
       "AmmoLabel": "Ammo Label",
       "AmmoDescription": "Ammo Description",
       "Damaged": "Damaged",
+      "DamagedShort": "DMG",
       "SecondaryLabel": "Secondary Resource Label",
       "SecondaryTrack": "Secondary Resource",
       "SecondaryDie": "Secondary Die",
@@ -87,6 +91,7 @@
       "SprayAndPray": "Spray and Pray",
       "Destroy": "Destroy",
       "Destroyed": "{name} is destroyed and cannot be used.",
+      "NotEquipped": "{name} is not equipped.",
       "KillMode": "Kill Mode",
       "KillModeNormal": "Normal",
       "KillModeExplosive": "Explosive (blast radius from target)",
@@ -210,7 +215,9 @@
       "NoCommandoTokens": "No COMMANDO tokens on the scene.",
       "CouldNotLoadActor": "Could not load actor {uuid}.",
       "CouldNotLoadTable": "Could not load table {uuid}.",
-      "NoLocationTiles": "No LOCATION tiles on this scene."
+      "NoLocationTiles": "No LOCATION tiles on this scene.",
+      "TargetOnePC": "Target exactly one COMMANDO/CHARACTER token first.",
+      "TargetNotPC": "Targeted token isn't a COMMANDO/CHARACTER."
     },
 
     "Locations": {
@@ -470,7 +477,29 @@
       "LockedTag": "LOCKED",
       "AlreadyLockedTag": "ALREADY LOCKED",
       "NoDoorTag": "NO DOOR",
-      "NoTileTag": "NO TILE"
+      "NoTileTag": "NO TILE",
+      "XenoAttackTitle": "XENO ATTACK",
+      "XenoAttackTag": "ATTACK",
+      "XenoAttackDesc": "The xeno lashes out with tail, claws, and bite at {name}.",
+      "XenoAttackButton": "Roll Dodge",
+      "XenoAmbushTitle": "XENO AMBUSH",
+      "XenoAmbushTag": "AMBUSH",
+      "XenoAmbushDesc": "A xeno bursts from the ceiling and floor, catching {name} completely off guard.",
+      "XenoAmbushButton": "Roll Death",
+      "XenoPanicTitle": "PANIC CHECK",
+      "XenoPanicTag": "PANIC",
+      "XenoPanicDesc": "The horror is too much to bear. {name} must hold it together.",
+      "XenoPanicButton": "Roll Fear",
+      "XenoDamageTitle": "DAMAGE",
+      "XenoDamageTag": "HIT",
+      "XenoDamageDesc": "{name} takes {amount} damage.",
+      "XenoAmbushDamageTitle": "AMBUSH DAMAGE",
+      "XenoAmbushDamageTag": "ROLL",
+      "XenoAmbushDamageDesc": "{name} is caught — roll damage.",
+      "XenoAmbushDamageButton": "Roll Damage (1d4)",
+      "XenoPanicFailTitle": "PANIC",
+      "XenoPanicFailTag": "AMMO",
+      "XenoPanicFailDesc": "{name} panics — must spend 1 ammo to attack this turn."
     },
 
     "Direction": {
@@ -517,6 +546,10 @@
       "DoorIconOpacity": {
         "Name": "Door Icon Opacity",
         "Hint": "Resting opacity of the door open/close icon on the canvas. Lower it for a more discreet icon; it still snaps to full opacity on hover."
+      },
+      "XenoActionsUseSelection": {
+        "Name": "Xeno Actions Target the Selected Token",
+        "Hint": "Attack/Ambush/Panic macros use the controlled (selected) token instead of requiring an actual target (T key)."
       }
     },
 

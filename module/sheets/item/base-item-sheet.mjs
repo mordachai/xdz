@@ -14,6 +14,7 @@ export default class XDZItemSheet extends HandlebarsApplicationMixin(ItemSheetV2
     },
     actions: {
       onEditImage: this._onEditImage,
+      onSendToChat: this._onSendToChat,
     },
   };
 
@@ -37,5 +38,9 @@ export default class XDZItemSheet extends HandlebarsApplicationMixin(ItemSheetV2
       callback: (path) => this.document.update({ [attr]: path }),
     });
     return fp.browse();
+  }
+
+  static async _onSendToChat() {
+    return this.document.postToChat();
   }
 }

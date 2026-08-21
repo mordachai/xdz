@@ -9,7 +9,7 @@ export default class XDZItem extends Item {
    * success, either posts damage-row follow-up buttons or immediately rolls
    * damage (enemies destroyed) too, per the "Roll Damage Automatically"
    * setting — see rollDamage().
-   * @param {"normal"|"grenade"} mode
+   * @param {"normal"|"ammo"|"grenade"} mode
    */
   async rollAttack(mode) {
     if (this.type !== 'weapon') return;
@@ -19,6 +19,13 @@ export default class XDZItem extends Item {
         ui.notifications.warn(game.i18n.format('XDZ.Weapon.Destroyed', { name: this.name }));
         return;
       }
+    } else if (mode === 'ammo') {
+      if (this.system.ammo.value <= 0) {
+        ui.notifications.warn(game.i18n.localize('XDZ.Weapon.NoAmmo'));
+        return;
+      }
+      // Ammo itself is spent on the damage roll (rollDamage's 'ammo' branch),
+      // not here — same spend point as the chained Spray and Pray button.
     } else if (mode === 'grenade') {
       if (this.system.secondary.value <= 0) {
         ui.notifications.warn(game.i18n.format('XDZ.Weapon.NoSecondary', { label: this.system.secondary.label }));
@@ -27,13 +34,21 @@ export default class XDZItem extends Item {
       await this.update({ 'system.secondary.value': this.system.secondary.value - 1 });
     }
 
-    const label = mode === 'grenade' ? this.system.secondary.label : game.i18n.localize('XDZ.Weapon.Attack');
+    const label = mode === 'grenade' ? this.system.secondary.label
+      : mode === 'ammo' ? (this.system.ammoLabel || game.i18n.localize('XDZ.Weapon.Ammo'))
+      : game.i18n.localize('XDZ.Weapon.Attack');
     const bonus = this.actor?.system?.training?.weapons ?? 0;
     const tn = TnTracker.getCurrentTN() ?? this.actor?.system?.target ?? CONFIG.XDZ.defaultTarget;
 
     const roll = await new Roll('1d20 + @bonus', { bonus }).evaluate();
     const die = roll.dice[0]?.results?.[0]?.result;
     const success = die === 20 || roll.total >= tn;
+
+    // A miss on an ammo shot still burns the round — rollDamage() (which
+    // normally spends it) never runs on a miss, so spend it here instead.
+    if (mode === 'ammo' && !success) {
+      await this.update({ 'system.ammo.value': this.system.ammo.value - 1 });
+    }
 
     // Roll Damage Automatically skips this button (damage rolls itself right
     // below instead) — see rollDamage()'s own buttons for where Spray and
@@ -42,7 +57,7 @@ export default class XDZItem extends Item {
     const buttons = [];
     if (success && !autoRollDamage) {
       buttons.push({
-        dieMode: mode === 'grenade' ? 'grenade' : 'normal',
+        dieMode: mode === 'grenade' ? 'grenade' : mode === 'ammo' ? 'ammo' : 'normal',
         label: game.i18n.localize('XDZ.Weapon.RollDamage'),
       });
       if (mode === 'normal' && this.system.ammo.max > 0) {
@@ -97,7 +112,7 @@ export default class XDZItem extends Item {
       // damage roll (and its own card/animation, and any auto-kill off the
       // back of it) fires — otherwise they'd all land on top of each other.
       await game.dice3d?.waitFor3DAnimationByMessageID(attackMessage.id);
-      await this.rollDamage(mode === 'grenade' ? 'grenade' : 'normal', targetIds, targetPoints);
+      await this.rollDamage(mode === 'grenade' ? 'grenade' : mode === 'ammo' ? 'ammo' : 'normal', targetIds, targetPoints);
     }
     return roll;
   }
@@ -216,6 +231,28 @@ export default class XDZItem extends Item {
       theme: game.settings.get('xdz', 'sheetTheme'),
       label: secondary.label,
       description: secondary.description,
+    });
+    return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content });
+  }
+
+  /**
+   * Post a read-only summary card to chat so the table can see what this
+   * item does, from either sheet type. Weapons get the same Attack/Ammo/
+   * Secondary breakdown as the loadout card's hover tooltip.
+   */
+  async postToChat() {
+    const isWeapon = this.type === 'weapon';
+    const s = this.system;
+
+    const content = await foundry.applications.handlebars.renderTemplate('systems/xdz/templates/chat/item-summary-card.hbs', {
+      item: this,
+      theme: game.settings.get('xdz', 'sheetTheme'),
+      typeLabel: game.i18n.localize(`TYPES.Item.${this.type}`),
+      description: isWeapon ? null : s.description,
+      rules: isWeapon ? s.rules : null,
+      attack: isWeapon ? { die: s.destroyDie, description: s.description } : null,
+      ammo: isWeapon ? { label: s.ammoLabel || game.i18n.localize('XDZ.Weapon.Ammo'), die: s.upgradeDie, description: s.ammoDescription } : null,
+      secondary: isWeapon && s.secondary.max ? { label: s.secondary.label || game.i18n.localize('XDZ.Weapon.SecondaryTrack'), die: s.secondary.die, description: s.secondary.description } : null,
     });
     return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content });
   }

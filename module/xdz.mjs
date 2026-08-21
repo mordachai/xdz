@@ -2,10 +2,10 @@ import XDZActor from './documents/actor.mjs';
 import XDZItem from './documents/item.mjs';
 import XDZCombat from './documents/combat.mjs';
 import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet } from './sheets/_module.mjs';
-import { TnTracker, RoundTimer, MapGenerator, CombatCarousel, onUpdateWallDoorState } from './apps/_module.mjs';
+import { TnTracker, RoundTimer, MapGenerator, CombatCarousel, CommandoHudApp, onUpdateWallDoorState } from './apps/_module.mjs';
 import { appendToOrder } from './helpers/combat-groups.mjs';
 import { autoKillXenos } from './helpers/auto-kill.mjs';
-import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors } from './macros/_module.mjs';
+import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic, resolveXenoResistance, resolveXenoAmbushDamage } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
@@ -14,8 +14,8 @@ import XdzDoorControl from './canvas/door-control.mjs';
 globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
-  apps: { TnTracker, RoundTimer, MapGenerator, CombatCarousel, tnTracker: null, timers: new Map(), combatCarousel: null },
-  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors },
+  apps: { TnTracker, RoundTimer, MapGenerator, CombatCarousel, CommandoHudApp, tnTracker: null, timers: new Map(), combatCarousel: null },
+  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic },
   models,
   config: XDZ,
 };
@@ -182,6 +182,17 @@ Hooks.once('init', function () {
   // Resting alpha for the door open/close canvas icon — core hardcodes 0.6
   // with no knob for it. Redraws every door control already on the canvas
   // so the change is visible immediately, not just on next scene load.
+  // Xeno-action macros (Attack/Ambush/Panic) normally require the GM to
+  // actually target (T key) the PC token. With this on, they fall back to
+  // the controlled/selected token instead — no explicit targeting needed.
+  game.settings.register('xdz', 'xenoActionsUseSelection', {
+    name: 'XDZ.Settings.XenoActionsUseSelection.Name',
+    hint: 'XDZ.Settings.XenoActionsUseSelection.Hint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  });
   game.settings.register('xdz', 'doorIconOpacity', {
     name: 'XDZ.Settings.DoorIconOpacity.Name',
     hint: 'XDZ.Settings.DoorIconOpacity.Hint',
@@ -264,6 +275,7 @@ Hooks.once('init', function () {
     'systems/xdz/templates/chat/assets-card.hbs',
     'systems/xdz/templates/apps/map-generator.hbs',
     'systems/xdz/templates/apps/combat-carousel.hbs',
+    'systems/xdz/templates/apps/commando-hud.hbs',
     'systems/xdz/templates/journal/mission-objectives-page.hbs',
     'systems/xdz/templates/journal/escalation-page.hbs',
     'systems/xdz/templates/journal/assets-page.hbs',
@@ -471,6 +483,22 @@ Hooks.on('renderChatMessageHTML', async (message, html) => {
       button.disabled = true;
       await item.rollDamage(dieMode, targetIds, targetPoints);
       if (dieMode === 'ammo') button.disabled = item.system.ammo.value <= 0;
+    });
+  });
+
+  html.querySelectorAll('[data-action="xdzRollXenoResistance"]').forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      button.disabled = true;
+      await resolveXenoResistance(button.dataset.actorUuid, button.dataset.key, button.dataset.kind);
+    });
+  });
+
+  html.querySelectorAll('[data-action="xdzRollXenoAmbushDamage"]').forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      button.disabled = true;
+      await resolveXenoAmbushDamage(button.dataset.actorUuid);
     });
   });
 

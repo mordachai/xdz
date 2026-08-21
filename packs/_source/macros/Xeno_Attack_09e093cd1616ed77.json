@@ -1,0 +1,28 @@
+{
+  "name": "Xeno Attack",
+  "type": "script",
+  "_id": "09e093cd1616ed77",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "systems/xdz/assets/ui/xenoAttack.webp",
+  "scope": "global",
+  "command": "await xdz.macros.xenoAttack();",
+  "folder": null,
+  "sort": 960000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "2.1.2",
+    "createdTime": 1787000000000,
+    "modifiedTime": 1787000000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!09e093cd1616ed77"
+}

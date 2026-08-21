@@ -25,7 +25,7 @@ XDZ.resistances = {
 
 XDZ.resistanceBudget = 6;
 
-XDZ.injuryDown = 4;
+XDZ.injuryDown = 5;
 XDZ.injuryDeath = 6;
 
 XDZ.defaultTarget = 12;
@@ -139,54 +139,120 @@ XDZ.itemTypeImages = {
  * behind a correctly-placed door. `bwCrop` overrides for the B&W asset,
  * same fallback rule as `bwSides`.
  *
+ * `aspect`: the color art's own real height/width ratio, measured directly
+ * off its .webp pixel dimensions (rooms are NOT uniformly proportioned —
+ * e.g. Colony Command is 0.87, Escape Pod is 0.63 — never assume one shared
+ * ratio for all of them). Combined with `sizeCells` this sets the room's
+ * real on-screen size (see map-generator.mjs's nominalSize/aspectFor); the
+ * B&W tile set is a shared 2100x1500 template canvas across every location
+ * (only the crop/paint differ), so there's no equivalent `bwAspect` to
+ * measure — aspectFor uses that template's own ratio for bw regardless of
+ * `aspect`.
+ *
  * `sizeCells` (optional): nominal room footprint width, in 75px grid
  * squares — defaults to 12 ("a 12x9 grid is an ok size for the average
- * room") when omitted; height is derived from the source art's own aspect
- * ratio, so this is a single knob, not a separate w/h pair. Smaller pieces
- * (Obs Deck, Escape Pod) override it down. MapGenerator never stretches a
- * location to fit a bigger box — a piece bigger than its neighbors just
- * grows its column/row for real; a smaller one renders at its own true
- * size, centered (see map-generator.mjs's #buildTiles).
+ * room") when omitted; height is derived from `aspect`, so this is a single
+ * knob, not a separate w/h pair. Smaller pieces (Obs Deck, Escape Pod)
+ * override it down. MapGenerator never stretches or box-fits a location —
+ * every piece renders at its own true size (see map-generator.mjs's
+ * cellFootprint/chainPlace).
  */
 XDZ.defaultDoorAt = 0.5;
 
 XDZ.locations = {
   ship: [
-    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', sides: { E: 0.5, N: 0.5, S: 0.5 }, exterior: ['W'], bwSides: { E: 0.5, S: 0.5, N: 0.55 }, bwExterior: ['W'], sizeCells: 9 },
-    { id: 'bridge', label: 'XDZ.Locations.Ship.Bridge', color: 'ship command deck.webp', bw: 'ship bridge.webp', sides: { S: 0.51, E: 0.5, W: 0.5 }, bwSides: { S: 0.51, E: 0.55, W: 0.57 } },
-    { id: 'engineRoom', label: 'XDZ.Locations.Ship.EngineRoom', color: 'ship engine room.webp', bw: 'ship engine room.webp', sides: { N: 0.5, E: 0.52, W: 0.53, S: 0.5 }, bwSides: { N: 0.53, E: 0.52, W: 0.53, S: 0.49 } },
-    { id: 'airlock', label: 'XDZ.Locations.Ship.Airlock', color: 'ship airlock.webp', bw: 'ship airlock.webp', sides: { S: 0.5, E: 0.54, W: 0.58 }, exterior: ['N'] },
-    { id: 'medBay', label: 'XDZ.Locations.Ship.MedBay', color: 'ship med bay.webp', bw: 'ship med bay.webp', sides: { W: 0.5, E: 0.68, S: 0.57, N: 0.51 }, bwSides: { W: 0.47, E: 0.68, S: 0.57, N: 0.53 } },
-    { id: 'quarters', label: 'XDZ.Locations.Ship.Quarters', color: 'ship quarters.webp', bw: 'ship quarters.webp', sides: { W: 0.48, E: 0.49, S: 0.49, N: 0.55 } },
-    { id: 'galley', label: 'XDZ.Locations.Ship.Galley', color: 'ship galley.webp', bw: 'ship galley.webp', sides: { E: 0.5, W: 0.7, N: 0.48, S: 0.49 }, bwSides: { E: 0.5, W: 0.74, N: 0.48, S: 0.49 } },
-    { id: 'refinery', label: 'XDZ.Locations.Ship.Refinery', color: 'ship refinery.webp', bw: 'ship refinery.webp', sides: { N: 0.51, E: 0.48, S: 0.39, W: 0.42 }, bwSides: { N: 0.51, E: 0.48, S: 0.39, W: 0.43 } },
-    { id: 'hydroponics', label: 'XDZ.Locations.Ship.Hydroponics', color: 'ship hydroponics.webp', bw: 'ship hydroponics.webp', sides: { W: 0.5, S: 0.51, E: 0.56, N: 0.49 }, bwSides: { W: 0.5, S: 0.51, E: 0.56, N: 0.48 } },
-    { id: 'garage', label: 'XDZ.Locations.Ship.Garage', color: 'ship garage.webp', bw: 'ship garage.webp', sides: { W: 0.33, N: 0.33, E: 0.35, S: 0.79 }, bwSides: { W: 0.47, N: 0.52, E: 0.49, S: 0.51 } },
-    { id: 'loadingBay', label: 'XDZ.Locations.Ship.LoadingBay', color: 'ship loading bay.webp', bw: 'ship loading bay.webp', sides: { E: 0.5 }, exterior: ['W'] },
-    { id: 'corridor', label: 'XDZ.Locations.Ship.Corridor', color: 'ship corridor.webp', bw: 'ship m corridor.webp', sides: { W: 0.28, E: 0.72 }, bwSides: { W: 0.29, E: 0.74 } },
-    { id: 'crawlspace', label: 'XDZ.Locations.Ship.Crawlspace', color: 'ship crawlspace.webp', bw: 'ship crawlspace.webp', sides: { N: 0.54, E: 0.5, S: 0.48, W: 0.4 }, bwSides: { N: 0.53, E: 0.51, S: 0.47, W: 0.4 } },
-    { id: 'sump', label: 'XDZ.Locations.Ship.Sump', color: 'ship sump.webp', bw: 'ship sump.webp', sides: { N: 0.53, E: 0.54, S: 0.48, W: 0.48 }, bwSides: { N: 0.53, E: 0.54, S: 0.48, W: 0.45 } },
-    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', sides: { S: 0.5, W: 0.71, E: 0.7 }, exterior: ['N'], bwSides: { S: 0.5, W: 0.76, E: 0.74 }, sizeCells: 9 },
-    { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp', sides: { W: 0.5, N: 0.5, S: 0.5, E: 0.51 } },
+    { id: 'escapePod', label: 'XDZ.Locations.Ship.EscapePod', color: 'ship escape pod.webp', bw: 'ship escape pod.webp', aspect: 0.6284, sides: { E: 0.5, N: 0.5, S: 0.5 }, exterior: ['W'], bwSides: { E: 0.5, S: 0.5, N: 0.55 }, bwExterior: ['W'], sizeCells: 9 },
+    { id: 'bridge', label: 'XDZ.Locations.Ship.Bridge', color: 'ship command deck.webp', bw: 'ship bridge.webp', aspect: 0.7232, sides: { S: 0.51, E: 0.5, W: 0.5 }, bwSides: { S: 0.51, E: 0.55, W: 0.57 } },
+    { id: 'engineRoom', label: 'XDZ.Locations.Ship.EngineRoom', color: 'ship engine room.webp', bw: 'ship engine room.webp', aspect: 0.6513, sides: { N: 0.5, E: 0.52, W: 0.53, S: 0.5 }, bwSides: { N: 0.53, E: 0.52, W: 0.53, S: 0.49 } },
+    { id: 'airlock', label: 'XDZ.Locations.Ship.Airlock', color: 'ship airlock.webp', bw: 'ship airlock.webp', aspect: 0.6876, sides: { S: 0.5, E: 0.54, W: 0.58 }, exterior: ['N'] },
+    { id: 'medBay', label: 'XDZ.Locations.Ship.MedBay', color: 'ship med bay.webp', bw: 'ship med bay.webp', aspect: 0.7081, sides: { W: 0.5, E: 0.68, S: 0.57, N: 0.51 }, bwSides: { W: 0.47, E: 0.68, S: 0.57, N: 0.53 } },
+    { id: 'quarters', label: 'XDZ.Locations.Ship.Quarters', color: 'ship quarters.webp', bw: 'ship quarters.webp', aspect: 0.7477, sides: { W: 0.48, E: 0.49, S: 0.49, N: 0.55 } },
+    { id: 'galley', label: 'XDZ.Locations.Ship.Galley', color: 'ship galley.webp', bw: 'ship galley.webp', aspect: 0.7197, sides: { E: 0.5, W: 0.7, N: 0.48, S: 0.49 }, bwSides: { E: 0.5, W: 0.74, N: 0.48, S: 0.49 } },
+    { id: 'refinery', label: 'XDZ.Locations.Ship.Refinery', color: 'ship refinery.webp', bw: 'ship refinery.webp', aspect: 0.7232, sides: { N: 0.51, E: 0.48, S: 0.39, W: 0.42 }, bwSides: { N: 0.51, E: 0.48, S: 0.39, W: 0.43 } },
+    { id: 'hydroponics', label: 'XDZ.Locations.Ship.Hydroponics', color: 'ship hydroponics.webp', bw: 'ship hydroponics.webp', aspect: 0.6713, sides: { W: 0.5, S: 0.51, E: 0.56, N: 0.49 }, bwSides: { W: 0.5, S: 0.51, E: 0.56, N: 0.48 } },
+    { id: 'garage', label: 'XDZ.Locations.Ship.Garage', color: 'ship garage.webp', bw: 'ship garage.webp', aspect: 0.6937, sides: { W: 0.33, N: 0.33, E: 0.35, S: 0.79 }, bwSides: { W: 0.47, N: 0.52, E: 0.49, S: 0.51 } },
+    { id: 'loadingBay', label: 'XDZ.Locations.Ship.LoadingBay', color: 'ship loading bay.webp', bw: 'ship loading bay.webp', aspect: 0.6686, sides: { E: 0.5 }, exterior: ['W'] },
+    { id: 'corridor', label: 'XDZ.Locations.Ship.Corridor', color: 'ship corridor.webp', bw: 'ship m corridor.webp', aspect: 0.7159, sides: { W: 0.28, E: 0.72 }, bwSides: { W: 0.29, E: 0.74 } },
+    { id: 'crawlspace', label: 'XDZ.Locations.Ship.Crawlspace', color: 'ship crawlspace.webp', bw: 'ship crawlspace.webp', aspect: 0.7127, sides: { N: 0.54, E: 0.5, S: 0.48, W: 0.4 }, bwSides: { N: 0.53, E: 0.51, S: 0.47, W: 0.4 } },
+    { id: 'sump', label: 'XDZ.Locations.Ship.Sump', color: 'ship sump.webp', bw: 'ship sump.webp', aspect: 0.7391, sides: { N: 0.53, E: 0.54, S: 0.48, W: 0.48 }, bwSides: { N: 0.53, E: 0.54, S: 0.48, W: 0.45 } },
+    { id: 'obsDeck', label: 'XDZ.Locations.Ship.ObsDeck', color: 'ship obs deck.webp', bw: 'ship obs deck.webp', aspect: 0.6946, sides: { S: 0.5, W: 0.71, E: 0.7 }, exterior: ['N'], bwSides: { S: 0.5, W: 0.76, E: 0.74 }, sizeCells: 9 },
+    { id: 'lifeSupport', label: 'XDZ.Locations.Ship.LifeSupport', color: 'ship life support.webp', bw: 'ship life support.webp', aspect: 0.7116, sides: { W: 0.5, N: 0.5, S: 0.5, E: 0.51 } },
   ],
   colony: [
-    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp', sides: { W: 0.47, S: 0.59, N: 0.53 }, exterior: ['E'], bwSides: { W: 0.47, S: 0.59, E: 0.54 }, bwExterior: ['N'], crop: { x0: 0.0517, y0: 0.0315, x1: 0.9669, y1: 0.9814 } },
-    { id: 'radioDish', label: 'XDZ.Locations.Colony.RadioDish', color: 'colony uplink dish.webp', bw: 'colony radio dish.webp', sides: { N: 0.31, W: 0.34, S: 0.55, E: 0.6 }, bwSides: { N: 0.32, S: 0.23, W: 0.35, E: 0.61 } },
-    { id: 'command', label: 'XDZ.Locations.Colony.Command', color: 'colony command.webp', bw: 'colony command.webp', sides: { W: 0.49, S: 0.48, E: 0.5, N: 0.52 }, bwSides: { S: 0.5, E: 0.56, W: 0.57 } },
-    { id: 'medBay', label: 'XDZ.Locations.Colony.MedBay', color: 'colony med bay.webp', bw: 'colony med bay.webp', sides: { N: 0.59, W: 0.47, E: 0.67, S: 0.61 }, bwSides: { N: 0.57, E: 0.67, W: 0.48, S: 0.56 } },
-    { id: 'armory', label: 'XDZ.Locations.Colony.Armory', color: 'colony armory.webp', bw: 'colony armory.webp', sides: { N: 0.6, E: 0.52, S: 0.6, W: 0.38 }, bwSides: { N: 0.44, W: 0.59, S: 0.59, E: 0.53 } },
-    { id: 'refinery', label: 'XDZ.Locations.Colony.Refinery', color: 'colony refinery.webp', bw: 'colony refinery.webp', sides: { W: 0.54, E: 0.58, N: 0.61, S: 0.5 }, bwSides: { W: 0.56, S: 0.59, E: 0.35, N: 0.48 } },
-    { id: 'reactor', label: 'XDZ.Locations.Colony.Reactor', color: 'colony reactor.webp', bw: 'colony reactor.webp', sides: { W: 0.5, E: 0.5, S: 0.5, N: 0.29 }, bwSides: { W: 0.5, E: 0.5, S: 0.5, N: 0.28 } },
-    { id: 'cafeteria', label: 'XDZ.Locations.Colony.Cafeteria', color: 'colony cafeteria.webp', bw: 'colony cafeteria.webp', sides: { W: 0.5, E: 0.5, S: 0.51, N: 0.51 } },
-    { id: 'causeway', label: 'XDZ.Locations.Colony.Causeway', color: 'colony causeway.webp', bw: 'colony causeway.webp', sides: { W: 0.5, E: 0.5 }, bwSides: { W: 0.5, E: 0.5, S: 0.49, N: 0.5 } },
-    { id: 'surface', label: 'XDZ.Locations.Colony.Surface', color: 'colony surface.webp', bw: 'colony surface.webp', sides: { W: 0.61, E: 0.6, S: 0.5, N: 0.56 }, bwSides: { N: 0.56, W: 0.62, E: 0.63, S: 0.49 } },
-    { id: 'residential', label: 'XDZ.Locations.Colony.Residential', color: 'colony residential.webp', bw: 'colony residential.webp', sides: { W: 0.38, N: 0.31, E: 0.61, S: 0.39 } },
-    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp', sides: { E: 0.61, S: 0.48, W: 0.47, N: 0.53 }, bwSides: { E: 0.61, W: 0.47, N: 0.53, S: 0.46 }, crop: { x0: 0, y0: 0.0072, x1: 1, y1: 1 } },
-    { id: 'substructure', label: 'XDZ.Locations.Colony.Substructure', color: 'colony substructure.webp', bw: 'colony substructure.webp', sides: { W: 0.7, N: 0.41, E: 0.4, S: 0.54 }, bwSides: { N: 0.41, E: 0.4, S: 0.54, W: 0.69 } },
-    { id: 'motorPool', label: 'XDZ.Locations.Colony.MotorPool', color: 'colony motor pool.webp', bw: 'colony motor pool.webp', sides: { W: 0.43, N: 0.52, E: 0.46, S: 0.5 }, bwSides: { S: 0.48, E: 0.5, N: 0.51, W: 0.49 } },
-    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp', sides: { N: 0.48, S: 0.49, E: 0.46, W: 0.44 }, bwSides: { S: 0.49, W: 0.47, N: 0.5, E: 0.5 }, crop: { x0: 0, y0: 0, x1: 0.9968, y1: 0.9628 } },
-    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp', sides: { E: 0.51, W: 0.48, N: 0.74, S: 0.4 }, bwSides: { E: 0.51, S: 0.39, W: 0.46, N: 0.74 }, crop: { x0: 0.0424, y0: 0.0501, x1: 0.9597, y1: 0.9514 } },
+    { id: 'landingPad', label: 'XDZ.Locations.Colony.LandingPad', color: 'colony landing pad.webp', bw: 'colony landing pad.webp', aspect: 0.7496, sides: { W: 0.47, S: 0.59, N: 0.53 }, exterior: ['E'], bwSides: { W: 0.47, S: 0.59, E: 0.54 }, bwExterior: ['N'], crop: { x0: 0.0517, y0: 0.0315, x1: 0.9669, y1: 0.9814 } },
+    { id: 'radioDish', label: 'XDZ.Locations.Colony.RadioDish', color: 'colony uplink dish.webp', bw: 'colony radio dish.webp', aspect: 0.7012, sides: { N: 0.31, W: 0.34, S: 0.55, E: 0.6 }, bwSides: { N: 0.32, S: 0.23, W: 0.35, E: 0.61 } },
+    { id: 'command', label: 'XDZ.Locations.Colony.Command', color: 'colony command.webp', bw: 'colony command.webp', aspect: 0.8725, sides: { W: 0.49, S: 0.48, E: 0.5, N: 0.52 }, bwSides: { S: 0.5, E: 0.56, W: 0.57 } },
+    { id: 'medBay', label: 'XDZ.Locations.Colony.MedBay', color: 'colony med bay.webp', bw: 'colony med bay.webp', aspect: 0.7141, sides: { N: 0.59, W: 0.47, E: 0.67, S: 0.61 }, bwSides: { N: 0.57, E: 0.67, W: 0.48, S: 0.56 } },
+    { id: 'armory', label: 'XDZ.Locations.Colony.Armory', color: 'colony armory.webp', bw: 'colony armory.webp', aspect: 0.7275, sides: { N: 0.6, E: 0.52, S: 0.6, W: 0.38 }, bwSides: { N: 0.44, W: 0.59, S: 0.59, E: 0.53 } },
+    { id: 'refinery', label: 'XDZ.Locations.Colony.Refinery', color: 'colony refinery.webp', bw: 'colony refinery.webp', aspect: 0.7123, sides: { W: 0.54, E: 0.58, N: 0.61, S: 0.5 }, bwSides: { W: 0.56, S: 0.59, E: 0.35, N: 0.48 } },
+    { id: 'reactor', label: 'XDZ.Locations.Colony.Reactor', color: 'colony reactor.webp', bw: 'colony reactor.webp', aspect: 0.6971, sides: { W: 0.5, E: 0.5, S: 0.5, N: 0.29 }, bwSides: { W: 0.5, E: 0.5, S: 0.5, N: 0.28 } },
+    { id: 'cafeteria', label: 'XDZ.Locations.Colony.Cafeteria', color: 'colony cafeteria.webp', bw: 'colony cafeteria.webp', aspect: 0.7159, sides: { W: 0.5, E: 0.5, S: 0.51, N: 0.51 } },
+    { id: 'causeway', label: 'XDZ.Locations.Colony.Causeway', color: 'colony causeway.webp', bw: 'colony causeway.webp', aspect: 0.7007, sides: { W: 0.5, E: 0.5 }, bwSides: { W: 0.5, E: 0.5, S: 0.49, N: 0.5 } },
+    { id: 'surface', label: 'XDZ.Locations.Colony.Surface', color: 'colony surface.webp', bw: 'colony surface.webp', aspect: 0.7313, sides: { W: 0.61, E: 0.6, S: 0.5, N: 0.56 }, bwSides: { N: 0.56, W: 0.62, E: 0.63, S: 0.49 } },
+    { id: 'residential', label: 'XDZ.Locations.Colony.Residential', color: 'colony residential.webp', bw: 'colony residential.webp', aspect: 0.7169, sides: { W: 0.38, N: 0.31, E: 0.61, S: 0.39 } },
+    { id: 'dump', label: 'XDZ.Locations.Colony.Dump', color: 'colony dump.webp', bw: 'colony dump.webp', aspect: 0.7221, sides: { E: 0.61, S: 0.48, W: 0.47, N: 0.53 }, bwSides: { E: 0.61, W: 0.47, N: 0.53, S: 0.46 }, crop: { x0: 0, y0: 0.0072, x1: 1, y1: 1 } },
+    { id: 'substructure', label: 'XDZ.Locations.Colony.Substructure', color: 'colony substructure.webp', bw: 'colony substructure.webp', aspect: 0.7203, sides: { W: 0.7, N: 0.41, E: 0.4, S: 0.54 }, bwSides: { N: 0.41, E: 0.4, S: 0.54, W: 0.69 } },
+    { id: 'motorPool', label: 'XDZ.Locations.Colony.MotorPool', color: 'colony motor pool.webp', bw: 'colony motor pool.webp', aspect: 0.7027, sides: { W: 0.43, N: 0.52, E: 0.46, S: 0.5 }, bwSides: { S: 0.48, E: 0.5, N: 0.51, W: 0.49 } },
+    { id: 'potatoFarm', label: 'XDZ.Locations.Colony.PotatoFarm', color: 'colony potato farm.webp', bw: 'colony potato farm.webp', aspect: 0.7205, sides: { N: 0.48, S: 0.49, E: 0.46, W: 0.44 }, bwSides: { S: 0.49, W: 0.47, N: 0.5, E: 0.5 }, crop: { x0: 0, y0: 0, x1: 0.9968, y1: 0.9628 } },
+    { id: 'astrophysics', label: 'XDZ.Locations.Colony.Astrophysics', color: 'colony astrophysics.webp', bw: 'colony astrophysics.webp', aspect: 0.7097, sides: { E: 0.51, W: 0.48, N: 0.74, S: 0.4 }, bwSides: { E: 0.51, S: 0.39, W: 0.46, N: 0.74 }, crop: { x0: 0.0424, y0: 0.0501, x1: 0.9597, y1: 0.9514 } },
   ],
+};
+
+/**
+ * A location-shaped object, but deliberately NOT inside `XDZ.locations` —
+ * MapGenerator's `#attemptLayout` only ever assigns roll slots to entries in
+ * that array, so this can never be seated as one of the 16 LOCATIONs. Used
+ * only as a thin bridging piece MapGenerator's chainPlace inserts between
+ * two touching LOCATIONs whose door-coincident alignment would otherwise
+ * overlap a third, already-placed piece — see map-generator.mjs's
+ * buildConnectorBox. `sides: {W,E}` is its canonical (unrotated)
+ * orientation; MapGenerator rotates it 90° for a N/S bridge the same way it
+ * rotates any LOCATION tile. One asset per style, reused for both
+ * orientations. `aspect` (height/width) matches the real 907x907 square
+ * art — `sizeCells` sets its natural cross-section only; its rendered
+ * *length* is whatever real gap it's bridging (buildConnectorBox sizes that
+ * axis directly from the two doors it connects, not from `sizeCells`).
+ */
+XDZ.connector = {
+  id: 'connector',
+  label: 'Connector',
+  color: 'connector.webp',
+  bw: 'connector bw.webp',
+  sides: { W: 0.5, E: 0.5 },
+  sizeCells: 2,
+  aspect: 1,
+  // Both the color and B&W connector art are real, separately-measured
+  // assets (not the shared 2100x1500 template every other B&W location
+  // uses) — `bwAspect` overrides `aspectFor`'s default BW_ASPECT fallback
+  // so B&W renders at this piece's own true 907x907 ratio instead.
+  bwAspect: 1,
+};
+
+/**
+ * A second connector asset, more elongated (real art 1777x502 vs the square
+ * connector's 907x907) — for bridging a much bigger gap than the square
+ * piece can reach without looking absurdly stretched. Never picked
+ * directly by `#attemptLayout`/`chainPlace`'s edge classification the way
+ * `XDZ.connector` is (same "not one of the 16 LOCATIONs" exclusion
+ * applies) — `buildConnectorBox`'s `pickConnector` chooses between the two
+ * per-bridge, by comparing how far each one's own natural (rest) length is
+ * from the actual gap being bridged, so a short gap still gets the square
+ * piece and only a genuinely long one reaches for this. `sizeCells: 6`
+ * (vs the square's 2) sets its natural rest length so that comparison
+ * means something — tune together if either art gets remeasured.
+ * `bwAspect` — same reasoning as `XDZ.connector`'s: `connector_long_bw.webp`
+ * is a real, separately-measured asset matching the color art's own real
+ * proportions, not the generic B&W template.
+ */
+XDZ.connectorLong = {
+  id: 'connectorLong',
+  label: 'Connector (Long)',
+  color: 'connector_long.webp',
+  bw: 'connector_long_bw.webp',
+  sides: { W: 0.5, E: 0.5 },
+  sizeCells: 6,
+  bwAspect: 502 / 1777,
+  aspect: 502 / 1777,
 };
 
 /**

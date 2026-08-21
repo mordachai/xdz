@@ -393,15 +393,16 @@
     &:hover { color: $xdz-orange-accent; }
   }
 
-  // Theme selector — two chevrons, ~40px apart, laid over the bottom band art.
+  // Theme selector (prev chevron / HUD button / next chevron), laid over the
+  // bottom band art's grille — same total span as the old 2-chevron layout.
   .xdz-theme-switcher {
     position: absolute;
     inset: 0;
     display: flex;
-    top:10px;
-    left:92px;
+    top: 7px;
+    left: 95px;
     align-items: center;
-    gap: 68px;
+    gap: 18px;
   }
 
   .xdz-theme-nav {

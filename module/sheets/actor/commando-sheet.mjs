@@ -1,5 +1,6 @@
 import XDZActorSheet from './base-actor-sheet.mjs';
 import { COMMANDO_LOADOUT } from '../../helpers/commando-loadout.mjs';
+import CommandoHudApp from '../../apps/commando-hud.mjs';
 
 /**
  * The Commando (player character) sheet — mirrors the printed XDZ character sheet.
@@ -11,12 +12,14 @@ export default class CommandoSheet extends XDZActorSheet {
     actions: {
       setPip: this._onSetPip,
       weaponRoll: this._onWeaponRoll,
+      weaponAmmo: this._onWeaponAmmo,
       weaponSecondary: this._onWeaponSecondary,
       toggleEquip: this._onToggleEquip,
       loadoutPrev: this._onLoadoutPrev,
       loadoutNext: this._onLoadoutNext,
       themePrev: this._onThemePrev,
       themeNext: this._onThemeNext,
+      openHud: this._onOpenHud,
     },
   };
 
@@ -36,6 +39,27 @@ export default class CommandoSheet extends XDZActorSheet {
   /** Total loadout pages for a given weapon count (always >= 1). @private */
   _loadoutPages(weaponCount) {
     return Math.max(1, Math.ceil(weaponCount / this._loadoutPageSize));
+  }
+
+  /**
+   * Redirect to the HUD popup instead of the normal sheet when that's the
+   * actor's persisted choice (see `_onOpenHud` / CommandoHudApp#_onBackToSheet).
+   * Fires once per open (state was CLOSED/NONE), not on data-triggered
+   * re-renders of an already-open sheet, so it can't fight the HUD's own
+   * "back to sheet" redirect.
+   * @override
+   */
+  _onFirstRender(context, options) {
+    super._onFirstRender(context, options);
+    if (this.actor.getFlag('xdz', 'sheetMode') === 'hud') this._redirectToHud();
+  }
+
+  /** Close this sheet and open (or focus) the HUD popup in its place. @private */
+  async _redirectToHud() {
+    await this.close();
+    const existing = Object.values(this.actor.apps).find((app) => app instanceof CommandoHudApp);
+    if (existing) existing.bringToFront();
+    else await new CommandoHudApp({ document: this.actor }).render(true);
   }
 
   /** @override */
@@ -174,15 +198,33 @@ export default class CommandoSheet extends XDZActorSheet {
     return this.actor.update({ [`system.${path}`]: value });
   }
 
+  /** Block firing an unequipped weapon, with a warning toast. @private */
+  static _requireEquipped(item) {
+    if (item && !item.system.equipped) {
+      ui.notifications.warn(game.i18n.format('XDZ.Weapon.NotEquipped', { name: item.name }));
+      return false;
+    }
+    return true;
+  }
+
   static async _onWeaponRoll(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
+    if (!this._requireEquipped(item)) return;
     return item?.rollAttack('normal');
+  }
+
+  static async _onWeaponAmmo(event, target) {
+    const li = target.closest('[data-item-id]');
+    const item = this.actor.items.get(li?.dataset.itemId);
+    if (!this._requireEquipped(item)) return;
+    return item?.rollAttack('ammo');
   }
 
   static async _onWeaponSecondary(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
+    if (!this._requireEquipped(item)) return;
     return item?.rollSecondary();
   }
 
@@ -214,13 +256,27 @@ export default class CommandoSheet extends XDZActorSheet {
     return this.actor.setFlag('xdz', 'sheetTheme', themes[index]);
   }
 
+  /** Open (or focus) this actor's compact read-only HUD popup, and persist HUD as the actor's sheet mode. @private */
+  static async _onOpenHud(event, target) {
+    await this.actor.setFlag('xdz', 'sheetMode', 'hud');
+    const existing = Object.values(this.actor.apps).find((app) => app instanceof CommandoHudApp);
+    if (existing) existing.bringToFront();
+    else await new CommandoHudApp({ document: this.actor }).render(true);
+    return this.close();
+  }
+
   static async _onToggleEquip(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
     if (!item) return;
     const equipped = !item.system.equipped;
-    if (equipped && item.system.discardOthersOnEquip) {
-      const others = this.actor.items.filter((i) => i.type === 'weapon' && i.id !== item.id && i.system.equipped);
+    if (equipped) {
+      // Exclusivity cuts both ways: equipping this weapon kicks out any
+      // other equipped weapon if EITHER side is marked exclusive — a
+      // Heavy Gun (exclusive) already equipped must drop when you equip a
+      // Flame/Pulse (non-exclusive), not just the other way around.
+      const others = this.actor.items.filter((i) => i.type === 'weapon' && i.id !== item.id && i.system.equipped
+        && (item.system.discardOthersOnEquip || i.system.discardOthersOnEquip));
       if (others.length) await this.actor.updateEmbeddedDocuments('Item', others.map((i) => ({ _id: i.id, 'system.equipped': false })));
     }
     return item.update({ 'system.equipped': equipped });

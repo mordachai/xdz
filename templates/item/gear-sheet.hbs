@@ -5,6 +5,9 @@
       <img class="xdz-portrait" src="{{item.img}}" data-action="onEditImage" data-edit="img" alt="{{item.name}}">
     </div>
     <input type="text" class="xdz-item-name" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}}>
+    <button type="button" class="xdz-item-header-btn" data-action="onSendToChat" data-tooltip="{{localize 'XDZ.SendToChat'}}">
+      <i class="fa-solid fa-comment"></i>
+    </button>
   </header>
 
   <div class="xdz-item-body">
@@ -15,7 +18,7 @@
 
     <label class="xdz-field">
       <span class="xdz-field-label">{{localize 'XDZ.Gear.Description'}}</span>
-      <textarea name="system.description" rows="6" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+      <textarea name="system.description" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
     </label>
   </div>
 

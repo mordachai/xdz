@@ -1,0 +1,119 @@
+<div class="xdz-cmdhud-root" data-theme="{{theme}}">
+
+  <div class="xdz-cmdhud-row1">
+
+    <div class="xdz-cmdhud-main">
+
+      <div class="xdz-cmdhud-rowA">
+        <div class="xdz-cmdhud-portrait"><img src="{{actor.img}}" alt="{{actor.name}}"></div>
+
+        <div class="xdz-cmdhud-identity-col">
+          <div class="xdz-cmdhud-identity">
+            <span class="xdz-cmdhud-name">{{actor.name}}</span>
+            {{#if system.rank}}<span class="xdz-cmdhud-dot">|</span><span class="xdz-cmdhud-tag">{{system.rank}}</span>{{/if}}
+            {{#if system.quirk}}<span class="xdz-cmdhud-dot">|</span><span class="xdz-cmdhud-tag">{{system.quirk}}</span>{{/if}}
+          </div>
+
+          <div class="xdz-cmdhud-injury{{#if system.injuries.dead}} xdz-cmdhud-ecg-dead{{/if}}" style="--xdz-cmdhud-ecg-speed: {{ecgSpeed}}">
+            <div class="xdz-cmdhud-panel-title">
+              {{localize 'XDZ.Actor.Injury'}}
+              {{#if system.injuries.dead}}<span class="xdz-cmdhud-flag xdz-cmdhud-flag-dead">{{localize 'XDZ.Actor.KIA'}}</span>
+              {{else if system.injuries.down}}<span class="xdz-cmdhud-flag">{{localize 'XDZ.Actor.Down'}}</span>{{/if}}
+            </div>
+            <div class="xdz-cmdhud-ecg-wave-row xdz-cmdhud-ecg-level-{{injuryLevel}}">
+              <span class="xdz-cmdhud-ecg-wave"></span>
+            </div>
+            <div class="xdz-cmdhud-ecg-pips">
+              {{#each injuryPips}}
+                <span class="xdz-cmdhud-ecg-pip {{#if filled}}filled{{/if}}"
+                      data-action="setPip" data-scope="actor" data-path="injuries.value" data-index="{{index}}"></span>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="xdz-cmdhud-rowB">
+        <div class="xdz-cmdhud-stat-block xdz-cmdhud-stat-block-training">
+          <span class="xdz-cmdhud-block-title-vertical">{{localize 'XDZ.Actor.Training'}}</span>
+          <div class="xdz-cmdhud-stat-rows">
+            {{#each trainingRows}}
+              <button type="button" class="xdz-cmdhud-stat-label" data-action="rollTraining" data-key="{{key}}">{{localize label}}</button>
+              <span class="xdz-cmdhud-value" data-action="bumpValue" data-scope="actor" data-path="{{path}}" data-max="{{max}}">{{value}}</span>
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="xdz-cmdhud-stat-block xdz-cmdhud-stat-block-resistance">
+          <span class="xdz-cmdhud-block-title-vertical">{{localize 'XDZ.Actor.Resistance'}}</span>
+          <div class="xdz-cmdhud-stat-rows">
+            {{#each resistanceRows}}
+              <button type="button" class="xdz-cmdhud-stat-label" data-action="rollResistance" data-key="{{key}}">{{localize label}}</button>
+              <span class="xdz-cmdhud-value" data-action="bumpValue" data-scope="actor" data-path="{{path}}" data-max="{{max}}">{{value}}</span>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="xdz-cmdhud-weapons">
+      <div class="xdz-cmdhud-loadout-title">
+        <button type="button" class="xdz-cmdhud-page-nav" data-action="loadoutPrev" {{#unless loadoutMultiPage}}disabled{{/unless}}>
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <span>{{localize 'XDZ.Actor.Loadout'}}</span>
+        <button type="button" class="xdz-cmdhud-page-nav" data-action="loadoutNext" {{#unless loadoutMultiPage}}disabled{{/unless}}>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      {{#each loadoutWeapons}}
+        <div class="xdz-cmdhud-weapon{{#if system.destroyed}} xdz-cmdhud-weapon-destroyed{{/if}}" data-item-id="{{item.id}}">
+          <div class="xdz-cmdhud-weapon-head">
+            <label class="xdz-cmdhud-equip">
+              <input type="radio" data-action="toggleEquip" {{#if system.equipped}}checked{{/if}}>
+              <span></span>
+            </label>
+            <span class="xdz-cmdhud-weapon-name" data-action="itemEdit">{{item.name}}</span>
+            <span class="xdz-cmdhud-weapon-dmg">
+              <span class="xdz-cmdhud-weapon-dmg-label">{{localize 'XDZ.Weapon.DamagedShort'}}</span>
+              <span class="xdz-cmdhud-value xdz-cmdhud-value-bad" data-action="bumpValue" data-scope="item" data-path="damaged.value" data-max="{{system.damaged.max}}">{{system.damaged.value}}/{{system.damaged.max}}</span>
+            </span>
+          </div>
+
+          <div class="xdz-cmdhud-weapon-img-wrap" data-action="weaponRoll">
+            <img class="xdz-cmdhud-weapon-img" src="{{item.img}}" alt="{{item.name}}">
+          </div>
+
+          <div class="xdz-cmdhud-weapon-tracks">
+            <div class="xdz-cmdhud-track">
+              <span class="xdz-cmdhud-track-label xdz-cmdhud-track-action" data-action="weaponAmmo">{{#if system.ammoLabel}}{{system.ammoLabel}}{{else}}{{localize 'XDZ.Weapon.Ammo'}}{{/if}}</span>
+              <span class="xdz-cmdhud-value" data-action="bumpValue" data-scope="item" data-path="ammo.value" data-max="{{system.ammo.max}}">{{system.ammo.value}}</span>
+            </div>
+            {{#if system.secondary.max}}
+              <div class="xdz-cmdhud-track">
+                <span class="xdz-cmdhud-track-label xdz-cmdhud-track-action" data-action="weaponSecondary">{{system.secondary.label}}</span>
+                <span class="xdz-cmdhud-value" data-action="bumpValue" data-scope="item" data-path="secondary.value" data-max="{{system.secondary.max}}">{{system.secondary.value}}</span>
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+  </div>
+
+  <div class="xdz-cmdhud-gear-row">
+    <span class="xdz-cmdhud-panel-title">{{localize 'XDZ.Actor.Gear'}}</span>
+    <div class="xdz-cmdhud-gear-list">
+      {{#each gear}}
+        <span class="xdz-cmdhud-gear-chip" data-item-id="{{this.id}}">
+          <span class="xdz-cmdhud-gear-chip-name" data-action="itemEdit">{{this.name}}</span>
+          <a class="xdz-cmdhud-gear-chip-delete" data-action="itemDelete"><i class="fa-solid fa-trash"></i></a>
+        </span>
+      {{else}}<span class="xdz-cmdhud-gear-empty">—</span>{{/each}}
+    </div>
+  </div>
+
+</div>

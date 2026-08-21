@@ -5,7 +5,7 @@
   "img": "icons/containers/boxes/crate-tech-silver.webp",
   "system": {
     "quantity": 1,
-    "description": "Once per LOCATION, make a Systems roll to call for (or find) a supply drop."
+    "description": "Once per AREA, make a Systems roll to call for (or find) a supply drop."
   },
   "effects": [],
   "folder": null,

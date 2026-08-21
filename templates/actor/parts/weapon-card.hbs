@@ -30,7 +30,7 @@
 
   <div class="xdz-weapon-tracks">
     <div class="xdz-track-row">
-      <span class="xdz-track-label">{{#if system.ammoLabel}}{{system.ammoLabel}}{{else}}{{localize 'XDZ.Weapon.Ammo'}}{{/if}}</span>
+      <span class="xdz-track-label xdz-track-action" data-action="weaponAmmo">{{#if system.ammoLabel}}{{system.ammoLabel}}{{else}}{{localize 'XDZ.Weapon.Ammo'}}{{/if}}</span>
       <div class="xdz-pip-row">
         {{#each ammoPips}}
           <span class="xdz-pip-circle {{#if filled}}xdz-pip-filled{{/if}}"

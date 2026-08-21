@@ -15,6 +15,12 @@
     &:focus { border-color: $xdz-green-color; }
   }
 
+  textarea {
+    field-sizing: content;
+    min-height: 1.5em;
+    max-height: 20em;
+  }
+
   // Soft grey field labels read fine on paper but vanish on the dark
   // chassis — tint them to the active theme color instead (dimmed, so the
   // brighter input/title text still reads as the primary layer).
@@ -45,6 +51,22 @@
   &:focus { border-bottom: 1px solid $xdz-orange-color; }
 }
 
+.xdz-item-header-btn {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba($xdz-green-color, 0.5);
+  border-radius: 4px;
+  color: $xdz-green-color;
+  cursor: pointer;
+
+  &:hover { border-color: $xdz-green-color; color: $xdz-orange-color; }
+}
+
 .xdz-item-body {
   display: flex;
   flex-direction: column;
@@ -73,6 +95,12 @@ $xdz-item-themes: (
     .xdz-portrait-frame { border-color: $color; }
     .xdz-item-name:focus { border-bottom-color: $accent; }
     .xdz-field-label { color: rgba($color, 0.65); }
+
+    .xdz-item-header-btn {
+      border-color: rgba($color, 0.5);
+      color: $color;
+      &:hover { border-color: $color; color: $accent; }
+    }
 
     input, textarea, select {
       border-color: rgba($color, 0.5);

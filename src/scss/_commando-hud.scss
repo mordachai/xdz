@@ -1,0 +1,609 @@
+// Compact Commando/Character HUD popup (see module/apps/commando-hud.mjs).
+// Flat CRT-dashboard look, drawn entirely in CSS — no printed-sheet art, no
+// icon glyphs on Training/Resistance. Chamfered (cut-corner) panels via
+// border-radius + corner-shape: bevel (real border, no clip-path). Color
+// follows the actor's existing sheet-theme flag via
+// $xdz-commando-themes (same palette the normal sheet cycles through) —
+// this view has no theme selector of its own.
+//
+// Everything except Injury is a plain number (left-click +1, right-click
+// -1 via contextmenu) instead of a pip row — no button chrome on those,
+// just a pointer cursor; the click target IS the digit.
+//
+// Namespaced "xdz-cmdhud-*" (not "xdz-hud-*") — that prefix already belongs
+// to _hud.scss's always-on TN/Timer badges (see .xdz-hud-root there).
+
+// `corner-shape: bevel` cuts the actual box shape (like a bevelled
+// border-radius), so a real `border` follows the cut edges natively —
+// no clip-path, no fake double-layer border hack needed.
+@mixin xdz-cmdhud-chamfer-ring($size: 6px, $border-color: currentColor, $width: 1px) {
+  border-radius: $size;
+  corner-shape: bevel;
+  border: $width solid $border-color;
+  background: transparent;
+}
+
+// Subtle CRT screen dressing reused from the chat-card look: a soft bright
+// spot glowing from the top (tinted by the panel's own theme color) plus a
+// faint scanline overlay via ::before. Overlay is translucent so it never
+// hides the content painted after it in the stacking order.
+@mixin xdz-cmdhud-screen-fx {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-cmdhud-color) 14%, transparent) 0%, transparent 70%);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(black, 0.15) 0,
+      rgba(black, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: multiply;
+  }
+}
+
+.xdz-cmdhud-root {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  background: #0a0f0a;
+  font-family: $xdz-font-body;
+  @include xdz-cmdhud-chamfer-ring(5px, var(--xdz-cmdhud-color));
+
+  @each $name, $t in $xdz-commando-themes {
+    &[data-theme="#{$name}"] {
+      --xdz-cmdhud-color: #{map-get($t, color)};
+      --xdz-cmdhud-accent: #{map-get($t, accent)};
+      --xdz-cmdhud-bright: #{mix(map-get($t, color), $xdz-white, 35%)};
+
+      // Reuses the same per-theme ecg-beat-N-<suffix>.svg strips as the
+      // main sheet's ECG tracker (see _commando.scss) — same assets, HUD
+      // just wires them up under its own xdz-cmdhud-* classes.
+      $suf: map-get($t, suffix);
+      @for $i from 1 through 6 {
+        .xdz-cmdhud-ecg-wave-row.xdz-cmdhud-ecg-level-#{$i} .xdz-cmdhud-ecg-wave {
+          background-image: url("../assets/ui/ecg-beat-#{$i}-#{$suf}.svg");
+        }
+      }
+
+      .xdz-cmdhud-ecg-dead .xdz-cmdhud-ecg-wave-row .xdz-cmdhud-ecg-wave {
+        background-image: url("../assets/ui/ecg-beat-6-#{$suf}.svg");
+      }
+    }
+  }
+
+  * { box-sizing: border-box; }
+}
+
+.xdz-cmdhud-panel-title {
+  font-family: $xdz-font-display;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--xdz-cmdhud-color);
+}
+
+.xdz-cmdhud-flag {
+  margin-left: 0.4rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--xdz-cmdhud-color);
+}
+
+.xdz-cmdhud-flag-dead { color: $xdz-red; }
+
+/* -------------------------------------------- */
+/* Row 1: main (2fr) | weapons (1fr)             */
+/* -------------------------------------------- */
+
+.xdz-cmdhud-row1 {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.xdz-cmdhud-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+/* Row A: portrait | identity-col (identity, injury). Grows to soak up
+   whatever height the weapons column has that the stats block doesn't
+   need, so rowB's bottom edge lines up with the weapons column's base
+   and the injury track gets the freed space instead of empty gap. */
+
+.xdz-cmdhud-rowA {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+}
+
+.xdz-cmdhud-portrait {
+  @include xdz-cmdhud-chamfer-ring(5px, var(--xdz-cmdhud-color));
+  width: 3.4rem;
+  height: 100%;
+  overflow: hidden;
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1; }
+}
+
+.xdz-cmdhud-identity-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+// Name, rank, and quirk all sit on one line (see markup — one flex row of
+// spans, not stacked divs).
+.xdz-cmdhud-identity {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.xdz-cmdhud-name {
+  font-family: $xdz-font-display;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: var(--xdz-cmdhud-bright);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--xdz-cmdhud-color) 55%, transparent);
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xdz-cmdhud-tag {
+  font-family: $xdz-font-mono;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--xdz-cmdhud-color);
+  flex: 0 0 auto;
+}
+
+.xdz-cmdhud-dot { margin: 0 0.3rem; opacity: 0.5; color: var(--xdz-cmdhud-color); flex: 0 0 auto; }
+
+.xdz-cmdhud-injury {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.5rem;
+  row-gap: 0.15rem;
+  align-items: center;
+  flex: 1;
+  border-top: 1px solid color-mix(in srgb, var(--xdz-cmdhud-color) 40%, transparent);
+  padding-top: 0.2rem;
+
+  .xdz-cmdhud-panel-title {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+}
+
+/* -------------------------------------------- */
+/* Injury ECG — same waveform tracker as the     */
+/* main sheet (see _commando.scss), reused here  */
+/* under xdz-cmdhud-* names and the HUD's own    */
+/* --xdz-cmdhud-color/theme vars.                */
+/* -------------------------------------------- */
+
+// Full-width strip masked by a sliding scan band — see xdz-cmdhud-ecg-reveal.
+// Speed reacts to injuries via --xdz-cmdhud-ecg-speed (set inline per actor).
+.xdz-cmdhud-ecg-wave-row {
+  grid-column: 2;
+  grid-row: 1;
+  height: 1.6rem;
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg, transparent 0%, transparent 8%,
+    rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+  );
+  mask-image: linear-gradient(
+    90deg, transparent 0%, transparent 8%,
+    rgba(0, 0, 0, 0.9) 88%, rgba(0, 0, 0, 0.9) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 38% 100%;
+  mask-size: 38% 100%;
+  animation: xdz-cmdhud-ecg-reveal var(--xdz-cmdhud-ecg-speed, 2.4s) linear infinite;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1%;
+    width: 2%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--xdz-cmdhud-bright) 95%, transparent), transparent);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: xdz-cmdhud-ecg-cursor var(--xdz-cmdhud-ecg-speed, 2.4s) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+
+    &::after { display: none; }
+  }
+}
+
+.xdz-cmdhud-ecg-wave {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: repeat-x left bottom / auto 100%;
+}
+
+@keyframes xdz-cmdhud-ecg-reveal {
+  from { -webkit-mask-position: -61.29% 0; mask-position: -61.29% 0; }
+  to   { -webkit-mask-position: 161.29% 0; mask-position: 161.29% 0; }
+}
+
+@keyframes xdz-cmdhud-ecg-cursor {
+  from { left: -1%; }
+  to   { left: 137%; }
+}
+
+.xdz-cmdhud-ecg-pips {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.15rem;
+}
+
+.xdz-cmdhud-ecg-pip {
+  display: block;
+  width: 90%;
+  height: 0.7rem;
+  justify-self: center;
+  border: 1px solid var(--xdz-cmdhud-color);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.1s ease, background-color 0.1s ease;
+
+  &:hover { opacity: 0.65; }
+
+  &.filled {
+    background: var(--xdz-cmdhud-color);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--xdz-cmdhud-color) 60%, transparent);
+  }
+}
+
+/* -------------------------------------------- */
+/* Row B: Training | Resistance                  */
+/* -------------------------------------------- */
+
+.xdz-cmdhud-rowB {
+  display: flex;
+  gap: 0.5rem;
+}
+
+// Training has 5 stats, Resistance 3 — size the two blocks by their own
+// column count instead of an even 1fr/1fr split, so neither stretches or
+// crowds relative to how many columns it actually holds.
+.xdz-cmdhud-stat-block-training { flex: 4; }
+.xdz-cmdhud-stat-block-resistance { flex: 3; }
+
+.xdz-cmdhud-stat-block {
+  @include xdz-cmdhud-chamfer-ring(5px, var(--xdz-cmdhud-color));
+  @include xdz-cmdhud-screen-fx;
+  display: flex;
+  align-items: stretch;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.3rem 0.4rem;
+}
+
+// Same sidebar-title idiom as the normal sheet's compact stat blocks —
+// rotated text, dotted divider — just reused here instead of a horizontal
+// title line, to give the column row below more vertical room back.
+.xdz-cmdhud-block-title-vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  flex: 0 0 auto;
+  font-family: $xdz-font-display;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--xdz-cmdhud-color);
+  border-left: 1px dotted color-mix(in srgb, var(--xdz-cmdhud-color) 50%, transparent);
+  padding-left: 0.3rem;
+}
+
+// Stats stay normal horizontal text, stacked as rows — only the block
+// title (Training/Resistance) is rotated. Grid (not flex space-between) so
+// the label column is one fixed width and every value lines up on the same
+// x regardless of how long an individual label is ("Mechanic" vs "Fear").
+.xdz-cmdhud-stat-rows {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.4rem;
+  row-gap: 0.08rem;
+}
+
+.xdz-cmdhud-stat-label {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-family: $xdz-font-body;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: var(--xdz-cmdhud-color);
+  text-align: right;
+  white-space: nowrap;
+  text-transform: uppercase;
+
+  &:hover { color: var(--xdz-cmdhud-bright); text-shadow: 0 0 4px color-mix(in srgb, var(--xdz-cmdhud-color) 60%, transparent); }
+}
+
+/* -------------------------------------------- */
+/* Numbers — no button chrome, pointer cursor only */
+/* -------------------------------------------- */
+
+.xdz-cmdhud-value {
+  cursor: pointer;
+  user-select: none;
+  font-family: $xdz-font-mono;
+  font-weight: 700;
+  color: var(--xdz-cmdhud-color);
+  text-shadow: 0 0 4px color-mix(in srgb, var(--xdz-cmdhud-color) 50%, transparent);
+
+  &:hover { opacity: 0.75; color: var(--xdz-cmdhud-bright); }
+}
+
+.xdz-cmdhud-stat-rows .xdz-cmdhud-value { font-size: 0.76rem; text-align: left; }
+
+.xdz-cmdhud-value-bad { color: var(--xdz-cmdhud-color); }
+
+/* -------------------------------------------- */
+/* Weapons column                                */
+/* -------------------------------------------- */
+
+.xdz-cmdhud-weapons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.xdz-cmdhud-loadout-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: $xdz-font-display;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--xdz-cmdhud-color);
+  border-bottom: 1px solid color-mix(in srgb, var(--xdz-cmdhud-color) 40%, transparent);
+  padding-bottom: 0.15rem;
+}
+
+.xdz-cmdhud-page-nav {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--xdz-cmdhud-color);
+
+  &:hover:not(:disabled) { color: var(--xdz-cmdhud-bright); }
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+.xdz-cmdhud-weapon {
+  @include xdz-cmdhud-chamfer-ring(5px, var(--xdz-cmdhud-color));
+  @include xdz-cmdhud-screen-fx;
+  padding: 0.3rem 0.35rem 0.35rem;
+}
+
+.xdz-cmdhud-weapon-destroyed { opacity: 0.5; }
+
+.xdz-cmdhud-weapon-head {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.xdz-cmdhud-weapon-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: $xdz-font-display;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: var(--xdz-cmdhud-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  &:hover { color: var(--xdz-cmdhud-accent); }
+  text-transform: uppercase;
+}
+
+.xdz-cmdhud-weapon-dmg {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  flex: 0 0 auto;
+
+  .xdz-cmdhud-value { font-size: 0.76rem; }
+}
+
+.xdz-cmdhud-weapon-dmg-label {
+  font-family: $xdz-font-mono;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--xdz-cmdhud-color);
+}
+
+.xdz-cmdhud-equip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  cursor: pointer;
+
+  input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  span {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid var(--xdz-cmdhud-accent);
+    border-radius: 50%;
+  }
+
+  input:checked + span {
+    background: var(--xdz-cmdhud-color);
+    border-color: var(--xdz-cmdhud-color);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--xdz-cmdhud-color) 60%, transparent);
+  }
+}
+
+.xdz-cmdhud-weapon-img-wrap {
+  display: block;
+  width: 100%;
+  height: 2.6rem;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(black, 0.6));
+    transition: filter 0.1s ease;
+  }
+
+  &:hover img {
+    filter: drop-shadow(0 1px 2px rgba(black, 0.6)) drop-shadow(0 0 5px color-mix(in srgb, var(--xdz-cmdhud-color) 80%, transparent));
+  }
+}
+
+.xdz-cmdhud-weapon-destroyed .xdz-cmdhud-weapon-img-wrap {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+// Track row grows/shrinks with the card — each group is flex:1 so 2 or 3
+// groups (Ammo/Grenade/Damaged) always share the row evenly, however narrow
+// the weapons column gets. Numbers never wrap (unlike the pip rows this
+// replaced), so there's nothing to break here.
+.xdz-cmdhud-weapon-tracks {
+  display: flex;
+  gap: 0.3rem;
+  border-top: 1px solid var(--xdz-cmdhud-color);
+}
+
+.xdz-cmdhud-track {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+
+  .xdz-cmdhud-value { font-size: 0.85rem; flex: 0 0 auto; }
+}
+
+.xdz-cmdhud-track-label {
+  font-family: $xdz-font-mono;
+  font-size: 0.75rem;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--xdz-cmdhud-color);
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.xdz-cmdhud-track-action {
+  cursor: pointer;
+  &:hover { color: var(--xdz-cmdhud-bright); }
+}
+
+/* -------------------------------------------- */
+/* Gear row — reuses the space the printed       */
+/* sheet's bottom-right decoration held.         */
+/* -------------------------------------------- */
+
+.xdz-cmdhud-gear-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--xdz-cmdhud-color) 40%, transparent);
+  padding-top: 0.3rem;
+}
+
+.xdz-cmdhud-gear-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.xdz-cmdhud-gear-chip {
+  @include xdz-cmdhud-chamfer-ring(3px, var(--xdz-cmdhud-color));
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.12rem 0.4rem;
+  font-family: $xdz-font-mono;
+  font-size: 0.75rem;
+  color: var(--xdz-cmdhud-color);
+  white-space: nowrap;
+}
+
+.xdz-cmdhud-gear-chip-name {
+  cursor: pointer;
+  &:hover { color: var(--xdz-cmdhud-accent); }
+}
+
+.xdz-cmdhud-gear-chip-delete {
+  color: var(--xdz-cmdhud-color);
+  opacity: 0.7;
+  cursor: pointer;
+  &:hover { color: $xdz-red; opacity: 1; }
+}
+
+.xdz-cmdhud-gear-empty {
+  font-family: $xdz-font-mono;
+  font-size: 0.64rem;
+  color: var(--xdz-cmdhud-accent);
+  opacity: 0.7;
+}

@@ -5,6 +5,9 @@
       <img class="xdz-portrait" src="{{item.img}}" data-action="onEditImage" data-edit="img" alt="{{item.name}}">
     </div>
     <input type="text" class="xdz-item-name" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}}>
+    <button type="button" class="xdz-item-header-btn" data-action="onSendToChat" data-tooltip="{{localize 'XDZ.SendToChat'}}">
+      <i class="fa-solid fa-comment"></i>
+    </button>
   </header>
 
   <div class="xdz-item-body">
@@ -44,7 +47,7 @@
 
     <label class="xdz-field">
       <span class="xdz-field-label">{{localize 'XDZ.Weapon.Description'}}</span>
-      <textarea name="system.description" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
+      <textarea name="system.description" {{#unless editable}}disabled{{/unless}}>{{system.description}}</textarea>
     </label>
 
     <div class="xdz-field-row">
@@ -76,7 +79,7 @@
 
     <label class="xdz-field">
       <span class="xdz-field-label">{{localize 'XDZ.Weapon.AmmoDescription'}}</span>
-      <textarea name="system.ammoDescription" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.ammoDescription}}</textarea>
+      <textarea name="system.ammoDescription" {{#unless editable}}disabled{{/unless}}>{{system.ammoDescription}}</textarea>
     </label>
 
     <div class="xdz-field-row xdz-field-row-baseline">
@@ -108,12 +111,12 @@
 
     <label class="xdz-field">
       <span class="xdz-field-label">{{localize 'XDZ.Weapon.SecondaryDescription'}}</span>
-      <textarea name="system.secondary.description" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.secondary.description}}</textarea>
+      <textarea name="system.secondary.description" {{#unless editable}}disabled{{/unless}}>{{system.secondary.description}}</textarea>
     </label>
 
     <label class="xdz-field">
       <span class="xdz-field-label">{{localize 'XDZ.Weapon.Rules'}}</span>
-      <textarea name="system.rules" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.rules}}</textarea>
+      <textarea name="system.rules" {{#unless editable}}disabled{{/unless}}>{{system.rules}}</textarea>
     </label>
   </div>
 

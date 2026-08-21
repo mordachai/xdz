@@ -1,0 +1,17 @@
+<div class="xdz-chatcard xdz-chatcard-xeno" data-theme="{{theme}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <span class="xdz-chatcard-title">{{title}}</span>
+    {{#if targetImg}}<img class="xdz-chatcard-icon" src="{{targetImg}}" alt="{{targetName}}">{{/if}}
+    <span class="xdz-chatcard-tag">{{tag}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    {{#if description}}<div class="xdz-chatcard-desc">{{description}}</div>{{/if}}
+
+    {{#if button}}
+    <div class="xdz-damage-row">
+      <button type="button" class="xdz-btn xdz-damage-btn" data-action="{{button.action}}" data-actor-uuid="{{button.actorUuid}}" data-key="{{button.key}}" data-kind="{{button.kind}}">{{button.label}}</button>
+    </div>
+    {{/if}}
+  </div>
+</div>

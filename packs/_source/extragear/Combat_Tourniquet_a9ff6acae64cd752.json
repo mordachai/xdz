@@ -5,7 +5,7 @@
   "img": "icons/containers/boxes/crate-tech-silver.webp",
   "system": {
     "quantity": 1,
-    "description": "Sacrifice to add 1D4 ROUNDS to any dying countdown."
+    "description": "Sacrifice to stop DOWN countdown for 1D4 ROUNDS."
   },
   "effects": [],
   "folder": null,
