@@ -55,7 +55,26 @@ jobs:
           mv "$tmp" system.json
           echo "Pinned download to: $DOWNLOAD"
 
-      # 4. Create the Zip file (Only if tag doesn't exist)
+      # 4. Build packs from source JSON files
+      # ------------------------------------------------------------------
+      # packs/*  (LevelDB binaries) are .gitignored; packs/_source/ is the truth.
+      # Install deps and compile _source/ → LevelDB before zipping.
+      # ------------------------------------------------------------------
+      - name: Setup Node
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        if: steps.check_tag.outputs.exists == 'false'
+        run: npm install
+
+      - name: Build packs from source
+        if: steps.check_tag.outputs.exists == 'false'
+        run: npm run pack
+
+      # 5b. Create the Zip file (Only if tag doesn't exist)
       # ------------------------------------------------------------------
       # Zips only the runtime folders, ignoring dev files (src, node_modules, etc).
       # Renamed to system.zip — includes the patched system.json above.
@@ -63,9 +82,9 @@ jobs:
       - name: Zip Files
         if: steps.check_tag.outputs.exists == 'false'
         run: |
-          zip -r system.zip system.json assets css lang module templates packs -x 'packs/_source/*' 'packs/*/LOCK' 'packs/*/LOG' 'packs/*/LOG.old'
+          zip -r system.zip system.json assets css lang module templates packs -x 'packs/_source/*' 'packs/.gitattributes'
 
-      # 5. Create Release
+      # 6. Create Release
       - name: Create Release
         if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v1

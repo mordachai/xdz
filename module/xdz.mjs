@@ -5,7 +5,7 @@ import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, Weapo
 import { TnTracker, RoundTimer, MapGenerator, CombatCarousel, onUpdateWallDoorState } from './apps/_module.mjs';
 import { appendToOrder } from './helpers/combat-groups.mjs';
 import { autoKillXenos } from './helpers/auto-kill.mjs';
-import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets } from './macros/_module.mjs';
+import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
@@ -15,7 +15,7 @@ globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
   apps: { TnTracker, RoundTimer, MapGenerator, CombatCarousel, tnTracker: null, timers: new Map(), combatCarousel: null },
-  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets },
+  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors },
   models,
   config: XDZ,
 };
@@ -394,8 +394,11 @@ Hooks.on('getSceneControlButtons', (controls) => {
 });
 
 // Generated doors re-texture their leaf + frame Tile to match locked/closed/
-// open — see onUpdateWallDoorState. Fires for every Wall update world-wide;
-// the function itself no-ops on anything without a MapGenerator `doorId` flag.
+// open — see onUpdateWallDoorState. The leaf write is intentionally delayed
+// past the slide duration: core recreates the DoorMesh (no tween) the moment
+// `animation.texture` changes, so swapping early turns the slide into an
+// instant snap. Fires for every Wall update world-wide; the function itself
+// no-ops on anything without a MapGenerator `doorId` flag.
 Hooks.on('updateWall', onUpdateWallDoorState);
 
 // Map Generator entry point lives in the Scenes sidebar, not a scene-control

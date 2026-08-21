@@ -219,6 +219,15 @@
   margin-top: 0.1rem;
 }
 
+// LOCK DOORS card — divider-title doubles as this attempt's outcome
+// (LOCKED reuses .xdz-chatcard-spend's amber; everything else that
+// consumed a 2D4 roll without locking a new door — ALREADY LOCKED, NO
+// DOOR, NO TILE — dims instead, so a glance at the list shows only the
+// amber rows as real changes).
+.xdz-chatcard-divider-title.xdz-chatcard-skip {
+  opacity: 0.45;
+}
+
 // Dice row and resolved-label row are the same grid, one below the other
 // (dice fill row 1, labels fill row 2) so each label lines up under its die.
 .xdz-chatcard-spawn-grid {

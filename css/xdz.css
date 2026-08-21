@@ -2944,6 +2944,10 @@
   margin-top: 0.1rem;
 }
 
+.xdz-chatcard-divider-title.xdz-chatcard-skip {
+  opacity: 0.45;
+}
+
 .xdz-chatcard-spawn-grid {
   display: grid;
   align-items: baseline;
@@ -4286,3 +4290,5 @@
   opacity: 0.35;
   cursor: not-allowed;
 }
+
+/*# sourceMappingURL=xdz.css.map */

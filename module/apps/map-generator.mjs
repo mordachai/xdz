@@ -275,22 +275,34 @@ function doorWall(c, doorId) {
 
 /**
  * `updateWall` hook body: when a generated door's `ds` (open/closed/locked)
- * changes, re-texture its leaf (the Wall's own `animation.texture`, shown
- * while closed/locked and mid-slide) and its static frame Tile to match —
- * see DOOR_LEAF_TEXTURES/DOOR_FRAME_TEXTURES. No-ops for any wall this
- * generator didn't build (no `doorId` flag) and re-entrantly for the
- * leaf-texture update this itself issues (that update's `changes` never
- * contains `ds`).
+ * changes, re-texture its leaf (the Wall's own `animation.texture`) and its
+ * static frame Tile to match — see DOOR_LEAF_TEXTURES/DOOR_FRAME_TEXTURES.
+ * No-ops for any wall this generator didn't build (no `doorId` flag) and
+ * re-entrantly for the leaf-texture update this itself issues (that update's
+ * `changes` never contains `ds`).
+ *
+ * The leaf write is deliberately DELAYED until after the slide finishes,
+ * not fired alongside `ds`. Core's Wall#_onUpdate (wall.mjs) forces a full
+ * DoorMesh destroy+recreate whenever `changed.animation?.texture` is set —
+ * recreation reads the Wall's *current* open/closed state with no tween, so
+ * a same-write (or immediate follow-up) texture swap always shows as an
+ * instant snap-to-final-position instead of a slide, regardless of the
+ * animation's `duration`. Delaying past the tween means the door is already
+ * resting at that final position when the mesh gets rebuilt, so only the
+ * texture pops — no position jump. Frame Tile isn't part of the DoorMesh
+ * chain, so it re-textures immediately with no such constraint.
  */
 export function onUpdateWallDoorState(wall, changes) {
   if (!('ds' in changes)) return;
   const doorId = wall.getFlag('xdz', 'doorId');
   if (!doorId) return;
-  const leafSrc = DOOR_LEAF_TEXTURES[wall.ds];
-  if (leafSrc && leafSrc !== wall.animation?.texture) wall.update({ 'animation.texture': leafSrc });
   const frameSrc = DOOR_FRAME_TEXTURES[wall.ds];
   const tile = wall.parent?.tiles.find((t) => t.getFlag('xdz', 'doorId') === doorId);
   if (frameSrc && tile && frameSrc !== tile.texture.src) tile.update({ 'texture.src': frameSrc });
+  const leafSrc = DOOR_LEAF_TEXTURES[wall.ds];
+  if (leafSrc && leafSrc !== wall.animation?.texture) {
+    setTimeout(() => wall.update({ 'animation.texture': leafSrc }), wall.animation?.duration ?? 750);
+  }
 }
 
 export function shuffleArray(array) {

@@ -464,7 +464,13 @@
       "OffMapTitle": "OUT OF RANGE",
       "OffMapTag": "NAV",
       "OffMapDesc": "Not in this area. Location is {direction} from here.",
-      "OffMapUnknown": "Not in this area."
+      "OffMapUnknown": "Not in this area.",
+      "LockDoorsTitle": "SECURITY LOCKDOWN",
+      "LockDoorsTag": "LOCKDOWN",
+      "LockedTag": "LOCKED",
+      "AlreadyLockedTag": "ALREADY LOCKED",
+      "NoDoorTag": "NO DOOR",
+      "NoTileTag": "NO TILE"
     },
 
     "Direction": {

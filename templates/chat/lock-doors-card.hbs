@@ -1,0 +1,33 @@
+<div class="xdz-chatcard xdz-chatcard-spawn" data-theme="{{theme}}">
+  <div class="xdz-chatcard-scanlines"></div>
+  <div class="xdz-chatcard-header">
+    <img class="xdz-chatcard-icon" src="systems/xdz/assets/ui/locked.webp" alt="" />
+    <span class="xdz-chatcard-title">{{localize "XDZ.Chat.LockDoorsTitle"}}</span>
+    <span class="xdz-chatcard-tag">{{localize "XDZ.Chat.LockDoorsTag"}}</span>
+  </div>
+  <div class="xdz-chatcard-body">
+    <div class="xdz-chatcard-readout xdz-chatcard-spawn-readout">
+      <span class="xdz-chatcard-digits">{{lockedCount}}</span>
+      <span class="xdz-chatcard-digits xdz-chatcard-digits-angle">{{total}}</span>
+    </div>
+
+    {{#each attempts}}
+    <div class="xdz-chatcard-spawn-group">
+      <div class="xdz-chatcard-divider">
+        <span class="xdz-chatcard-divider-title{{#if spend}} xdz-chatcard-spend{{else}} xdz-chatcard-skip{{/if}}">{{statusLabel}}</span>
+        <span class="xdz-chatcard-divider-fill">////////////////////////////////////////////////////////////</span>
+      </div>
+      {{#if hasLocation}}
+      <div class="xdz-chatcard-spawn-grid">
+        <span class="xdz-chatcard-spawn-die">&lt;{{area}}&gt;</span>
+        <span class="xdz-chatcard-spawn-die">&lt;{{location}}&gt;</span>
+        <span class="xdz-chatcard-spawn-die">&lt;{{quadrantDie}}&gt;</span>
+        <span class="xdz-chatcard-spawn-label">{{areaLabel}}</span>
+        <button type="button" class="xdz-chatcard-spawn-label xdz-chatcard-spawn-locbtn" data-action="xdzPanToLocationId" data-location-id="{{locationId}}">{{label}}</button>
+        <span class="xdz-chatcard-spawn-label">{{quadrantWord}}</span>
+      </div>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+</div>
