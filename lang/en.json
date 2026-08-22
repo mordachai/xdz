@@ -216,8 +216,7 @@
       "CouldNotLoadActor": "Could not load actor {uuid}.",
       "CouldNotLoadTable": "Could not load table {uuid}.",
       "NoLocationTiles": "No LOCATION tiles on this scene.",
-      "TargetOnePC": "Target exactly one COMMANDO/CHARACTER token first.",
-      "TargetNotPC": "Targeted token isn't a COMMANDO/CHARACTER."
+      "TargetNotPC": "No targeted/selected token is a COMMANDO/CHARACTER."
     },
 
     "Locations": {
@@ -478,6 +477,7 @@
       "AlreadyLockedTag": "ALREADY LOCKED",
       "NoDoorTag": "NO DOOR",
       "NoTileTag": "NO TILE",
+      "DefaultSource": "Resistance",
       "XenoAttackTitle": "XENO ATTACK",
       "XenoAttackTag": "ATTACK",
       "XenoAttackDesc": "The xeno lashes out with tail, claws, and bite at {name}.",
@@ -548,7 +548,7 @@
         "Hint": "Resting opacity of the door open/close icon on the canvas. Lower it for a more discreet icon; it still snaps to full opacity on hover."
       },
       "XenoActionsUseSelection": {
-        "Name": "Xeno Actions Target the Selected Token",
+        "Name": "Select Commandos to Target",
         "Hint": "Attack/Ambush/Panic macros use the controlled (selected) token instead of requiring an actual target (T key)."
       }
     },

@@ -1,0 +1,264 @@
+{
+  "label": "EQUIPAMENTO EXTRA",
+  "mapping": {
+    "description": "system.description"
+  },
+  "entries": {
+    "81c45daec046176f": {
+      "name": "Habilidade: Determinação Implacável",
+      "description": "Uma vez por LOCALIZAÇÃO, faça um teste Difícil de Sistemas e reduza o ALVO da sala em 1."
+    },
+    "afc1cf80f6fef70c": {
+      "name": "Habilidade: Aprendiz Rápido",
+      "description": "Toda vez que um companheiro de equipe rolar um 20 natural (não psiônico), receba um bônus de +2 no treinamento que ele usou."
+    },
+    "ebc06979a8d4c13d": {
+      "name": "Habilidade: Operador de Carregadeira",
+      "description": "+3 em todas as rolagens feitas para operar carregadeiras motorizadas ou armaduras de força."
+    },
+    "236d7fd19317f4ed": {
+      "name": "Habilidade: Assumir o Comando",
+      "description": "Todas as suas rolagens são FÁCEIS pelas próximas 4 RODADAS; depois disso, esta habilidade fica desativada por 4 RODADAS."
+    },
+    "2f319139e48b5b7b": {
+      "name": "Botas de Ancoragem",
+      "description": "Resiste automaticamente a ser agarrado ou derrubado."
+    },
+    "9d3ef8bd52b5dbb4": {
+      "name": "Arsenal Escondido",
+      "description": "Um estoque escondido de munição e peças sobressalentes. Reabastece a MUNIÇÃO de 1 arma ao máximo."
+    },
+    "e2728e934edba28b": {
+      "name": "Escudo de Assalto",
+      "description": "+3 de Armadura; sacrifique para absorver todo o dano de um ataque."
+    },
+    "cc4f0279a63c767c": {
+      "name": "Barricada",
+      "description": "Cobertura móvel montada rapidamente. COMANDOS atrás dela somam 1D4 a uma rolagem de ESQUIVA."
+    },
+    "d629ade2b1abefcd": {
+      "name": "Kit de Contenção de Bioforma",
+      "description": "Itens para atordoar, capturar, preservar, transportar e/ou dissecar uma única bioforma."
+    },
+    "c206fd6ea3470e8f": {
+      "name": "Bioscanner",
+      "description": "Escaneie qualquer alvo morto. Role Fácil contra aquele tipo de inimigo."
+    },
+    "036b7b409ebf3002": {
+      "name": "Agente Neurotóxico",
+      "description": "Preenche rapidamente uma área PRÓXIMA com uma nuvem química que interrompe o sistema nervoso central de qualquer criatura por 1D4 RODADAS."
+    },
+    "c68aaba6c1313acf": {
+      "name": "Kit de Escalada",
+      "description": "15 metros de paracord, pitons, grampos de escalada e um machado de escalada/gelo."
+    },
+    "a9ff6acae64cd752": {
+      "name": "Torniquete de Combate",
+      "description": "Sacrifique para interromper a contagem regressiva de CAÍDO por 1D4 RODADAS."
+    },
+    "6840794ab15c99e9": {
+      "name": "Armadura de Comando",
+      "description": "+3 de Armadura. Padrão para Comandos do tipo comando."
+    },
+    "a6d14787d53e5e39": {
+      "name": "Monitor de Condição",
+      "description": "Consuma para se recuperar instantaneamente com 1 PV, mesmo após chegar a 0 na contagem regressiva de morte."
+    },
+    "987cc5b64ac7ae70": {
+      "name": "Maçarico de Corte",
+      "description": "Corte ou sele metal com uma rolagem Fácil de Sistemas."
+    },
+    "46422c4c7827fbf5": {
+      "name": "Caixa de Suprimentos",
+      "description": "Uma caixa de suprimentos lançada pela evacuação. Contém 1D4 ASSETS aleatórios."
+    },
+    "0769ad1c11025a30": {
+      "name": "Fita Adesiva",
+      "description": "Junte 2 armas com fita adesiva. Role dano em dobro com a arma combinada."
+    },
+    "ac578365eb97a76c": {
+      "name": "Armadura EOD",
+      "description": "+3 de Armadura. Blindagem à prova de explosão para especialistas em demolição."
+    },
+    "85aebd72de53e6bb": {
+      "name": "Escudo EOD",
+      "description": "Recebe metade do dano de todas as explosões."
+    },
+    "c8dcb4625a88a86e": {
+      "name": "Ferramentas EOD",
+      "description": "Desative qualquer dispositivo explosivo com uma rolagem Fácil de Sistemas."
+    },
+    "ca1d1532032dcd2a": {
+      "name": "Pod de Munição Estendida",
+      "description": "Recarregue a cada três rajadas em vez de duas."
+    },
+    "492d3768e600d796": {
+      "name": "Blindagem Extra",
+      "description": "Adiciona 10 PV (aumenta o máximo de Ferimentos em 1)."
+    },
+    "7a3f92e4c815b0d6": {
+      "name": "Refletores",
+      "description": "Refletores instaláveis que iluminam completamente uma LOCALIZAÇÃO inteira."
+    },
+    "d1cd9b5fe43ab14e": {
+      "name": "Módulo Tempestade de Granizo",
+      "description": "Em uma rolagem modificada de 15+ em Armas, role novamente para atacar um segundo alvo."
+    },
+    "9251c88c8d3f59ae": {
+      "name": "Armadura Pesada",
+      "description": "+5 de Armadura. Blindagem volumosa feita para artilheiros pesados."
+    },
+    "c90a8e298b960d2b": {
+      "name": "Munição de Alta Velocidade",
+      "description": "Armas padrão carregadas com essa munição causam dano de destruição D8 em vez de seu dado usual."
+    },
+    "20107ee760f29a23": {
+      "name": "Posição Defensiva",
+      "description": "Um ponto de estrangulamento defensável. COMANDOS entrincheirados aqui rolam ESQUIVA com bônus de D4."
+    },
+    "083cceca28b33df7": {
+      "name": "Mochila a Jato",
+      "description": "Paire em uma LOCALIZAÇÃO por 1D4 RODADAS; suba até 9 metros."
+    },
+    "0a62a5dc78acc456": {
+      "name": "Pacote de Estimulante",
+      "description": "Em uma rolagem de 15+ durante uma contagem regressiva de morte, levante-se com 1 PV."
+    },
+    "11d278a3cfdeeb9e": {
+      "name": "Propulsores de Salto",
+      "description": "Mova-se, realize uma ação e mova-se novamente no mesmo TURNO."
+    },
+    "20b6d235478b7c5c": {
+      "name": "Cartucho de Nitrogênio Líquido",
+      "description": "Congela instantaneamente uma fechadura ou pequena peça de metal."
+    },
+    "1cf03281d49ca517": {
+      "name": "Armadura de Médico",
+      "description": "+0 de Armadura, mas aumenta a capacidade de carga em 2 — espaço para mais equipamento médico."
+    },
+    "94007bbf6e563749": {
+      "name": "Kit Médico",
+      "description": "Cure um alvo usando uma rolagem de Medicina com bônus de D4."
+    },
+    "51734d294a8f3326": {
+      "name": "Micro Isqueiro-Maçarico",
+      "description": "Corta aço, mas lentamente. Usado principalmente para cortar cabos."
+    },
+    "463ef39451c764ce": {
+      "name": "Rastreador de Movimento",
+      "description": "Em uma rolagem de Sistemas bem-sucedida, localize todos os XENOS em movimento a até distância LONGE. Não indica a elevação dos alvos."
+    },
+    "94dc65009ad64ca7": {
+      "name": "Ração de Combate",
+      "description": "Recupera 1 Ferimento quando consumida durante uma pausa na luta."
+    },
+    "8ee9fdbd6f55d621": {
+      "name": "Módulo de Nanorreparo",
+      "description": "Regenera 1 PV por RODADA."
+    },
+    "2c9924d68d5e6777": {
+      "name": "Blindagem Natural",
+      "description": "+2 de Armadura. Blindagem embutida no chassi com refletores integrados."
+    },
+    "b1e6d0a247c9f358": {
+      "name": "Óculos de Visão Noturna",
+      "description": "Enxergue claramente na escuridão total. Sem penalidade em condições de pouca luz ou escuridão."
+    },
+    "5ab6ca6ee20f1c77": {
+      "name": "Macacão",
+      "description": "+0 de Armadura. Apenas um macacão civil comum."
+    },
+    "615f64ac368893e2": {
+      "name": "Pneumática",
+      "description": "Um tanque de ar comprimido para ferramentas e equipamentos. Potencializa 1 rolagem de MECÂNICA com bônus de D4."
+    },
+    "da1004c4a20ebc03": {
+      "name": "Escudo de Energia",
+      "description": "Ignora 1D6 de dano por RODADA."
+    },
+    "222e51abd2a39fad": {
+      "name": "Habilidade Psiônica: Dominar Criatura",
+      "description": "Em uma rolagem de Sistemas bem-sucedida, controle uma criatura por 1D4 RODADAS."
+    },
+    "fc7999be87d550fe": {
+      "name": "Habilidade Psiônica: Ilusão",
+      "description": "Role Sistemas para criar uma ilusão realista do tamanho de uma pessoa, que dura 1D4 RODADAS ou até ser tocada."
+    },
+    "5c55a6b2a1c907d9": {
+      "name": "Habilidade Psiônica: Telecinesia Limitada",
+      "description": "Em uma rolagem de Sistemas bem-sucedida, mova objetos do tamanho de uma caixa ou menores."
+    },
+    "e6bd36ad2ddd177b": {
+      "name": "Armadura Psi Ops",
+      "description": "+2 de Armadura. Usada por Comandos do tipo espião em operações psiônicas."
+    },
+    "bf7cd1c3a549afd5": {
+      "name": "Ataduras QuickClot",
+      "description": "Cure um alvo instantaneamente com bônus de D4 em Medicina, sem necessidade de rolagem."
+    },
+    "823b49ca9f0f8a1b": {
+      "name": "Rádio Comunicador",
+      "description": "Uma vez por ÁREA, faça uma rolagem de Sistemas para chamar (ou encontrar) uma queda de suprimentos."
+    },
+    "4552c44ac617e739": {
+      "name": "Drone de Reconhecimento",
+      "description": "Um drone pequeno e rápido que pode reconhecer até distância LONGE em um TURNO."
+    },
+    "fa2b10d30771d636": {
+      "name": "Programação de Reflexos",
+      "description": "Em uma rolagem bem-sucedida, desvie e contra-ataque um ataque PERTO por RODADA."
+    },
+    "a66684c4bcb543ef": {
+      "name": "Datapad de Esquemas",
+      "description": "Em uma rolagem de Sistemas bem-sucedida, saiba instantaneamente o caminho a percorrer, pontos fracos estruturais, locais de emboscada ou outros dados de qualquer estrutura."
+    },
+    "3b8ee361cb1a96e7": {
+      "name": "Armadura de Batedor",
+      "description": "+2 de Armadura. Blindagem mais leve, preferida por Comandos do tipo assalto."
+    },
+    "e3c4f7a8cf341f0b": {
+      "name": "Datapad de Autoajuda",
+      "description": "Use seu treinamento em Sistemas em vez de Medicina para se recuperar."
+    },
+    "8ef393cefb5ec5b8": {
+      "name": "Sinalizadores",
+      "description": "Sinalizadores de acionar-e-soltar. Também queimam debaixo d'água ou no vácuo."
+    },
+    "840773c1d5da50a8": {
+      "name": "Armadura Padrão",
+      "description": "+1 de Armadura. Proteção básica de infantaria."
+    },
+    "ba666fbd15211fa2": {
+      "name": "Link de Ataque Aéreo Tático",
+      "description": "Uma vez por LOCALIZAÇÃO ao ar livre, faça uma rolagem Difícil de Sistemas para solicitar um ataque aéreo em uma LOCALIZAÇÃO à sua escolha dentro de 1D4 RODADAS."
+    },
+    "5d94a7c1b3e08f62": {
+      "name": "Lanterna Tática",
+      "description": "Lanterna acoplada à arma. Ilumina uma pequena área à frente, cortando a escuridão a curto alcance."
+    },
+    "27e2d58bf36a5971": {
+      "name": "Programação Tática",
+      "description": "Role o dano da arma duas vezes em um 17, 18, 19 ou 20 natural."
+    },
+    "312705ec153f4506": {
+      "name": "Aprimoramento de Arma Talon",
+      "description": "Sua arma principal causa dano de destruição D8 em vez de seu dado usual."
+    },
+    "d4aaf0c24f889f63": {
+      "name": "Módulo Thump",
+      "description": "Role o esforço de Armas 3 vezes e distribua o dano como desejar."
+    },
+    "5f9e472673d110b7": {
+      "name": "Dispositivo de Rastreamento e Baliza de Localização",
+      "description": "Entregue a baliza a uma pessoa, ou coloque-a em uma LOCALIZAÇÃO. Sempre é possível encontrar aquela pessoa ou LOCALIZAÇÃO."
+    },
+    "2fe67cb479733e9c": {
+      "name": "Placas de Trauma",
+      "description": "+2 de Armadura."
+    },
+    "4ee787a0b2fcf20a": {
+      "name": "Kit de Trauma",
+      "description": "Cura um alvo completamente de forma instantânea; esse alvo regenera 1 PV por RODADA durante 1D4 RODADAS."
+    }
+  }
+}

@@ -210,7 +210,8 @@
       "NoCommandoTokens": "Nenhum token de COMANDO na cena.",
       "CouldNotLoadActor": "Não foi possível carregar o ator {uuid}.",
       "CouldNotLoadTable": "Não foi possível carregar a tabela {uuid}.",
-      "NoLocationTiles": "Nenhum tile de LOCALIZAÇÃO nesta cena."
+      "NoLocationTiles": "Nenhum tile de LOCALIZAÇÃO nesta cena.",
+      "TargetNotPC": "Nenhum token alvejado/selecionado é um COMANDO/PERSONAGEM."
     },
 
     "Locations": {
@@ -458,11 +459,42 @@
       "SpawnTitle": "SURGIMENTO DE XENO",
       "SpawnTag": "SURGIU",
       "AmbushTag": "EMBOSCADA",
+      "LocationTitle": "ROLAGEM DE LOCALIZAÇÃO",
+      "LocationTag": "LOCALIZAÇÃO",
       "AssetsTitle": "RECURSOS",
       "OffMapTitle": "FORA DE ALCANCE",
       "OffMapTag": "NAV",
       "OffMapDesc": "Não está nesta área. A localização fica {direction} daqui.",
-      "OffMapUnknown": "Não está nesta área."
+      "OffMapUnknown": "Não está nesta área.",
+      "LockDoorsTitle": "BLOQUEIO DE SEGURANÇA",
+      "LockDoorsTag": "BLOQUEIO",
+      "LockedTag": "TRANCADA",
+      "AlreadyLockedTag": "JÁ TRANCADA",
+      "NoDoorTag": "SEM PORTA",
+      "NoTileTag": "SEM TILE",
+      "DefaultSource": "Resistência",
+      "XenoAttackTitle": "ATAQUE XENO",
+      "XenoAttackTag": "ATAQUE",
+      "XenoAttackDesc": "O xeno ataca com cauda, garras e mordida contra {name}.",
+      "XenoAttackButton": "Rolar Esquiva",
+      "XenoAmbushTitle": "EMBOSCADA XENO",
+      "XenoAmbushTag": "EMBOSCADA",
+      "XenoAmbushDesc": "Xenos irrompem do teto e do chão, pegando {name} completamente desprevenido.",
+      "XenoAmbushButton": "Rolar Morte",
+      "XenoPanicTitle": "TESTE DE PÂNICO",
+      "XenoPanicTag": "PÂNICO",
+      "XenoPanicDesc": "O horror é grande demais para suportar. {name} precisa se manter firme.",
+      "XenoPanicButton": "Rolar Medo",
+      "XenoDamageTitle": "DANO",
+      "XenoDamageTag": "ACERTO",
+      "XenoDamageDesc": "{name} sofre {amount} de dano.",
+      "XenoAmbushDamageTitle": "DANO DE EMBOSCADA",
+      "XenoAmbushDamageTag": "ROLAR",
+      "XenoAmbushDamageDesc": "{name} foi pego — role o dano.",
+      "XenoAmbushDamageButton": "Rolar Dano (1d4)",
+      "XenoPanicFailTitle": "PÂNICO",
+      "XenoPanicFailTag": "MUNIÇÃO",
+      "XenoPanicFailDesc": "{name} entra em pânico — precisa gastar x1 Munição para atacar neste turno."
     },
 
     "Direction": {
@@ -505,6 +537,14 @@
         "Left": "Esquerda",
         "Right": "Direita",
         "Sidebar": "Barra Lateral"
+      },
+      "DoorIconOpacity": {
+        "Name": "Opacidade do Ícone da Porta",
+        "Hint": "Opacidade de repouso do ícone de abrir/fechar porta no canvas. Reduza para um ícone mais discreto; ele continua indo para opacidade total ao passar o mouse."
+      },
+      "XenoActionsUseSelection": {
+        "Name": "Selecionar Comandos para Alvo",
+        "Hint": "As macros de Ataque/Emboscada/Pânico usam o token controlado (selecionado) em vez de exigir um alvo real (tecla T)."
       }
     },
 

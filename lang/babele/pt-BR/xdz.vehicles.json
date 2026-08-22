@@ -1,0 +1,114 @@
+{
+  "label": "VEÍCULOS",
+  "mapping": {
+    "description": "system.description",
+    "vehicleType": "system.vehicleType",
+    "chunks": {
+      "path": "system.chunks",
+      "converter": "structured",
+      "cardinality": "many",
+      "container": "array",
+      "mapping": {
+        "title": "title",
+        "description": "description"
+      }
+    }
+  },
+  "entries": {
+    "GDPd02w1tPs7OYel": {
+      "vehicleType": "Transporte de Tropas de Superfície",
+      "chunks": [
+        {
+          "title": "Compartimento Blindado",
+          "description": "O compartimento de tripulação acomoda 8 tropas em assentos acolchoados de proteção contra capotamento."
+        },
+        {
+          "title": "Cabine de Comando",
+          "description": "Espaço para piloto e artilheiro. Se destruído, o veículo fica inoperante."
+        }
+      ]
+    },
+    "cx8kNwgvAaeHO0oG": {
+      "description": "Usado por construtores coloniais e trabalhadores portuários na maioria dos sistemas.",
+      "vehicleType": "Carregadeira Pesada",
+      "chunks": [
+        {
+          "title": "Cabine do Operador",
+          "description": "Um único piloto opera esta máquina de um arnês em pé. Os controles de braços e pés são replicados pelo veículo, dando-lhe grande versatilidade. A cabine do operador NÃO possui cúpula de proteção. Se este COMPONENTE for destruído, o veículo deixa de funcionar."
+        },
+        {
+          "title": "Pernas Ambulantes",
+          "description": "4 pernas pneumáticas movem o veículo de todas as formas possíveis, incluindo girar, escalar e se firmar no lugar. O veículo é muito lento, movendo-se no máximo PRÓXIMO por TURNO. Se este COMPONENTE for destruído, todas as funções continuam exceto a mobilidade."
+        },
+        {
+          "title": "Braços de Elevação",
+          "description": "Lâminas hidráulicas de aço-carbono medem 1,8 metro e podem se mover de diversas formas para agarrar, erguer ou carregar todo tipo de objeto. O peso máximo de elevação é de 4 toneladas."
+        },
+        {
+          "title": "Motor",
+          "description": "O veículo possui um motor híbrido a diesel. Armazena combustível suficiente para 1 hora de operação. Se destruído, o veículo fica imobilizado. Se destruído, role 1D6; em um resultado 6 o motor explode, destruindo o veículo por completo, junto com seu operador."
+        }
+      ]
+    },
+    "pECTYZN4Vyeww3g5": {
+      "description": "Frequentemente lançado a partir da baía de um Strike Jump Jet T16, com até 20 tropas.",
+      "vehicleType": "Transporte de Tropas e Ataque de Superfície",
+      "chunks": [
+        {
+          "title": "Compartimento Blindado de Tripulação e Rampa de Assalto",
+          "description": "O compartimento de tripulação acomoda 10 tropas em assentos acolchoados de proteção contra capotamento. Também inclui um painel de monitores de câmeras de capacete para comando a partir do veículo. O veículo continua operável se destruído, mas não pode transportar tropas."
+        },
+        {
+          "title": "Canhão de Plasma Principal",
+          "description": "Dispara projéteis de urânio superaquecido, 4D12, leva 1d4 rodadas para recarregar."
+        },
+        {
+          "title": "Metralhadoras Duplas",
+          "description": "Causam 1D8 em até 4 alvos."
+        },
+        {
+          "title": "Cabine de Comando",
+          "description": "Espaço para piloto e artilheiro. Se destruído, o veículo fica inoperante."
+        },
+        {
+          "title": "Ninho de Drones",
+          "description": "2 drones de combate para reconhecimento de longo alcance, com ótica avançada e sistemas de comunicação. Os sinais dos drones não podem ser processados se o compartimento de tripulação for destruído."
+        },
+        {
+          "title": "Compartimento de Armazenamento",
+          "description": "Armazena 6 cartuchos de gás neurotóxico, 2 autocanhões remotos, armas de reserva para as tropas, 8 kits médicos e 1 veículo de fuga de curto alcance."
+        }
+      ]
+    },
+    "WEpDlnzfkJbIxPBi": {
+      "description": "O que há de mais avançado para levar tropas e equipamento da órbita até a superfície.",
+      "vehicleType": "Aeronave de Lançamento Orbital",
+      "chunks": [
+        {
+          "title": "Rotores Gêmeos VTOL",
+          "description": "Velocidade de voo supersônica, capacidade de pairar, manobrabilidade extrema mesmo em ambientes fechados. Pode manter voo ou pairar com carga DOBRADA, mas somente por 1D4 RODADAS."
+        },
+        {
+          "title": "Revestimento Composto de Painéis Reflexivos",
+          "description": "Invisível ao radar. Todas as rolagens para detectar a aeronave visualmente são DIFÍCEIS. Além de 100 metros, a aeronave só é detectável por equipamentos sensíveis a calor."
+        },
+        {
+          "title": "Cabine e Conjunto de Aviônicos",
+          "description": "O STRIKE fica inoperante se este COMPONENTE for destruído. Se este COMPONENTE sofrer mais de 5 de dano, todas as rolagens de pilotagem são DIFÍCEIS."
+        },
+        {
+          "title": "Mísseis Inteligentes",
+          "description": "Um pod de explosivos teleguiados. 24 unidades, cada um causando d12 de dano a veículos. Podem ser disparados em salvas de até 6. Se este COMPONENTE for destruído, ele explode, destruindo mais 2 COMPONENTES."
+        },
+        {
+          "title": "Baía de Carga",
+          "description": "Capaz de transportar um MCS Rapid Assault Vehicle e suas tropas. Pousa e libera o conteúdo da baía em 1D4 RODADAS antes de decolar."
+        },
+        {
+          "title": "Pods Antipessoal Gêmeos de Flechetes",
+          "description": "Despedaça qualquer alvo em um raio PRÓXIMO do veículo; 4D12 de dano é causado em todas as direções. Esse dano pode ser reduzido à metade com uma rolagem de DES."
+        }
+      ]
+    }
+  }
+}

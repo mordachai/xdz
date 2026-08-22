@@ -1,0 +1,31 @@
+{
+  "label": "NPCS",
+  "mapping": {
+    "description": "system.notes",
+    "xenoTypeCustom": "system.xenoTypeCustom"
+  },
+  "entries": {
+    "ARzr0yrQtSLCoM41": {
+      "name": "Alfa",
+      "xenoTypeCustom": "Alfa"
+    },
+    "vYaSgea8JfEA0mRh": {
+      "name": "Pretoriano",
+      "description": "Nunca muito longe da rainha..."
+    },
+    "jR4cSGznMxeiLvfz": {
+      "name": "Rainha",
+      "xenoTypeCustom": "Rainha"
+    },
+    "3Vkief3qvIJShqBK": {
+      "name": "Comando Desertor"
+    },
+    "KqNRkTh7OGu8lkts": {
+      "name": "Cientista"
+    },
+    "nJilHxm4gmAhgoxS": {
+      "name": "Perverso",
+      "xenoTypeCustom": "Perverso"
+    }
+  }
+}

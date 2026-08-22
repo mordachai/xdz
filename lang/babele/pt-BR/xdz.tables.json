@@ -1,0 +1,177 @@
+{
+  "label": "TABELAS",
+  "entries": {
+    "izGbcWp05MyNI4dc": {
+      "name": "ASSETS",
+      "description": "<p>Difícil de acreditar, mas de vez em quando os COMANDOS têm um golpe de sorte.</p><p>Toda MISSÃO tem <strong>[[/r 1D8]] ASSETS</strong>. Quando a MISSÃO começa, role quantos existem e onde estão. Se jogando com um Mestre, isso pode ser mantido em segredo. Afirmativo!</p>",
+      "results": [
+        {
+          "_id": "zdHWcxN5ie8CtjYm",
+          "name": "01 - Armas Automáticas",
+          "description": "<p>Coloque em uma LOCALIZAÇÃO. O Autocanhão matará [[/r 1D8]] XENOS ali por [[/r 1D8]] RODADAS </p>"
+        },
+        {
+          "_id": "sR1eoolPxjmuPwhZ",
+          "name": "02 - Barricada",
+          "description": "<p>Coloque onde duas LOCALIZAÇÕES se encontram para bloquear permanentemente aquela porta</p>"
+        },
+        {
+          "_id": "2hZHJk4OP7vrae6L",
+          "name": "03 - Caixa de Suprimentos",
+          "description": "<p>Reabastece a munição e os suprimentos médicos do esquadrão</p>"
+        },
+        {
+          "_id": "RF2ckDEkhD0O7fRm",
+          "name": "04 - Kits Médicos",
+          "description": "<p>Todos os COMANDOS curam 2 FERIMENTOS</p>"
+        },
+        {
+          "_id": "QhkPD88s12t89Yyn",
+          "name": "05 - Arsenal Escondido",
+          "description": "<p>Todos os COMANDOS adquirem uma arma à escolha (Rifle de Pulso, Lança-Chamas ou Pesada)</p>"
+        },
+        {
+          "_id": "QMUuP2VMGM11005s",
+          "name": "06 - Cortador",
+          "description": "<p>Pode ser usado por um COMANDO para remover uma Barricada</p>"
+        },
+        {
+          "_id": "sOD8XjA7XAHFMAfZ",
+          "name": "07 - Pneumática",
+          "description": "<p>Escava um túnel entre quaisquer 2 LOCALIZAÇÕES</p>"
+        },
+        {
+          "_id": "OxgkvhyKH7VfDQCH",
+          "name": "08 - Explosivos",
+          "description": "<p>Usando um pavio de [[/r 1D4]] RODADA, destrói uma LOCALIZAÇÃO e tudo dentro dela</p>"
+        },
+        {
+          "_id": "03LNigzwFXnehTQV",
+          "name": "09 - Cobertura",
+          "description": "<p>Coloque em uma LOCALIZAÇÃO. XENOS não podem EMBOSCAR ali</p>"
+        },
+        {
+          "_id": "95QwGSkZB8tFmC8s",
+          "name": "10 - Descanso",
+          "description": "<p>Um breve descanso. Reabastece toda a munição e cura todos os FERIMENTOS</p>"
+        },
+        {
+          "_id": "i4Kd8hti2rDeujYQ",
+          "name": "11 - Carregadeira",
+          "description": "<p>Uma máquina de movimentação de carga, pode ser usada de todo tipo de forma criativa e destrutiva @UUID[Compendium.xdz.vehicles.Actor.cx8kNwgvAaeHO0oG]{Lift Truck}</p>"
+        },
+        {
+          "_id": "j2MOtHzfwicwQ7Cn",
+          "name": "12 - APC",
+          "description": "<p>Move 8 COMANDOS para qualquer LOCALIZAÇÃO instantaneamente, depois fica danificado demais para uso @UUID[Compendium.xdz.vehicles.Actor.GDPd02w1tPs7OYel]{APC}</p>"
+        }
+      ]
+    },
+    "fC4RMSXWpQy7IQkV": {
+      "name": "PECULIARIDADE DO COMANDO",
+      "description": "<p>Role 1D20 para dar a um COMANDO uma peculiaridade de personalidade.</p>",
+      "results": [
+        {
+          "_id": "QPLHRCs5ckzYFKJE",
+          "name": "1 - Covarde",
+          "description": "Esse soldado não engana ninguém: está morrendo de medo de quase tudo"
+        },
+        {
+          "_id": "Sa6GnMrb1FBODwLN",
+          "name": "2 - Vendido",
+          "description": "Ninguém sabe à primeira vista, mas esse aqui é um fura-greve da companhia"
+        },
+        {
+          "_id": "0nHJc6It9vJMbWyd",
+          "name": "3 - Só pelo Dinheiro",
+          "description": "Só está aqui pelas ações. Dá pra discutir a questão do bônus?"
+        },
+        {
+          "_id": "JbclYPnLi7KqLXf5",
+          "name": "4 - Duas Semanas",
+          "description": "Prestes a se aposentar em duas semanas, esse soldado não deixa ninguém esquecer disso"
+        },
+        {
+          "_id": "0dI74kybMUjclX6d",
+          "name": "5 - Brigão",
+          "description": "Esse praça nunca desiste, nunca se abala, sempre focado na missão"
+        },
+        {
+          "_id": "xDtLwiCQQOEDdoAK",
+          "name": "6 - Caipira",
+          "description": "Sotaque carregado como melado e toda aquela gíria caipira que vem junto"
+        },
+        {
+          "_id": "zLfCLOD0BHdhYnAd",
+          "name": "7 - Quatro-Olhos",
+          "description": "Óculos com lentes grossas como fundo de garrafa. Vive derrubando a maldita coisa"
+        },
+        {
+          "_id": "PysIQREJWuuMoYaq",
+          "name": "8 - Da Velha Guarda",
+          "description": "Prefere usar pistolas, espingardas e os próprios punhos"
+        },
+        {
+          "_id": "GhzO7sdezAHuHrDD",
+          "name": "9 - Rua",
+          "description": "Criado no gueto, e ainda representa até hoje"
+        },
+        {
+          "_id": "W2V7c8DQ1Lj1ZGd8",
+          "name": "10 - Quadrinhos",
+          "description": "Esse soldado está sempre com o nariz enfiado numa revista em quadrinhos nos momentos mais estranhos"
+        },
+        {
+          "_id": "sMwK1H1EYWvVmZHq",
+          "name": "11 - Sempre Positivo",
+          "description": "Um otimista raiz, para a irritação de todo mundo"
+        },
+        {
+          "_id": "2UWWkMBY6z1hSNhK",
+          "name": "12 - Pirômano",
+          "description": "Entrou no corpo para ver tudo queimar, e geralmente consegue o que quer"
+        },
+        {
+          "_id": "2HvxJYVpvmg0xpHW",
+          "name": "13 - Veterano",
+          "description": "Velho como o mundo, duro como couro, já viu de tudo"
+        },
+        {
+          "_id": "eI0S7HuOsXjfJh1Z",
+          "name": "14 - Chapado",
+          "description": "Esse praça contrabandeou um frasco de NUKE na nave de desembarque. Um baratinado"
+        },
+        {
+          "_id": "0oy0N0uHydLlsdmi",
+          "name": "15 - Fracassado",
+          "description": "Tem gente que dá péssimos soldados, mas acaba aqui mesmo assim"
+        },
+        {
+          "_id": "G6GjDUjoGX4LJtUq",
+          "name": "16 - Black Ops",
+          "description": "Sem conversa, equipamento preto, óculos maneiros, estilo ninja"
+        },
+        {
+          "_id": "URBn3PsMSgG91iLc",
+          "name": "17 - Híbrido",
+          "description": "A companhia anda mexendo com guerreiros geneticamente alterados"
+        },
+        {
+          "_id": "JzyA45cgscHEYSKw",
+          "name": "18 - Tech",
+          "description": "Ninguém melhor com fios e microchips. Pessoas? Não, obrigado."
+        },
+        {
+          "_id": "jH48gBZrntjZq8TC",
+          "name": "19 - Nativo",
+          "description": "Prefere usar uma faca e os 'métodos antigos'"
+        },
+        {
+          "_id": "ZUuAWqai72LWW1LG",
+          "name": "20 - Sargento",
+          "description": "Um glorioso chute na bunda, boca grande e sempre mascando charuto"
+        }
+      ]
+    }
+  }
+}

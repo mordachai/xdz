@@ -2152,7 +2152,7 @@
   background: transparent;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-cmdhud-color) 14%, transparent) 0%, transparent 70%);
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px), radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-cmdhud-color) 14%, transparent) 0%, transparent 70%), radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.3) 120%), #111;
 }
 .xdz-cmdhud-stat-block::before {
   content: "";
@@ -2286,7 +2286,7 @@
   background: transparent;
   position: relative;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-cmdhud-color) 14%, transparent) 0%, transparent 70%);
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.15) 2px, rgba(0, 0, 0, 0.15) 4px), radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--xdz-cmdhud-color) 14%, transparent) 0%, transparent 70%), radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.3) 120%), #111;
 }
 .xdz-cmdhud-weapon::before {
   content: "";
@@ -3835,7 +3835,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   padding: 0.25rem 0.4rem;
   background: transparent;
   color: #4dff8a;

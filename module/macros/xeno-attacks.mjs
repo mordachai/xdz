@@ -1,8 +1,7 @@
 import { show3d, createRolledMessage } from './location-roll.mjs';
 
-// Each xeno action posts a card naming exactly one targeted PC and a button
-// that rolls the matching resistance. No multi-target support yet — the
-// book's Wicked xeno (multi-target attack) will need its own macro later.
+// Each xeno action posts one card per targeted PC, each with a button that
+// rolls that PC's matching resistance.
 const ACTIONS = {
   attack: {
     titleKey: 'XDZ.Chat.XenoAttackTitle',
@@ -34,9 +33,25 @@ async function renderXenoCard(data) {
   });
 }
 
+/**
+ * Alias used as the chat card's "speaker" header. Cards are attacks/checks
+ * caused by whatever's attacking, not by whichever token the GM has
+ * selected/targeted — `ChatMessage.getSpeaker()` with no args would
+ * otherwise default to that token (visibly wrong under the
+ * select-instead-of-target setting, where the selected token IS the PC
+ * being attacked). Falls back to a generic "Resistance" label since these
+ * three actions aren't always tied to a specific xeno actor; callers that
+ * do have one (a rogue commando, a colonist, a named xeno) should pass its
+ * actual name as `source` instead.
+ */
+function defaultSourceAlias() {
+  return game.i18n.localize('XDZ.Chat.DefaultSource');
+}
+
 async function postXenoCard(data) {
   const content = await renderXenoCard(data);
-  return ChatMessage.create({ speaker: ChatMessage.getSpeaker(), content });
+  const alias = data.source ?? defaultSourceAlias();
+  return ChatMessage.create({ speaker: { alias }, content });
 }
 
 /** Adds `amount` injury points, clamped to the death threshold. Commando/character only. */
@@ -57,37 +72,37 @@ function getActionTokens() {
 }
 
 /**
- * Shared entry point for the three hotbar macros below. Requires exactly one
- * resolved token (see `getActionTokens`) pointing at a commando/character;
- * anything else warns and does nothing.
+ * Shared entry point for the three hotbar macros below. Resolves tokens (see
+ * `getActionTokens`), posts one card per commando/character among them; any
+ * non-PC token is skipped. Warns if none resolve.
  */
 async function postXenoAction(kind) {
   const def = ACTIONS[kind];
 
   const tokens = getActionTokens();
-  if (tokens.length !== 1) {
-    return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.TargetOnePC'));
-  }
-  const [token] = tokens;
-  const actor = token.actor;
-  if (!actor || (actor.type !== 'commando' && actor.type !== 'character')) {
+  const actors = tokens
+    .map((t) => t.actor)
+    .filter((actor) => actor && (actor.type === 'commando' || actor.type === 'character'));
+  if (!actors.length) {
     return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.TargetNotPC'));
   }
 
-  await postXenoCard({
-    title: game.i18n.localize(def.titleKey),
-    tag: game.i18n.localize(def.tagKey),
-    targetImg: actor.img,
-    targetName: actor.name,
-    description: game.i18n.format(def.descKey, { name: actor.name }),
-    button: {
-      action: 'xdzRollXenoResistance',
-      label: game.i18n.localize(def.buttonKey),
-      actorUuid: actor.uuid,
-      key: def.resistance,
-      kind,
-    },
-  });
+  for (const actor of actors) {
+    await postXenoCard({
+      title: game.i18n.localize(def.titleKey),
+      tag: game.i18n.localize(def.tagKey),
+      targetImg: actor.img,
+      targetName: actor.name,
+      description: game.i18n.format(def.descKey, { name: actor.name }),
+      button: {
+        action: 'xdzRollXenoResistance',
+        label: game.i18n.localize(def.buttonKey),
+        actorUuid: actor.uuid,
+        key: def.resistance,
+        kind,
+      },
+    });
+  }
 }
 
 export const xenoAttack = () => postXenoAction('attack');
@@ -160,5 +175,5 @@ export async function resolveXenoAmbushDamage(actorUuid) {
     targetName: actor.name,
     description: game.i18n.format('XDZ.Chat.XenoDamageDesc', { name: actor.name, amount: roll.total }),
   });
-  await createRolledMessage({ speaker: ChatMessage.getSpeaker({ actor }), content, rolls: [roll] });
+  await createRolledMessage({ speaker: { alias: defaultSourceAlias() }, content, rolls: [roll] });
 }

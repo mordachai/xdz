@@ -2,7 +2,7 @@
   "id": "xdz",
   "title": "Xeno Dead Zone",
   "description": "Non-official Xeno Dead Zone system for Foundry VTT. XENO DEAD ZONE is a one-stop solution to scratch your itch for a night of great gaming in the world of deadly space predators and the badasses who fight them.",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "authors": [
     {
       "name": "Gus",
@@ -153,7 +153,7 @@
   "socket": true,
   "url": "https://github.com/mordachai/xdz",
   "manifest": "https://github.com/mordachai/xdz/releases/latest/download/system.json",
-  "download": "https://github.com/mordachai/xdz/releases/download/v2.2.0/system.zip",
+  "download": "https://github.com/mordachai/xdz/releases/download/v2.2.1/system.zip",
   "readme": "https://github.com/mordachai/xdz/blob/main/README.md",
   "bugs": "https://github.com/mordachai/xdz/issues",
   "license": "LICENSE"

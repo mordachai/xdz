@@ -1,0 +1,125 @@
+{
+  "label": "ARMAS",
+  "mapping": {
+    "description": "system.description",
+    "rules": "system.rules",
+    "ammoLabel": "system.ammoLabel",
+    "secondaryLabel": "system.secondary.label",
+    "secondaryDescription": "system.secondary.description"
+  },
+  "entries": {
+    "b312c254173601fb": {
+      "name": "Autocanhões",
+      "description": "Implante duas armas automatizadas uma vez por MISSÃO. Cada uma tem 10 PV e 1D6 rajadas; cada rajada destrói 10 PV de um XENO.",
+      "ammoLabel": "Rajadas"
+    },
+    "7920b085ce8e4702": {
+      "name": "Canhão de Impulso",
+      "description": "Ligado diretamente ao seu chassi de combate. +2 na rolagem de destruição.",
+      "ammoLabel": "Cargas"
+    },
+    "adcf011f2fc329b0": {
+      "name": "Rifle de Precisão CM8",
+      "description": "Gaste 1 RODADA mirando. Em um acerto, reduza os PV do alvo em 20.",
+      "ammoLabel": "Balas"
+    },
+    "5d3d026f5d489cd8": {
+      "name": "Espingarda de Combate",
+      "description": "Dano total da rolagem de destruição, apenas inimigos PERTO.",
+      "ammoLabel": "Cartuchos"
+    },
+    "3beeace6fee66094": {
+      "name": "Granadas EMP",
+      "description": "Causa curto-circuito em qualquer dispositivo eletrônico ou XENOS com 20 PV ou menos.",
+      "ammoLabel": "Granadas"
+    },
+    "4bed37290a3e80bb": {
+      "name": "Granadas de Fragmentação",
+      "description": "Dano total da rolagem de destruição.",
+      "ammoLabel": "Granadas"
+    },
+    "2072dc895fc8d609": {
+      "name": "Explosivo em Gel",
+      "description": "Pegajoso — explode quando incendiado, atingido por tiros, ou detonado em um temporizador D4. Dano de destruição em dobro.",
+      "ammoLabel": "Cargas"
+    },
+    "7506ce0d7f6f3c3d": {
+      "name": "Lançador de Granadas",
+      "description": "A rolagem de destruição se distribui entre até três alvos que estejam PERTO uns dos outros.",
+      "ammoLabel": "Granadas"
+    },
+    "e7774f4dfc81ab5e": {
+      "name": "Unidade de Chamas Pesada",
+      "description": "Causa o dobro do dano da rolagem de destruição a todos os alvos PRÓXIMOS de quem a porta.",
+      "ammoLabel": "Combustível"
+    },
+    "7d626d9d6b73f619": {
+      "name": "Rifle Leve",
+      "description": "Leve, preciso, confiável. +3 na rolagem de destruição.",
+      "ammoLabel": "Balas"
+    },
+    "b4518ad091889348": {
+      "name": "Rifle de Infantaria M39",
+      "description": "Rifle de infantaria padrão. +1 na rolagem de destruição.",
+      "ammoLabel": "Balas"
+    },
+    "623ad7384f7e300f": {
+      "name": "Pod de Micro-Mísseis",
+      "description": "Em um acerto, lança 1D6 mísseis contra um único alvo. Erros não consomem uma carga.",
+      "ammoLabel": "Mísseis"
+    },
+    "b930f32c9265e5d7": {
+      "name": "Arma Inteligente MK11 \"Sasha\"",
+      "description": "Batizada em homenagem à sua falecida namorada. +4 na rolagem de destruição.",
+      "rules": "Dispara em rajadas de 3 balas — recarregue após 2 rajadas (1 TURNO).",
+      "ammoLabel": "Balas"
+    },
+    "a3b128221c65908b": {
+      "name": "Rifle Talon MK1",
+      "description": "Rifle de emissão de comando. +2 na rolagem de destruição.",
+      "rules": "Combina bem com o marco Talon Weapon Upgrade.",
+      "ammoLabel": "Balas"
+    },
+    "082e4d32662d03a4": {
+      "name": "Pistola Automática MK3",
+      "description": "Compacta, dissimulável, letal o suficiente. +1 na rolagem de destruição.",
+      "ammoLabel": "Balas"
+    },
+    "890321508cd0452d": {
+      "name": "Minas Remotas",
+      "description": "Minas-aranha ágeis que perseguem alvos a até distância LONGE.",
+      "ammoLabel": "Minas"
+    },
+    "9fb2923b2363d6f3": {
+      "name": "Lançador de Foguetes SILAS 2",
+      "description": "Lança um míssil teleguiado que causa 4x o dano da rolagem de destruição a um único alvo.",
+      "ammoLabel": "Foguetes"
+    },
+    "21e6bb59b09843db": {
+      "name": "Canhão de Luz Solar",
+      "description": "+2 na rolagem de destruição, usando um dado de destruição não padrão D10.",
+      "ammoLabel": "Cargas"
+    },
+    "566a3afd1c00a249": {
+      "name": "Rifle Padrão do Corpo",
+      "description": "Rifle básico de emissão do Corpo. +1 na rolagem de destruição.",
+      "ammoLabel": "Balas"
+    },
+    "9fd7af9a10cfb6c2": {
+      "name": "Arma Secundária T11",
+      "description": "Arma secundária padrão dos COMANDOS. Compacta, confiável, carregador de 20 balas.",
+      "rules": "Arma reserva — sempre disponível mesmo quando a principal for destruída.",
+      "ammoLabel": "Balas"
+    },
+    "2caf057d461febe3": {
+      "name": "Faca Tática",
+      "description": "Faca tática de aço de alto carbono. Durável e útil.",
+      "rules": "Nunca acaba — sempre disponível em um aperto."
+    },
+    "76875db49ca178e8": {
+      "name": "Munição Tranquilizante",
+      "description": "Não letal. Coloca um alvo com 20 PV ou menos para dormir por 1D4 RODADAS.",
+      "ammoLabel": "Balas"
+    }
+  }
+}

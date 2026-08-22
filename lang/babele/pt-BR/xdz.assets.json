@@ -1,0 +1,56 @@
+{
+  "label": "ASSETS",
+  "mapping": {
+    "description": "system.description"
+  },
+  "entries": {
+    "xdzAsset1AutoGun": {
+      "name": "01 - Armas Automáticas",
+      "description": "Coloque em uma Localização. O Autocanhão matará 1d8 Xenos ali por 1d8 Rodadas."
+    },
+    "xdzAsset2Barrcad": {
+      "name": "02 - Barricada",
+      "description": "Coloque onde duas Localizações se encontram para bloquear permanentemente aquela porta."
+    },
+    "xdzAsset3DropCrt": {
+      "name": "03 - Caixa de Suprimentos",
+      "description": "Reabastece a munição e os suprimentos médicos do esquadrão."
+    },
+    "xdzAsset4MedKits": {
+      "name": "04 - Kits Médicos",
+      "description": "Todos os Comandos curam 2 Ferimentos."
+    },
+    "xdzAsset5ArmsCch": {
+      "name": "05 - Arsenal Escondido",
+      "description": "Todos os Comandos adquirem uma arma à escolha (Rifle de Pulso, Lança-Chamas ou Pesada)."
+    },
+    "xdzAsset6Cuttrxx": {
+      "name": "06 - Cortador",
+      "description": "Pode ser usado por um Comando para remover uma Barricada."
+    },
+    "xdzAsset7Pneumtc": {
+      "name": "07 - Pneumática",
+      "description": "Escava um túnel entre quaisquer 2 Localizações."
+    },
+    "xdzAsset8Explosv": {
+      "name": "08 - Explosivos",
+      "description": "Usando um pavio de 1d4 Rodada, destrói uma Localização e tudo dentro dela."
+    },
+    "xdzAsset9Coverxx": {
+      "name": "09 - Cobertura",
+      "description": "Coloque em uma Localização. Xenos não podem Emboscar ali."
+    },
+    "xdzAssetaHoldxxx": {
+      "name": "10 - Descanso",
+      "description": "Um breve descanso. Reabastece toda a munição e cura todos os Ferimentos."
+    },
+    "xdzAssetbLoaderx": {
+      "name": "11 - Carregadeira",
+      "description": "Uma máquina de movimentação de carga, pode ser usada de todo tipo de forma criativa e destrutiva."
+    },
+    "xdzAssetcAPCxxxx": {
+      "name": "12 - APC",
+      "description": "Move 8 Comandos para qualquer Localização instantaneamente, depois fica danificado demais para uso."
+    }
+  }
+}

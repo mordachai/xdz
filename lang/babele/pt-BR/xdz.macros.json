@@ -1,0 +1,20 @@
+{
+  "label": "MACROS",
+  "entries": {
+    "fb7d984ede9eee73": { "name": "Destacar Áreas" },
+    "f9fdd85f27ecaf8b": { "name": "Trancar Portas" },
+    "98a42a8c8ca312f5": { "name": "Rolar Assets" },
+    "69b0a7eff288dc5c": { "name": "Rolar Missão de Colônia" },
+    "3abc57eecb8070b6": { "name": "Rolar Escalada" },
+    "f8d1208caaef422d": { "name": "Rolar Localização" },
+    "bf55e711e37245c6": { "name": "Rolar Missão de Nave" },
+    "db85392487533c61": { "name": "Gerar Procriadora" },
+    "58b3d813bb2fa137": { "name": "Gerar Comandos Desertores" },
+    "94ebfdbe58a4061f": { "name": "Gerar Enxame" },
+    "bccba38b6c737bfc": { "name": "Gerar Perverso" },
+    "9cdb314c54f8806e": { "name": "Gerar Xenos" },
+    "0a02c5ef40a236af": { "name": "Emboscada Xeno" },
+    "09e093cd1616ed77": { "name": "Ataque Xeno" },
+    "b82e606d1ebe3d93": { "name": "Pânico Xeno" }
+  }
+}

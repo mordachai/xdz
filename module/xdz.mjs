@@ -20,6 +20,12 @@ globalThis.xdz = {
   config: XDZ,
 };
 
+// Babele (optional module) compendium translations, read from
+// lang/babele/<language>/xdz.<pack>.json. Journal entries only translate
+// their sidebar name — page content is already localized at render time via
+// the @Localize enricher below, reading straight from lang/pt-BR.json.
+Hooks.once('babele.init', (babele) => babele.setSystemTranslationsDir('lang/babele'));
+
 Hooks.once('init', function () {
   CONFIG.XDZ = XDZ;
 
