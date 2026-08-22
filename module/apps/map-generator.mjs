@@ -1,7 +1,7 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ApplicationV2 } = foundry.applications.api;
 
-const GRID_SIZE = 75; // must match the Scene's own grid size, see #createSceneDoc
+const GRID_SIZE = 50; // must match the Scene's own grid size, see #createSceneDoc
 
 // Rooms are NOT all the same shape — every location's real art has its own
 // aspect ratio (measured off the actual .webp pixel dimensions, ranging
@@ -25,7 +25,7 @@ const BW_ASPECT = 1500 / 2100;
 // size for the average room" per design call. A location can override via
 // its own `sizeCells` (e.g. Obs Deck / Escape Pod are intentionally
 // smaller) — see nominalSize().
-const DEFAULT_SIZE_CELLS = 12;
+const DEFAULT_SIZE_CELLS = 18;
 
 /** A location's own `aspect` (height/width) for `style`: color uses its real per-location `aspect` (measured off its actual art, see config.mjs); bw uses `loc.bwAspect` when the piece has genuinely separate B&W art (the connectors) measured to its own real proportions, else falls back to the shared B&W template ratio `BW_ASPECT`. `NATIVE_ASPECT` only if somehow neither `aspect` nor a style match is set. */
 function aspectFor(loc, style) {
@@ -166,7 +166,7 @@ function buildPitch(cellsList, widthCells, heightCells, style) {
 
 // Door opening width, in scene pixels, cut into the generated wall at the
 // real door position — the rest of the shared edge stays a solid wall.
-const DOOR_WIDTH = 120;
+const DOOR_WIDTH = 100;
 
 // Door leaf swapped in for the slide animation, and the static frame Tile
 // laid over the gap (see tools/door-mapper); the frame Tile is rotated 90°
@@ -187,8 +187,8 @@ const DOOR_FRAME_TEXTURES = {
 // being squeezed/stretched to fit the DOOR_WIDTH gap — the frame can
 // legitimately run wider than the gap itself (a door casing overlapping
 // the wall on either side is normal).
-const DOOR_FRAME_HEIGHT = 17;
-const DOOR_FRAME_WIDTH = DOOR_FRAME_HEIGHT * (836 / 55);
+const DOOR_FRAME_HEIGHT = 34;
+const DOOR_FRAME_WIDTH = DOOR_FRAME_HEIGHT * (836 / 117);
 
 /** Wall+frame-Tile docs for the shared edge between a cell (at `col,row`, already offset into the target scene's local space) and its `dir` neighbor: solid wall on either side of a `DOOR_WIDTH`-wide door gap at the location's real door position, plus a frame Tile centered on that gap. `edge` is the scene's own pitch-built EDGE (see buildPitch/makeEdge). The wall and its frame Tile share a `flags.xdz.doorId` (random, this pair's only) so onUpdateWallDoorState can find the Tile back from the Wall once both exist as real embedded documents with their own (unrelated) ids. */
 function buildEdgeDoor(edge, dir, col, row, loc, rotation, style) {
@@ -284,7 +284,7 @@ function doorWall(c, doorId) {
     door: CONST.WALL_DOOR_TYPES.DOOR,
     ds: CONST.WALL_DOOR_STATES.CLOSED,
     doorSound: 'futuristicHydraulic',
-    animation: { type: 'slide', texture: DOOR_LEAF_TEXTURES[CONST.WALL_DOOR_STATES.CLOSED], double: true, direction: 1, duration: 750, strength: 1, flip: false },
+    animation: { type: 'slide', texture: DOOR_LEAF_TEXTURES[CONST.WALL_DOOR_STATES.CLOSED], double: true, direction: 1, duration: 750, strength: 1.2, flip: false },
     flags: { xdz: { doorId } },
   };
 }
@@ -729,6 +729,10 @@ export function onUpdateWallDoorState(wall, changes) {
   if (!('ds' in changes)) return;
   const doorId = wall.getFlag('xdz', 'doorId');
   if (!doorId) return;
+  // Fires on every connected client; only the GM has permission to write the
+  // Tile/Wall updates below (core's door-toggle permission carve-out covers
+  // only the `ds`/`_id` fields, not `animation.texture` or the Tile write).
+  if (!game.user.isGM) return;
   const frameSrc = DOOR_FRAME_TEXTURES[wall.ds];
   const tile = wall.parent?.tiles.find((t) => t.getFlag('xdz', 'doorId') === doorId);
   if (frameSrc && tile && frameSrc !== tile.texture.src) tile.update({ 'texture.src': frameSrc });

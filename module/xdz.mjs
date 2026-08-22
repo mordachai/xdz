@@ -7,7 +7,7 @@ import { appendToOrder } from './helpers/combat-groups.mjs';
 import { autoKillXenos } from './helpers/auto-kill.mjs';
 import { getStateDoc } from './helpers/table-state.mjs';
 import { isResponsibleClient } from './helpers/gm-election.mjs';
-import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic, resolveXenoResistance, resolveXenoAmbushDamage } from './macros/_module.mjs';
+import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic, hazardDeath, resolveXenoResistance, resolveXenoAmbushDamage } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
 import * as models from './data/_module.mjs';
@@ -17,7 +17,7 @@ globalThis.xdz = {
   documents: { XDZActor, XDZItem },
   applications: { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, WeaponSheet, GearSheet },
   apps: { TnTracker, RoundTimer, MapGenerator, CombatCarousel, CommandoHudApp, tnTracker: null, timers: new Map(), combatCarousel: null },
-  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic },
+  macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic, hazardDeath },
   models,
   config: XDZ,
   /** Shared table-state JournalEntry (TN, timers, current mission type) — see table-state.mjs. Resolved once in the 'ready' hook. */

@@ -494,7 +494,14 @@
       "XenoAmbushDamageButton": "Rolar Dano (1d4)",
       "XenoPanicFailTitle": "PÂNICO",
       "XenoPanicFailTag": "MUNIÇÃO",
-      "XenoPanicFailDesc": "{name} entra em pânico — precisa gastar x1 Munição para atacar neste turno."
+      "XenoPanicFailDesc": "{name} entra em pânico — precisa gastar x1 Munição para atacar neste turno.",
+      "HazardTitle": "PERIGO",
+      "HazardTag": "MORTE",
+      "HazardDesc": "{name} precisa evitar a morte certa.",
+      "HazardButton": "Rolar Morte",
+      "HazardDeathTitle": "PERIGO",
+      "HazardDeathTag": "MORTO",
+      "HazardDeathDesc": "{name} não sobrevive."
     },
 
     "Direction": {

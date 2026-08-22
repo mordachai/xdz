@@ -11,19 +11,19 @@
     "notes": ""
   },
   "prototypeToken": {
-    "name": "Wicked",
+    "name": "Perverso",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
     "height": 1,
     "depth": 1,
     "texture": {
-      "src": "systems/xdz/assets/images/xdz%20tokens%20xeno%20albino.png",
+      "src": "systems/xdz/assets/tokens/albino.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
-      "fit": "contain",
-      "scaleX": 1.3,
-      "scaleY": 1.3,
+      "fit": "fill",
+      "scaleX": 1.4,
+      "scaleY": 1.4,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
@@ -97,7 +97,11 @@
       "disposition": false
     },
     "movementAction": null,
-    "flags": {},
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      }
+    },
     "randomImg": false,
     "appendNumber": false,
     "prependAdjective": false
@@ -114,8 +118,8 @@
     "systemId": "xdz",
     "systemVersion": "0.1.1",
     "createdTime": 1786735671641,
-    "modifiedTime": 1786735671641,
-    "lastModifiedBy": null,
+    "modifiedTime": 1787401767698,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

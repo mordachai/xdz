@@ -4,4 +4,4 @@ export { spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm 
 export { areaLegends } from './area-legends.mjs';
 export { rollAssets } from './assets-roll.mjs';
 export { lockDoors } from './lock-doors.mjs';
-export { xenoAttack, xenoAmbush, xenoPanic, resolveXenoResistance, resolveXenoAmbushDamage } from './xeno-attacks.mjs';
+export { xenoAttack, xenoAmbush, xenoPanic, hazardDeath, resolveXenoResistance, resolveXenoAmbushDamage } from './xeno-attacks.mjs';

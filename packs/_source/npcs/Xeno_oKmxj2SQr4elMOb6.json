@@ -18,12 +18,12 @@
     "height": 1,
     "depth": 1,
     "texture": {
-      "src": "systems/xdz/assets/images/xeno%20token%20*.png",
+      "src": "systems/xdz/assets/tokens/warrior-0*.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
-      "fit": "contain",
-      "scaleX": 1,
-      "scaleY": 1,
+      "fit": "fill",
+      "scaleX": 1.4,
+      "scaleY": 1.4,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
@@ -97,7 +97,11 @@
       "disposition": false
     },
     "movementAction": null,
-    "flags": {},
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      }
+    },
     "randomImg": true,
     "appendNumber": false,
     "prependAdjective": false
@@ -115,7 +119,7 @@
     "systemId": "xdz",
     "systemVersion": "0.1.1",
     "createdTime": 1786722920574,
-    "modifiedTime": 1786735671642,
+    "modifiedTime": 1787401490387,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,

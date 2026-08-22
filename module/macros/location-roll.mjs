@@ -2,6 +2,27 @@
 // and MapGenerator's DIRECTIONS array — 1D4 maps 1:1 onto it.
 const QUADRANTS = ['N', 'E', 'S', 'W'];
 
+// `dice3d.messageHookDisabled` is local to each client — setting it on the
+// roller's own client (as createRolledMessage does) doesn't stop OTHER
+// connected clients from auto-playing DsN's animation a second time when
+// they receive the created chat message. show3d() already broadcasts the
+// animation live to everyone via showForRoll's `sync` flag, so that second
+// per-client auto-play is a pure duplicate. Relay the suppression flag over
+// the socket so every client — not just the roller — skips its own hook for
+// the brief window around message creation.
+const DSN_SOCKET_EVENT = 'system.xdz';
+
+Hooks.once('ready', () => {
+  game.socket.on(DSN_SOCKET_EVENT, ({ type, value } = {}) => {
+    if (type === 'dsnHookDisabled' && game.dice3d) game.dice3d.messageHookDisabled = value;
+  });
+});
+
+function setDsnHookDisabled(value) {
+  if (game.dice3d) game.dice3d.messageHookDisabled = value;
+  game.socket.emit(DSN_SOCKET_EVENT, { type: 'dsnHookDisabled', value });
+}
+
 /**
  * GM-only whisper for chat data when "Play with a GM" is on. Drops `rolls`
  * rather than just whispering: a whispered message that still carries Roll
@@ -39,8 +60,7 @@ export async function show3d(roll) {
  * roll for the same dice the moment the message posts.
  */
 export async function createRolledMessage(data) {
-  const dsn = game.dice3d;
-  if (dsn) dsn.messageHookDisabled = true;
+  setDsnHookDisabled(true);
   try {
     // ChatMessage#_preCreate auto-assigns CONFIG.sounds.dice whenever `rolls`
     // is non-empty and `data` has no `sound` key; DsN's own hook (skipped
@@ -48,7 +68,7 @@ export async function createRolledMessage(data) {
     // without this it plays on top of show3d()'s sound.
     return await ChatMessage.create({ sound: null, ...data });
   } finally {
-    if (dsn) dsn.messageHookDisabled = false;
+    setDsnHookDisabled(false);
   }
 }
 

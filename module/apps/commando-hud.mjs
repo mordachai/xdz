@@ -172,21 +172,21 @@ export default class CommandoHudApp extends HandlebarsApplicationMixin(ActorShee
   static async _onWeaponRoll(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    if (!this._requireEquipped(item)) return;
+    if (!this.constructor._requireEquipped(item)) return;
     return item?.rollAttack('normal');
   }
 
   static async _onWeaponAmmo(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    if (!this._requireEquipped(item)) return;
+    if (!this.constructor._requireEquipped(item)) return;
     return item?.rollAttack('ammo');
   }
 
   static async _onWeaponSecondary(event, target) {
     const li = target.closest('[data-item-id]');
     const item = this.actor.items.get(li?.dataset.itemId);
-    if (!this._requireEquipped(item)) return;
+    if (!this.constructor._requireEquipped(item)) return;
     return item?.rollSecondary();
   }
 

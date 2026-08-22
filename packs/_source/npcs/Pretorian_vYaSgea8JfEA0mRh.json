@@ -11,19 +11,19 @@
     "notes": "Never to far from the queen..."
   },
   "prototypeToken": {
-    "name": "Pretorian",
+    "name": "Pretoriano",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
     "height": 1,
     "depth": 1,
     "texture": {
-      "src": "systems/xdz/assets/images/xeno_token%20dark.png",
+      "src": "systems/xdz/assets/tokens/pretorian-01.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
-      "fit": "contain",
-      "scaleX": 1.15,
-      "scaleY": 1.15,
+      "fit": "fill",
+      "scaleX": 1.5,
+      "scaleY": 1.5,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
@@ -97,7 +97,11 @@
       "disposition": false
     },
     "movementAction": null,
-    "flags": {},
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      }
+    },
     "randomImg": false,
     "appendNumber": false,
     "prependAdjective": false
@@ -115,7 +119,7 @@
     "systemId": "xdz",
     "systemVersion": "0.1.1",
     "createdTime": 1786723587543,
-    "modifiedTime": 1786735671642,
+    "modifiedTime": 1787401602899,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,

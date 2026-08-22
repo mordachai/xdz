@@ -1,4 +1,5 @@
 import { show3d, createRolledMessage } from './location-roll.mjs';
+import { updateActorAsOwner } from '../helpers/relay-update.mjs';
 
 // Each xeno action posts one card per targeted PC, each with a button that
 // rolls that PC's matching resistance.
@@ -54,10 +55,15 @@ async function postXenoCard(data) {
   return ChatMessage.create({ speaker: { alias }, content });
 }
 
-/** Adds `amount` injury points, clamped to the death threshold. Commando/character only. */
+/**
+ * Adds `amount` injury points, clamped to the death threshold. Commando/character
+ * only. Any connected player can trigger this (resolving a teammate's card,
+ * not just their own) — updateActorAsOwner relays the write to the
+ * responsible client when the clicking user doesn't own `actor`.
+ */
 async function applyInjury(actor, amount) {
   const next = Math.min((actor.system.injuries?.value ?? 0) + amount, CONFIG.XDZ.injuryDeath);
-  await actor.update({ 'system.injuries.value': next });
+  await updateActorAsOwner(actor, { 'system.injuries.value': next });
 }
 
 /**
@@ -110,6 +116,41 @@ export const xenoAmbush = () => postXenoAction('ambush');
 export const xenoPanic = () => postXenoAction('panic');
 
 /**
+ * Generic instant-death hazard (falls, explosions, vacuum exposure, etc.) —
+ * unlike the three xeno actions above, no single line of flavor text covers
+ * every case, so the card just uses a generic "avoid certain death" line.
+ * Posts one card per targeted PC with a "Roll Death" button; a failed roll
+ * is fatal outright (see resolveXenoResistance's 'hazard' branch below) —
+ * no damage roll, no partial injury.
+ */
+export async function hazardDeath() {
+  const tokens = getActionTokens();
+  const actors = tokens
+    .map((t) => t.actor)
+    .filter((actor) => actor && (actor.type === 'commando' || actor.type === 'character'));
+  if (!actors.length) {
+    return ui.notifications.warn(game.i18n.localize('XDZ.Notifications.TargetNotPC'));
+  }
+
+  for (const actor of actors) {
+    await postXenoCard({
+      title: game.i18n.localize('XDZ.Chat.HazardTitle'),
+      tag: game.i18n.localize('XDZ.Chat.HazardTag'),
+      targetImg: actor.img,
+      targetName: actor.name,
+      description: game.i18n.format('XDZ.Chat.HazardDesc', { name: actor.name }),
+      button: {
+        action: 'xdzRollXenoResistance',
+        label: game.i18n.localize('XDZ.Chat.HazardButton'),
+        actorUuid: actor.uuid,
+        key: 'death',
+        kind: 'hazard',
+      },
+    });
+  }
+}
+
+/**
  * Click handler for the "Roll Dodge/Death/Fear" button on a xeno-action
  * card (wired in module/xdz.mjs). Rolls the named resistance on `actorUuid`
  * (posts the normal check-card via XDZActor#rollResistance) then, only on a
@@ -118,6 +159,8 @@ export const xenoPanic = () => postXenoAction('panic');
  * - ambush: posts a follow-up card with a "Roll Damage (1d4)" button.
  * - panic: posts a flavor-only note (no automated damage/ammo spend — spending
  *   the ammo happens through the player's normal attack roll this turn).
+ * - hazard: instant death — sets injuries straight to the death threshold,
+ *   no damage roll (see hazardDeath() above).
  */
 export async function resolveXenoResistance(actorUuid, key, kind) {
   const actor = await fromUuid(actorUuid);
@@ -155,6 +198,15 @@ export async function resolveXenoResistance(actorUuid, key, kind) {
       targetImg: actor.img,
       targetName: actor.name,
       description: game.i18n.format('XDZ.Chat.XenoPanicFailDesc', { name: actor.name }),
+    });
+  } else if (kind === 'hazard') {
+    await updateActorAsOwner(actor, { 'system.injuries.value': CONFIG.XDZ.injuryDeath });
+    await postXenoCard({
+      title: game.i18n.localize('XDZ.Chat.HazardDeathTitle'),
+      tag: game.i18n.localize('XDZ.Chat.HazardDeathTag'),
+      targetImg: actor.img,
+      targetName: actor.name,
+      description: game.i18n.format('XDZ.Chat.HazardDeathDesc', { name: actor.name }),
     });
   }
 }

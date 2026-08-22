@@ -499,7 +499,14 @@
       "XenoAmbushDamageButton": "Roll Damage (1d4)",
       "XenoPanicFailTitle": "PANIC",
       "XenoPanicFailTag": "AMMO",
-      "XenoPanicFailDesc": "{name} panics — must spend 1 ammo to attack this turn."
+      "XenoPanicFailDesc": "{name} panics — must spend 1 ammo to attack this turn.",
+      "HazardTitle": "HAZARD",
+      "HazardTag": "DEATH",
+      "HazardDesc": "{name} must avoid certain death.",
+      "HazardButton": "Roll Death",
+      "HazardDeathTitle": "HAZARD",
+      "HazardDeathTag": "DEAD",
+      "HazardDeathDesc": "{name} doesn't make it."
     },
 
     "Direction": {

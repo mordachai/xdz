@@ -37,7 +37,6 @@
   },
   "flags": {},
   "_id": "ubnOXOhSXZQ5SeAc",
-  "_key": "!journal!ubnOXOhSXZQ5SeAc",
   "_stats": {
     "coreVersion": "14.365",
     "systemId": "xdz",
@@ -48,5 +47,7 @@
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
-  }
+  },
+  "categories": [],
+  "_key": "!journal!ubnOXOhSXZQ5SeAc"
 }

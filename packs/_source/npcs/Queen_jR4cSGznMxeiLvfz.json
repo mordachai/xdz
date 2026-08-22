@@ -11,19 +11,19 @@
     "notes": ""
   },
   "prototypeToken": {
-    "name": "Queen",
+    "name": "Rainha",
     "displayName": 0,
     "actorLink": false,
-    "width": 1,
-    "height": 1,
-    "depth": 1,
+    "width": 2,
+    "height": 2,
+    "depth": 2,
     "texture": {
-      "src": "systems/xdz/assets/images/xdz%20tokens%20xeno%20breeder.png",
+      "src": "systems/xdz/assets/tokens/queen.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
-      "fit": "contain",
-      "scaleX": 1.75,
-      "scaleY": 1.75,
+      "fit": "fill",
+      "scaleX": 1.2,
+      "scaleY": 1.2,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
@@ -97,7 +97,11 @@
       "disposition": false
     },
     "movementAction": null,
-    "flags": {},
+    "flags": {
+      "splatter": {
+        "bloodColor": ""
+      }
+    },
     "randomImg": false,
     "appendNumber": false,
     "prependAdjective": false
@@ -115,7 +119,7 @@
     "systemId": "xdz",
     "systemVersion": "0.1.1",
     "createdTime": 1786733757185,
-    "modifiedTime": 1786735671642,
+    "modifiedTime": 1787401370635,
     "lastModifiedBy": "P0vokdR1GDvHsok3",
     "compendiumSource": null,
     "duplicateSource": null,

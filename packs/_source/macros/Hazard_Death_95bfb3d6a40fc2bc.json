@@ -1,0 +1,28 @@
+{
+  "name": "Hazard Death",
+  "type": "script",
+  "_id": "95bfb3d6a40fc2bc",
+  "author": "P0vokdR1GDvHsok3",
+  "img": "systems/xdz/assets/ui/xenoDeath.webp",
+  "scope": "global",
+  "command": "await xdz.macros.hazardDeath();",
+  "folder": null,
+  "sort": 990000,
+  "ownership": {
+    "default": 0,
+    "P0vokdR1GDvHsok3": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.365",
+    "systemId": "xdz",
+    "systemVersion": "2.3.0",
+    "createdTime": 1787000000000,
+    "modifiedTime": 1787000000000,
+    "lastModifiedBy": "P0vokdR1GDvHsok3",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!95bfb3d6a40fc2bc"
+}
