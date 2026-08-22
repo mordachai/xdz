@@ -38,5 +38,5 @@ export async function rollMission(type) {
   );
   journal.sheet.render(true, { pageId: page.id });
 
-  await game.settings.set('xdz', 'currentMissionType', type);
+  await xdz.state.setFlag('xdz', 'currentMissionType', type);
 }

@@ -5,6 +5,8 @@ import { CommandoSheet, CharacterSheet, XenoSheet, NpcSheet, VehicleSheet, Weapo
 import { TnTracker, RoundTimer, MapGenerator, CombatCarousel, CommandoHudApp, onUpdateWallDoorState } from './apps/_module.mjs';
 import { appendToOrder } from './helpers/combat-groups.mjs';
 import { autoKillXenos } from './helpers/auto-kill.mjs';
+import { getStateDoc } from './helpers/table-state.mjs';
+import { isResponsibleClient } from './helpers/gm-election.mjs';
 import { rollEscalation, rollLocation, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic, resolveXenoResistance, resolveXenoAmbushDamage } from './macros/_module.mjs';
 import { rollMission } from './helpers/mission-roll.mjs';
 import { XDZ } from './helpers/config.mjs';
@@ -18,6 +20,8 @@ globalThis.xdz = {
   macros: { rollEscalation, rollLocation, rollMission, spawnXenos, spawnBreeder, spawnRogueCommandos, spawnWicked, spawnSwarm, areaLegends, rollAssets, lockDoors, xenoAttack, xenoAmbush, xenoPanic },
   models,
   config: XDZ,
+  /** Shared table-state JournalEntry (TN, timers, current mission type) — see table-state.mjs. Resolved once in the 'ready' hook. */
+  state: null,
 };
 
 // Babele (optional module) compendium translations, read from
@@ -69,35 +73,12 @@ Hooks.once('init', function () {
   };
   CONFIG.Item.typeImages = XDZ.itemTypeImages;
 
-  game.settings.register('xdz', TnTracker.SETTING, {
-    scope: 'world',
-    config: false,
-    type: Number,
-    default: XDZ.defaultTarget,
-  });
-  game.settings.register('xdz', TnTracker.MODIFIER_SETTING, {
-    scope: 'world',
-    config: false,
-    type: Object,
-    default: { type: null, delta: 0, baseValue: null },
-  });
-  // Any number of timers can run at once — an array of independent state
-  // objects, each tagged with its own id (see RoundTimer).
-  game.settings.register('xdz', RoundTimer.SETTING, {
-    scope: 'world',
-    config: false,
-    type: Array,
-    default: [],
-  });
-  // Last mission type rolled via rollMission() — read by the Escalation
-  // roller so its own LOCATION-roll placeholders match the current mission
-  // (ship vs colony) without needing an explicit picker on every call.
-  game.settings.register('xdz', 'currentMissionType', {
-    scope: 'world',
-    config: false,
-    type: String,
-    default: 'colony',
-  });
+  // TN value/modifier, round timers, and current mission type used to live
+  // here as world Settings — a hard Foundry engine rule makes those GM-only
+  // to write, with no permission override, which silently broke them for a
+  // GM-less table. They now live as flags on a shared JournalEntry instead
+  // (see table-state.mjs / getStateDoc()), resolved once into `xdz.state`
+  // in the 'ready' hook below.
   game.settings.register('xdz', 'sheetTheme', {
     name: 'XDZ.Settings.SheetTheme.Name',
     hint: 'XDZ.Settings.SheetTheme.Hint',
@@ -289,12 +270,12 @@ Hooks.once('init', function () {
 });
 
 /**
- * Reconcile the open timer badges against the `xdz.timers` world setting:
- * create apps for ids we haven't seen, close+drop apps for ids that were
- * removed, re-render the rest so their digits stay live.
+ * Reconcile the open timer badges against the `timers` flag on the shared
+ * table-state doc: create apps for ids we haven't seen, close+drop apps for
+ * ids that were removed, re-render the rest so their digits stay live.
  */
 function syncTimers() {
-  const states = game.settings.get('xdz', RoundTimer.SETTING);
+  const states = RoundTimer.getAll();
   const seen = new Set();
   states.forEach((state) => {
     seen.add(state.id);
@@ -311,7 +292,9 @@ function syncTimers() {
   }
 }
 
-Hooks.once('ready', function () {
+Hooks.once('ready', async function () {
+  xdz.state = await getStateDoc();
+
   xdz.apps.tnTracker = new TnTracker();
   if (game.settings.get('xdz', 'hudVisible')) {
     xdz.apps.tnTracker.render(true);
@@ -335,12 +318,16 @@ Hooks.once('ready', function () {
   game.settings.set('splatter', 'BloodSheetData', { ...sheet, xeno: '#39ff14d8' });
 });
 
-// TN/timer state lives in world settings (Setting documents), which already
-// broadcast live to every connected client — re-render the HUD badges in
-// place instead of wiring a bespoke socket.
-Hooks.on('updateSetting', (setting) => {
-  if (setting.key === 'xdz.tnValue' || setting.key === 'xdz.tnModifier') xdz.apps.tnTracker?.render();
-  if (setting.key === 'xdz.timers') syncTimers();
+// TN/timer state lives as flags on the shared table-state JournalEntry (see
+// table-state.mjs), which already broadcasts live to every connected client
+// via the normal Document update flow — re-render the HUD badges in place
+// instead of wiring a bespoke socket.
+Hooks.on('updateJournalEntry', (doc, changes) => {
+  if (doc.id !== xdz.state?.id) return;
+  const flags = changes.flags?.xdz;
+  if (!flags) return;
+  if ('tnValue' in flags || 'tnModifier' in flags) xdz.apps.tnTracker?.render();
+  if ('timers' in flags) syncTimers();
 });
 
 // Combat Carousel: open/close tracks whether a combat exists, re-render on
@@ -349,7 +336,7 @@ Hooks.on('updateSetting', (setting) => {
 // group's manual drag order (see combat-groups.mjs) so it has a defined
 // position without requiring a roll.
 Hooks.on('createCombat', (combat) => {
-  if (game.user.isGM && !game.settings.get('xdz', 'playWithGM')) {
+  if (isResponsibleClient() && !game.settings.get('xdz', 'playWithGM')) {
     combat.update({ ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER } });
   }
   xdz.apps.combatCarousel?.syncVisibility();
@@ -357,19 +344,20 @@ Hooks.on('createCombat', (combat) => {
 Hooks.on('deleteCombat', () => xdz.apps.combatCarousel?.syncVisibility());
 Hooks.on('updateCombat', () => xdz.apps.combatCarousel?.render());
 Hooks.on('createCombatant', (combatant) => {
-  // Every connected client sees this hook fire — only the GM writes the
-  // append, avoiding duplicate/conflicting order values from a race.
-  if (game.user.isGM) appendToOrder(combatant);
+  // Every connected client sees this hook fire — only the responsible
+  // client writes the append, avoiding duplicate/conflicting order values
+  // from a race. See gm-election.mjs.
+  if (isResponsibleClient()) appendToOrder(combatant);
   xdz.apps.combatCarousel?.render();
 });
 Hooks.on('updateCombatant', () => xdz.apps.combatCarousel?.render());
 Hooks.on('deleteCombatant', () => xdz.apps.combatCarousel?.render());
 // Destroy-die rolls stash their kill payload on the chat message (see
 // rollDamage() in documents/item.mjs) instead of a bespoke socket — every
-// connected client sees this hook fire, only the GM acts on it, same
-// pattern as the createCombatant append above.
+// connected client sees this hook fire, only the responsible client acts on
+// it, same pattern as the createCombatant append above.
 Hooks.on('createChatMessage', async (message) => {
-  if (!game.user.isGM) return;
+  if (!isResponsibleClient()) return;
   const data = message.getFlag('xdz', 'autoKill');
   if (!data) return;
   // Wait out Dice So Nice's roll animation (if active) so the kill lands
@@ -424,7 +412,7 @@ Hooks.on('updateWall', onUpdateWallDoorState);
 // is exactly the state of a fresh world with zero scenes — the one moment
 // this button is needed most. The sidebar directory renders regardless.
 Hooks.on('renderSceneDirectory', (app, html) => {
-  if (!game.user.isGM) return;
+  if (!game.user.isGM && game.settings.get('xdz', 'playWithGM')) return;
   const actions = html.querySelector('.header-actions');
   if (!actions || actions.querySelector('.xdz-map-generator-btn')) return;
   const button = document.createElement('button');
@@ -439,7 +427,7 @@ Hooks.on('renderSceneDirectory', (app, html) => {
 // the Map Generator button above, but on the Journal sidebar: one button per
 // mission type, each rolling and logging straight away (no picker dialog).
 Hooks.on('renderJournalDirectory', (app, html) => {
-  if (!game.user.isGM) return;
+  if (!game.user.isGM && game.settings.get('xdz', 'playWithGM')) return;
   const actions = html.querySelector('.header-actions');
   if (!actions || actions.querySelector('.xdz-mission-roll-btn')) return;
   const buttons = [

@@ -31,8 +31,10 @@ function parseMmSs(text) {
 /**
  * A round-counter / real-time-countdown HUD badge. Spawned on demand (via
  * the TN tracker's right-click "Timer" entry) rather than always-on — any
- * number of timers can run at once, each tracked by id in the `xdz.timers`
- * world setting so every client sees the same set and the same state.
+ * number of timers can run at once, each tracked by id in the `timers` flag
+ * on the shared table-state JournalEntry (see table-state.mjs) so every
+ * client sees the same set and the same state, and — unlike a world Setting
+ * — a non-GM client can write it too when playing without a dedicated GM.
  * Screen position, like the other HUD badges, is per-client.
  */
 export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -66,7 +68,7 @@ export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2
   _alarmFired = false;
 
   static getAll() {
-    return game.settings.get('xdz', RoundTimer.SETTING);
+    return xdz.state?.getFlag('xdz', RoundTimer.SETTING) ?? [];
   }
 
   static getState(id) {
@@ -74,22 +76,27 @@ export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2
     return foundry.utils.mergeObject(DEFAULT_STATE, state ?? {}, { inplace: false });
   }
 
-  static async _updateState(id, changes) {
-    const all = RoundTimer.getAll().map((t) => (t.id === id ? foundry.utils.mergeObject(t, changes, { inplace: false }) : t));
-    await game.settings.set('xdz', RoundTimer.SETTING, all);
+  /** True when this client is allowed to edit timers: the GM, or anyone at all once the table's playing without a dedicated GM. */
+  static canEdit() {
+    return game.user.isGM || !game.settings.get('xdz', 'playWithGM');
   }
 
-  /** Create a new timer entry; every client picks it up via the settings hook. */
+  static async _updateState(id, changes) {
+    const all = RoundTimer.getAll().map((t) => (t.id === id ? foundry.utils.mergeObject(t, changes, { inplace: false }) : t));
+    await xdz.state.setFlag('xdz', RoundTimer.SETTING, all);
+  }
+
+  /** Create a new timer entry; every client picks it up via the table-state hook. */
   static async create() {
     const id = foundry.utils.randomID();
     const all = [...RoundTimer.getAll(), { id, ...DEFAULT_STATE }];
-    await game.settings.set('xdz', RoundTimer.SETTING, all);
+    await xdz.state.setFlag('xdz', RoundTimer.SETTING, all);
     return id;
   }
 
   static async delete(id) {
     const all = RoundTimer.getAll().filter((t) => t.id !== id);
-    await game.settings.set('xdz', RoundTimer.SETTING, all);
+    await xdz.state.setFlag('xdz', RoundTimer.SETTING, all);
   }
 
   /** Default spawn spot for a newly-seen timer: stacked to the left of the TN badge. */
@@ -107,7 +114,7 @@ export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2
     const remainingMs = state.running ? state.clockEndTime - Date.now() : state.clockRemainingMs;
     const modeLabel = game.i18n.localize(state.mode === 'rounds' ? 'XDZ.Hud.Rounds' : 'XDZ.Hud.Clock');
     return {
-      isGM: game.user.isGM,
+      canEdit: RoundTimer.canEdit(),
       mode: state.mode,
       rounds: state.rounds,
       label: state.name || modeLabel,
@@ -129,7 +136,7 @@ export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2
     if (!this.position.left && !this.position.top) this._applyDefaultPosition();
     attachHudDrag(this, this.element.querySelector('.xdz-hud-root'), `timers.${this.timerId}`);
 
-    if (game.user.isGM) {
+    if (RoundTimer.canEdit()) {
       this._contextMenu ??= new foundry.applications.ux.ContextMenu(
         this.element,
         '.xdz-hud-badge',
@@ -175,7 +182,7 @@ export default class RoundTimer extends HandlebarsApplicationMixin(ApplicationV2
       if (remaining <= 0 && !this._alarmFired) {
         this._alarmFired = true;
         this._stopTicking();
-        if (game.user.isGM) RoundTimer._updateState(this.timerId, { running: false, clockEndTime: null, clockRemainingMs: 0 });
+        if (RoundTimer.canEdit()) RoundTimer._updateState(this.timerId, { running: false, clockEndTime: null, clockRemainingMs: 0 });
       }
     }, 250);
   }

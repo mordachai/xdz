@@ -3,7 +3,7 @@
     <div class="xdz-hud-bg xdz-hud-bg-timer"></div>
     <div class="xdz-hud-readout">
       {{#if (eq mode 'rounds')}}
-        {{#if isGM}}
+        {{#if canEdit}}
           <input type="number" class="xdz-hud-input" name="rounds" value="{{rounds}}" min="0">
         {{else}}
           <span class="xdz-hud-digits">{{rounds}}</span>
@@ -13,12 +13,12 @@
       {{/if}}
     </div>
   </div>
-  {{#if isGM}}
+  {{#if canEdit}}
     <input type="text" class="xdz-hud-label-input" name="name" value="{{label}}" title="{{localize 'XDZ.Hud.Rename'}}">
   {{else}}
     <div class="xdz-hud-label">{{label}}</div>
   {{/if}}
-  {{#if isGM}}
+  {{#if canEdit}}
     <div class="xdz-hud-controls">
       {{#if (eq mode 'rounds')}}
         <button type="button" data-action="adjustRounds" data-delta="-1" title="{{localize 'XDZ.Hud.AdjustMinus1'}}">-</button>

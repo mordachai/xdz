@@ -2,7 +2,7 @@
   <div class="xdz-hud-badge">
     <div class="xdz-hud-bg xdz-hud-bg-tn"></div>
     <div class="xdz-hud-readout">
-      {{#if isGM}}
+      {{#if canEdit}}
         <input type="number" class="xdz-hud-input" name="tnValue" value="{{value}}" min="1">
       {{else}}
         <span class="xdz-hud-digits">{{value}}</span>

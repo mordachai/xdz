@@ -28,7 +28,7 @@ export async function rollAssets() {
 
   const countRoll = await new Roll('1d8').evaluate();
   await show3d(countRoll);
-  const type = game.settings.get('xdz', 'currentMissionType');
+  const type = xdz.state?.getFlag('xdz', 'currentMissionType') ?? 'colony';
   const pool = shuffleArray(CONFIG.XDZ.locations[type]);
 
   const enrichHTML = foundry.applications.ux.TextEditor.implementation.enrichHTML;

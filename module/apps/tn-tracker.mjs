@@ -7,10 +7,13 @@ const MODIFIER_LABELS = { hard: 'XDZ.Hud.HardPlate', easy: 'XDZ.Hud.EasyPlate' }
 
 /**
  * Always-on HUD badge showing the room's shared Target Number (ICRPG-style:
- * every action in a scene rolls against the same TN until the GM changes
- * it). GM can adjust it via direct edit or the right-click menu; everyone
- * else sees a read-only readout that updates live via the `xdz.tnValue`
- * world setting. Pinned beside the sidebar by default; draggable per-client.
+ * every action in a scene rolls against the same TN until it's changed).
+ * Editable by the GM, or by anyone when the table's playing without a
+ * dedicated GM (`xdz.playWithGM` off) — see `canEdit` below; everyone else
+ * sees a read-only readout. Value/modifier live as flags on the shared
+ * table-state JournalEntry (see table-state.mjs) rather than a world
+ * Setting, since a world Setting can only ever be written by a GM. Pinned
+ * beside the sidebar by default; draggable per-client.
  */
 export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2) {
   static SETTING = 'tnValue';
@@ -30,11 +33,16 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
 
   /** Current shared TN, for the rest of the system to read (rolls, etc). */
   static getCurrentTN() {
-    return game.settings.get('xdz', TnTracker.SETTING);
+    return xdz.state?.getFlag('xdz', TnTracker.SETTING) ?? CONFIG.XDZ.defaultTarget;
   }
 
   static getModifier() {
-    return game.settings.get('xdz', TnTracker.MODIFIER_SETTING);
+    return xdz.state?.getFlag('xdz', TnTracker.MODIFIER_SETTING) ?? { type: null, delta: 0, baseValue: null };
+  }
+
+  /** True when this client is allowed to edit the TN: the GM, or anyone at all once the table's playing without a dedicated GM. */
+  static canEdit() {
+    return game.user.isGM || !game.settings.get('xdz', 'playWithGM');
   }
 
   /** @override */
@@ -42,7 +50,7 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
     const modifier = TnTracker.getModifier();
     return {
       value: TnTracker.getCurrentTN(),
-      isGM: game.user.isGM,
+      canEdit: TnTracker.canEdit(),
       modifier: { type: modifier.type, label: modifier.type ? game.i18n.localize(MODIFIER_LABELS[modifier.type]) : null },
     };
   }
@@ -57,7 +65,7 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
     this._observeSidebar();
     this._avoidSidebar();
 
-    if (game.user.isGM) {
+    if (TnTracker.canEdit()) {
       this._contextMenu ??= new foundry.applications.ux.ContextMenu(
         this.element,
         '.xdz-hud-badge',
@@ -119,22 +127,22 @@ export default class TnTracker extends HandlebarsApplicationMixin(ApplicationV2)
 
   static async _onDirectSet(event) {
     const value = Math.max(1, Number(event.target.value) || CONFIG.XDZ.defaultTarget);
-    await game.settings.set('xdz', TnTracker.SETTING, value);
-    await game.settings.set('xdz', TnTracker.MODIFIER_SETTING, { type: null, delta: 0, baseValue: null });
+    await xdz.state.setFlag('xdz', TnTracker.SETTING, value);
+    await xdz.state.setFlag('xdz', TnTracker.MODIFIER_SETTING, { type: null, delta: 0, baseValue: null });
   }
 
   /** Hard/Easy are toggles — clicking the active one again restores the pre-modifier value. */
   static async _onApplyModifier(type, delta) {
     const modifier = TnTracker.getModifier();
     if (modifier.type === type) {
-      await game.settings.set('xdz', TnTracker.SETTING, modifier.baseValue);
-      await game.settings.set('xdz', TnTracker.MODIFIER_SETTING, { type: null, delta: 0, baseValue: null });
+      await xdz.state.setFlag('xdz', TnTracker.SETTING, modifier.baseValue);
+      await xdz.state.setFlag('xdz', TnTracker.MODIFIER_SETTING, { type: null, delta: 0, baseValue: null });
       return;
     }
     const baseValue = modifier.type ? modifier.baseValue : TnTracker.getCurrentTN();
     const value = Math.max(1, baseValue + delta);
-    await game.settings.set('xdz', TnTracker.SETTING, value);
-    await game.settings.set('xdz', TnTracker.MODIFIER_SETTING, { type, delta, baseValue });
+    await xdz.state.setFlag('xdz', TnTracker.SETTING, value);
+    await xdz.state.setFlag('xdz', TnTracker.MODIFIER_SETTING, { type, delta, baseValue });
   }
 
   static async _onCreateTimer() {

@@ -15,8 +15,9 @@ const SPAWN_HANDLERS = {
  * XENO turn) and posts a CRT-styled chat card. Exposed as `xdz.macros.
  * rollEscalation()` for a hotbar macro. Any LOCATION-roll placeholder in
  * the result resolves against the last mission type rolled by
- * MissionGenerator (world setting xdz.currentMissionType), defaulting to
- * 'colony' if no mission has been rolled yet this world.
+ * MissionGenerator (`currentMissionType` flag on the shared table-state
+ * JournalEntry, see table-state.mjs), defaulting to 'colony' if no mission
+ * has been rolled yet this world.
  *
  * Also logs the roll as its own page in the "Mission Objectives" journal,
  * appended after the mission briefing page (not nested inside it) — a
@@ -28,7 +29,7 @@ export async function rollEscalation() {
   const roll = await new Roll('1d20').evaluate();
   await show3d(roll);
   const entry = CONFIG.XDZ.escalations.find((e) => e.num === roll.total);
-  const type = game.settings.get('xdz', 'currentMissionType');
+  const type = xdz.state?.getFlag('xdz', 'currentMissionType') ?? 'colony';
   const resolved = resolveEntry(entry, type);
   const timestamp = new Date().toLocaleString();
 
